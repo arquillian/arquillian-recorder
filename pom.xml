@@ -51,7 +51,13 @@
         <module>arquillian-recorder-video-base</module>
     </modules>
 
-    <!-- Add here scm section -->
+    <!-- SCM -->
+    <scm>
+        <connection>scm:git:git://git@github.com:arquillian/arquillian-unified-recorder.git</connection>
+        <developerConnection>scm:git:ssh://github.com/arquillian/arquillian-unified-recorder.git</developerConnection>
+        <url>git://github.com/arquillian/arquillian-unified-recorder.git</url>
+        <tag>HEAD</tag>
+    </scm>    
 
     <!-- Properties -->
     <properties>
