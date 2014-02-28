@@ -13,7 +13,7 @@ Arquillian Reporter is an extension to Arquillian platform which provides the po
 </dependency>
 ----
 
-The examples of how reports are taken can be seen http://bit.ly/1kvVOB4[here] for JSON, http://bit.ly/1cs1k2D[here] for XML and http://devio.us/~stewe/arquillian_report_html.png[here] form HTML type of reporting.
+The examples of how reports are taken can be seen http://bit.ly/1kvVOB4[here] for JSON, http://bit.ly/1cs1k2D[here] for XML and http://devio.us/~stewe/report/arquillian_report.html[here] form HTML type of reporting.
 
 == Settings
 
