@@ -17,12 +17,14 @@
 package org.arquillian.recorder.reporter.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.arquillian.recorder.reporter.PropertyEntry;
@@ -52,12 +54,21 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
  *
  */
 @XmlRootElement(name = "class")
-@XmlType(propOrder = { "testClassName", "runAsClient", "propertyEntries", "testMethodReports" })
+@XmlType(propOrder = { "testClassName", "runAsClient", "duration", "propertyEntries", "testMethodReports" })
 public class TestClassReport implements ReportEntry {
 
     private String testClassName;
 
     private boolean runAsClient;
+
+    @XmlTransient
+    private Date start = new Date(System.currentTimeMillis());
+
+    @XmlTransient
+    private Date stop = start;
+
+    @XmlAttribute(required = true)
+    private long duration = 0;
 
     @XmlElement(name = "method", required = true)
     private final List<TestMethodReport> testMethodReports = new ArrayList<TestMethodReport>();
@@ -87,6 +98,11 @@ public class TestClassReport implements ReportEntry {
         this.runAsClient = runsAsClient;
     }
 
+    public void setStop(Date timestamp) {
+        stop = timestamp;
+        setDuration(stop.getTime() - start.getTime());
+    }
+
     public List<TestMethodReport> getTestMethodReports() {
         return testMethodReports;
     }
@@ -94,6 +110,14 @@ public class TestClassReport implements ReportEntry {
     @Override
     public List<PropertyEntry> getPropertyEntries() {
         return propertyEntries;
+    }
+
+    private void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public long getDuration() {
+        return this.duration;
     }
 
 }

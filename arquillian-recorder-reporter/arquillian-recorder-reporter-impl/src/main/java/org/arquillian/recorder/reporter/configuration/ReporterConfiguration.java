@@ -17,7 +17,6 @@
 package org.arquillian.recorder.reporter.configuration;
 
 import java.io.File;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.arquillian.extension.recorder.Configuration;
@@ -38,7 +37,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
 
     private String rootDir = "target";
 
-    private String template = "src/test/resources/template.xsl";
+    private String template = "template.xsl";
 
     /**
      *
@@ -65,8 +64,10 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
     }
 
     /**
+     * XSL template for transforming XML to HTML when using HTML report type, defaults to "template.xsl". When this file is not
+     * found, default system XSL template is used.
      *
-     * @return xsl template for transforming XML to HTML when using HTML report type, defaults to "template.xsl"
+     * @return
      */
     public File getTemplate() {
         return new File(getProperty("template", template));
@@ -74,8 +75,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
 
     private String getFileDefaultFileName() {
         return new StringBuilder()
-            .append("arquillian_report_")
-            .append(UUID.randomUUID())
+            .append("arquillian_report")
             .append(".")
             .append(DEFAULT_TYPE)
             .toString();
@@ -92,7 +92,15 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         String reportProperty = getProperty("report", report);
 
         if (!fileProperty.endsWith(reportProperty)) {
-            file = fileProperty.concat(".").concat(reportProperty);
+            StringBuilder sb = new StringBuilder();
+            if (fileProperty.contains(".")) {
+                sb.append(fileProperty.substring(0, fileProperty.lastIndexOf(".")));
+            } else {
+                sb.append(fileProperty);
+            }
+            sb.append(".");
+            sb.append(reportProperty);
+            file = sb.toString();
             setProperty("file", file);
         }
     }

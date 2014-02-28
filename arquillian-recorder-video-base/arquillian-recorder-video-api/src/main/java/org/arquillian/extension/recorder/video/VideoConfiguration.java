@@ -32,7 +32,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
 
     private String baseFolder = "videos";
 
-    private String videoType = VideoType.MPEG.name();
+    private String videoType = VideoType.MP4.name();
 
     private String startBeforeTest = "false";
 
@@ -94,7 +94,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
     }
 
     /**
-     * By default set to "MPEG".
+     * By default set to "MP4".
      *
      * @return type of video we want our screenshots to be of
      */

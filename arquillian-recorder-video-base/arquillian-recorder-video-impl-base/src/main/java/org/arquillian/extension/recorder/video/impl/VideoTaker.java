@@ -113,7 +113,8 @@ public class VideoTaker {
 
     private PropertyEntry getVideoEntry(Video video) {
         VideoEntry videoEntry = new VideoEntry();
-        videoEntry.setName(video.getResource().getPath());
+        videoEntry.setPath(video.getResource().getAbsolutePath());
+        videoEntry.setType(video.getResourceType().toString());
         videoEntry.setSize(Long.toString(video.getResource().length()));
         return videoEntry;
     }

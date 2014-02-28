@@ -54,11 +54,14 @@ public class ScreenshotTaker {
             event.getFileName());
 
         Screenshot screenshot = screenshooter.get().takeScreenshot(screenshotTarget, type);
+        event.getMetaData().setHeight(screenshot.getHeight());
+        event.getMetaData().setWidth(screenshot.getWidth());
         screenshot.setResourceMetaData(event.getMetaData());
 
         ScreenshotEntry propertyEntry = new ScreenshotEntry();
-        propertyEntry.setName(screenshot.getResource().getPath());
+        propertyEntry.setPath(screenshot.getResource().getAbsolutePath());
         propertyEntry.setPhase(event.getWhen());
+        propertyEntry.setType(screenshot.getResourceType().toString());
         propertyEntry.setSize(Long.toString(screenshot.getResource().length()));
 
         propertyReportEvent.fire(new PropertyReportEvent(propertyEntry));

@@ -16,6 +16,10 @@
  */
 package org.arquillian.recorder.reporter.impl;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.arquillian.recorder.reporter.Reportable;
 import org.arquillian.recorder.reporter.Reporter;
 import org.arquillian.recorder.reporter.ReporterCursor;
@@ -23,9 +27,12 @@ import org.arquillian.recorder.reporter.event.ExportReport;
 import org.arquillian.recorder.reporter.event.PropertyReportEvent;
 import org.arquillian.recorder.reporter.model.ContainerReport;
 import org.arquillian.recorder.reporter.model.DeploymentReport;
+import org.arquillian.recorder.reporter.model.ExtensionReport;
 import org.arquillian.recorder.reporter.model.TestClassReport;
 import org.arquillian.recorder.reporter.model.TestMethodReport;
 import org.arquillian.recorder.reporter.model.TestSuiteReport;
+import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
+import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
 import org.jboss.arquillian.container.spi.Container;
 import org.jboss.arquillian.container.spi.ContainerRegistry;
 import org.jboss.arquillian.container.spi.client.deployment.DeploymentDescription;
@@ -37,6 +44,7 @@ import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.core.api.event.ManagerStopping;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.jboss.arquillian.test.spi.TestResult.Status;
 import org.jboss.arquillian.test.spi.event.suite.After;
@@ -106,6 +114,8 @@ public class ReporterLifecycleObserver {
         String protocol = description.getProtocol().getName();
         if (!protocol.equals("_DEFAULT_")) {
             deploymentReport.setProtocol(protocol);
+        } else {
+            deploymentReport.setProtocol("_DEFAULT_");
         }
 
         deploymentReport.setTarget(description.getTarget().getName());
@@ -120,7 +130,6 @@ public class ReporterLifecycleObserver {
     }
 
     public void observeBeforeClass(@Observes BeforeClass event) {
-
         TestClassReport testClassReport = new TestClassReport();
         testClassReport.setTestClassName(event.getTestClass().getName());
         testClassReport.setRunAsClient(event.getTestClass().isAnnotationPresent(RunAsClient.class));
@@ -135,8 +144,12 @@ public class ReporterLifecycleObserver {
 
         if (event.getTestMethod().isAnnotationPresent(OperateOnDeployment.class)) {
             OperateOnDeployment ood = event.getTestMethod().getAnnotation(OperateOnDeployment.class);
-            testMethodReport.setOperatesOnDeployment(ood.value());
+            testMethodReport.setOperateOnDeployment(ood.value());
+        } else {
+            testMethodReport.setOperateOnDeployment("_DEFAULT_");
         }
+
+        testMethodReport.setRunAsClient(event.getTestMethod().isAnnotationPresent(RunAsClient.class));
 
         reporter.get().getLastTestClassReport().getTestMethodReports().add(testMethodReport);
         reporter.get().setTestMethodReport(testMethodReport);
@@ -149,22 +162,54 @@ public class ReporterLifecycleObserver {
         testMethodReport.setDuration(result.getEnd() - result.getStart());
 
         if (result.getStatus() == Status.FAILED) {
-            testMethodReport.setException(result.getThrowable().getMessage());
+            if (result.getThrowable() != null) {
+                testMethodReport.setException(getStackTrace(result.getThrowable()));
+            }
         }
 
         reporter.get().setReporterCursor(new ReporterCursor(reporter.get().getLastTestClassReport()));
     }
 
     public void observeAfterClass(@Observes AfterClass event) {
+        reporter.get().getLastTestClassReport().setStop(new Date(System.currentTimeMillis()));
         reporter.get().setReporterCursor(new ReporterCursor(reporter.get().getLastTestSuiteReport()));
     }
 
     public void observeAfterSuite(@Observes AfterSuite event) {
+        reporter.get().getLastTestSuiteReport().setStop(new Date(System.currentTimeMillis()));
+    }
+
+    public void observeManagerStopping(@Observes(precedence = 1) ManagerStopping event, ArquillianDescriptor descriptor) {
+
+        List<ExtensionReport> extensionReports = new ArrayList<ExtensionReport>();
+
+        for (ExtensionDef extensionDef : descriptor.getExtensions()) {
+            ExtensionReport extensionReport = new ExtensionReport();
+            extensionReport.setQualifier(extensionDef.getExtensionName());
+            extensionReport.setConfiguration(extensionDef.getExtensionProperties());
+            extensionReports.add(extensionReport);
+        }
+
+        reporter.get().getReport().getExtensionReports().addAll(extensionReports);
+
         Reportable report = reporter.get().getReport();
         exportReportEvent.fire(new ExportReport(report));
     }
 
     public void observeReportEvent(@Observes PropertyReportEvent event) {
         reporter.get().getReporterCursor().getCursor().getPropertyEntries().add(event.getPropertyEntry());
+    }
+
+    private String getStackTrace(Throwable aThrowable) {
+        StringBuilder sb = new StringBuilder();
+        String newLine = System.getProperty("line.separator");
+        sb.append(aThrowable.toString());
+        sb.append(newLine);
+
+        for (StackTraceElement element : aThrowable.getStackTrace()) {
+            sb.append(element);
+            sb.append(newLine);
+        }
+        return sb.toString();
     }
 }

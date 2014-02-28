@@ -18,6 +18,7 @@ package org.arquillian.recorder.reporter;
 
 import org.arquillian.extension.recorder.Configuration;
 import org.arquillian.recorder.reporter.model.ContainerReport;
+import org.arquillian.recorder.reporter.model.ExtensionReport;
 import org.arquillian.recorder.reporter.model.Report;
 import org.arquillian.recorder.reporter.model.TestClassReport;
 import org.arquillian.recorder.reporter.model.TestMethodReport;
@@ -46,6 +47,8 @@ public interface Reporter {
 
     void setContainerReport(ContainerReport containerReport);
 
+    void setExtensionReport(ExtensionReport extensionReport);
+
     void setReporterCursor(ReporterCursor reporterCursor);
 
     TestSuiteReport getLastTestSuiteReport();
@@ -55,6 +58,8 @@ public interface Reporter {
     TestMethodReport getLastTestMethodReport();
 
     ContainerReport getLastContainerReport();
+
+    ExtensionReport getLastExtensionReport();
 
     /**
      * During test run, we can fire property from 3rd party extensions. That event is fired in some context (e.g. BeforeSuite,

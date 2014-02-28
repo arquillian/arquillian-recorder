@@ -18,6 +18,7 @@ package org.arquillian.recorder.reporter.model.entry;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.arquillian.extension.recorder.When;
 
@@ -27,6 +28,8 @@ import org.arquillian.extension.recorder.When;
  * Can hold:
  * <ul>
  * <li>phase as {@link When}</li>
+ * <li>width</li>
+ * <li>height</li>
  * </ul>
  *
  * @see {@link FileEntry}
@@ -34,9 +37,14 @@ import org.arquillian.extension.recorder.When;
  *
  */
 @XmlRootElement(name = "screenshot")
+@XmlType(propOrder = { "phase", "width", "height" })
 public class ScreenshotEntry extends FileEntry {
 
     private When phase;
+
+    private int width;
+
+    private int height;
 
     @XmlAttribute(required = false)
     public When getPhase() {
@@ -46,4 +54,23 @@ public class ScreenshotEntry extends FileEntry {
     public void setPhase(When phase) {
         this.phase = phase;
     }
+
+    @XmlAttribute(required = false)
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    @XmlAttribute(required = false)
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
 }

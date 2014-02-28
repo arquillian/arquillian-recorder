@@ -16,11 +16,14 @@
  */
 package org.arquillian.recorder.reporter.impl;
 
+import java.util.Date;
+
 import org.arquillian.extension.recorder.Configuration;
 import org.arquillian.recorder.reporter.Reporter;
 import org.arquillian.recorder.reporter.ReporterCursor;
 import org.arquillian.recorder.reporter.configuration.ReporterConfiguration;
 import org.arquillian.recorder.reporter.model.ContainerReport;
+import org.arquillian.recorder.reporter.model.ExtensionReport;
 import org.arquillian.recorder.reporter.model.Report;
 import org.arquillian.recorder.reporter.model.TestClassReport;
 import org.arquillian.recorder.reporter.model.TestMethodReport;
@@ -44,11 +47,12 @@ public class ReporterImpl implements Reporter {
 
     private ContainerReport containerReport;
 
+    private ExtensionReport extensionReport;
+
     private ReporterCursor reporterCursor = new ReporterCursor();
 
     @Override
     public Report getReport() {
-        report.setStop(System.currentTimeMillis());
         return report;
     }
 
@@ -70,6 +74,7 @@ public class ReporterImpl implements Reporter {
     public void setTestSuiteReport(TestSuiteReport testSuiteReport) {
         this.testSuiteReport = testSuiteReport;
         this.reporterCursor.setCursor(this.testSuiteReport);
+        this.testSuiteReport.setStop(new Date(System.currentTimeMillis()));
     }
 
     @Override
@@ -90,6 +95,11 @@ public class ReporterImpl implements Reporter {
     }
 
     @Override
+    public void setExtensionReport(ExtensionReport extensionReport) {
+        this.extensionReport = extensionReport;
+    }
+
+    @Override
     public TestSuiteReport getLastTestSuiteReport() {
         return testSuiteReport;
     }
@@ -107,6 +117,11 @@ public class ReporterImpl implements Reporter {
     @Override
     public ContainerReport getLastContainerReport() {
         return containerReport;
+    }
+
+    @Override
+    public ExtensionReport getLastExtensionReport() {
+        return extensionReport;
     }
 
     @Override

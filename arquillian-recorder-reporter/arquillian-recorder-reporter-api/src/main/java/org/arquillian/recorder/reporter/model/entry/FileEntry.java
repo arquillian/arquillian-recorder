@@ -27,7 +27,8 @@ import org.arquillian.recorder.reporter.PropertyEntry;
  * <br>
  * Must hold:
  * <ul>
- * <li>name</li>
+ * <li>path</li>
+ * <li>type</li>
  * </ul>
  * Can hold:
  * <ul>
@@ -38,20 +39,22 @@ import org.arquillian.recorder.reporter.PropertyEntry;
  *
  */
 @XmlRootElement(name = "file")
-@XmlType(propOrder = { "name", "size" })
+@XmlType(propOrder = { "path", "size", "type" })
 public class FileEntry extends PropertyEntry {
 
-    private String name;
+    private String path;
 
     private String size;
 
-    public String getName() {
-        return name;
+    private String type;
+
+    public String getPath() {
+        return path;
     }
 
     @XmlAttribute(required = true)
-    public void setName(String name) {
-        this.name = name;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getSize() {
@@ -62,4 +65,14 @@ public class FileEntry extends PropertyEntry {
     public void setSize(String size) {
         this.size = size;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    @XmlAttribute(required = true)
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }

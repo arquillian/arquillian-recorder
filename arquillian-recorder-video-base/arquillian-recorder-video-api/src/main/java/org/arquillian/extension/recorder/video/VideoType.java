@@ -26,7 +26,7 @@ import org.arquillian.extension.recorder.ResourceType;
  */
 public enum VideoType implements ResourceType {
 
-    MPEG("mp4");
+    MP4("mp4");
 
     private String name;
 

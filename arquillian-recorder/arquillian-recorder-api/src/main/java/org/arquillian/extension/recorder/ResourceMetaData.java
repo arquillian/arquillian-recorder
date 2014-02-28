@@ -168,9 +168,9 @@ public abstract class ResourceMetaData {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("test class\t\t:\n").append(getTestClass())
-          .append("test method\t\t:\n").append(getTestMethod())
-          .append("timestamp\t\t:\n").append(getTimeStamp())
-          .append(optionalDescription.isEmpty() ? "" : "payload\t\t:\n" + optionalDescription);
+            .append("test method\t\t:\n").append(getTestMethod())
+            .append("timestamp\t\t:\n").append(getTimeStamp())
+            .append(optionalDescription.isEmpty() ? "" : "payload\t\t:\n" + optionalDescription);
         return sb.toString();
     }
 

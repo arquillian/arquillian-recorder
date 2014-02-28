@@ -31,9 +31,8 @@ public class PropertyReportEvent {
 
     /**
      *
-     * @param report
-     * @param clazz runtime class of {@code report}
-     * @throws IllegalArgumentException if some argument is a null object
+     * @param propertyEntry
+     * @throws IllegalArgumentException if {@code propertyEntry} is a null object
      */
     public PropertyReportEvent(PropertyEntry propertyEntry) {
         Validate.notNull(propertyEntry, "property entry can not be a null object");

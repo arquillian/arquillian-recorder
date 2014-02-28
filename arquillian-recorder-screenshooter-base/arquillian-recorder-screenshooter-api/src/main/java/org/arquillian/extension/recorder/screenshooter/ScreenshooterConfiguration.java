@@ -101,8 +101,8 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
             ScreenshotType.valueOf(ScreenshotType.class, getScreenshotType());
         } catch (IllegalArgumentException ex) {
             throw new ScreenshooterConfigurationException(
-                    "Screenshot type you specified in arquillian.xml is not valid screenshot type."
-                            + "Supported screenshot types are: " + ScreenshotType.getAll());
+                "Screenshot type you specified in arquillian.xml is not valid screenshot type."
+                    + "Supported screenshot types are: " + ScreenshotType.getAll());
         }
 
         try {
@@ -117,12 +117,12 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
                 }
                 if (!getRootFolder().canWrite()) {
                     throw new ScreenshooterConfigurationException(
-                            "You can not write to '" + getRootFolder().getAbsolutePath() + "'.");
+                        "You can not write to '" + getRootFolder().getAbsolutePath() + "'.");
                 }
             }
         } catch (SecurityException ex) {
             throw new ScreenshooterConfigurationException(
-                    "You are not permitted to operate on specified resource: " + getRootFolder().getAbsolutePath() + "'.");
+                "You are not permitted to operate on specified resource: " + getRootFolder().getAbsolutePath() + "'.");
         }
     }
 

@@ -17,11 +17,14 @@
 package org.arquillian.recorder.reporter.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 import org.arquillian.recorder.reporter.PropertyEntry;
@@ -51,6 +54,18 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 @XmlType(propOrder = { "propertyEntries", "containerReports", "testClassReports" })
 public class TestSuiteReport implements ReportEntry {
 
+    @XmlAttribute(required = true)
+    @XmlSchemaType(name = "dateTime")
+    private Date start = new Date(System.currentTimeMillis());
+
+    @XmlAttribute(required = true)
+    @XmlSchemaType(name = "dateTime")
+    private Date stop = start;
+
+    @XmlAttribute(required = true)
+    @XmlSchemaType(name = "time")
+    private long duration = 0;
+
     @XmlElement(name = "container", required = true)
     private final List<ContainerReport> containerReports = new ArrayList<ContainerReport>();
 
@@ -75,6 +90,15 @@ public class TestSuiteReport implements ReportEntry {
     @Override
     public List<PropertyEntry> getPropertyEntries() {
         return propertyEntries;
+    }
+
+    public void setStop(Date timestamp) {
+        stop = timestamp;
+        setDuration(stop.getTime() - start.getTime());
+    }
+
+    private void setDuration(long duration) {
+        this.duration = duration;
     }
 
 }

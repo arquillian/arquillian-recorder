@@ -40,11 +40,13 @@ import org.jboss.arquillian.test.spi.TestResult.Status;
  * <ul>
  * <li>name</li>
  * <li>result status</li>
- * <li>duration</li>
+ * <li>runAsClient</li>
+ * <li>operateOnDeployment</li>
  * </ul>
  * Can hold:
  * <ul>
  * <li>exception message</li>
+ * <li>duration</li>
  * <li>list of {@link KeyValueEntry}</li>
  * <li>list of {@link FileEntry}</li>
  * <li>list of {@link VideoEntry}</li>
@@ -55,18 +57,20 @@ import org.jboss.arquillian.test.spi.TestResult.Status;
  *
  */
 @XmlRootElement(name = "method")
-@XmlType(propOrder = { "name", "status", "duration", "operatesOnDeployment", "exception", "propertyEntries" })
+@XmlType(propOrder = { "name", "status", "duration", "operateOnDeployment", "runAsClient", "exception", "propertyEntries" })
 public class TestMethodReport implements ReportEntry {
 
     private String name;
 
     private Status status;
 
-    private long duration = -1;
+    private long duration = 0;
 
     private String exception;
 
-    private String operatesOnDeployment;
+    private String operateOnDeployment;
+
+    private boolean runAsClient;
 
     @XmlElements({
         @XmlElement(name = "property", type = KeyValueEntry.class),
@@ -98,7 +102,7 @@ public class TestMethodReport implements ReportEntry {
         return duration;
     }
 
-    @XmlAttribute(required = true)
+    @XmlAttribute(required = false)
     public void setDuration(long duration) {
         if (duration > 0) {
             this.duration = duration;
@@ -114,18 +118,27 @@ public class TestMethodReport implements ReportEntry {
         return exception;
     }
 
-    @XmlAttribute(name = "operatesOnDeployment")
-    public void setOperatesOnDeployment(String operatesOnDeployment) {
-        this.operatesOnDeployment = operatesOnDeployment;
+    @XmlAttribute(required = true)
+    public void setOperateOnDeployment(String operateOnDeployment) {
+        this.operateOnDeployment = operateOnDeployment;
     }
 
-    public String getOperatesOnDeployment() {
-        return operatesOnDeployment;
+    public String getOperateOnDeployment() {
+        return operateOnDeployment;
     }
 
     @Override
     public List<PropertyEntry> getPropertyEntries() {
         return propertyEntries;
+    }
+
+    @XmlAttribute(required = true)
+    public void setRunAsClient(boolean runAsClient) {
+        this.runAsClient = runAsClient;
+    }
+
+    public boolean getRunAsClient() {
+        return runAsClient;
     }
 
 }

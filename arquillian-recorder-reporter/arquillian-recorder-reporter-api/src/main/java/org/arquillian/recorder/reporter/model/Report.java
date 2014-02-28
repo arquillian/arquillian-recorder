@@ -19,11 +19,9 @@ package org.arquillian.recorder.reporter.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 import org.arquillian.recorder.reporter.PropertyEntry;
@@ -40,6 +38,7 @@ import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
  * </ul>
  * Can hold:
  * <ul>
+ * <li>list of {@link ExtensionReport}</li>
  * <li>list of {@link KeyValueEntry}</li>
  * <li>list of {@link FileEntry}</li>
  * </ul>
@@ -48,23 +47,14 @@ import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
  *
  */
 @XmlRootElement(name = "report")
-@XmlType(propOrder = { "propertyEntries", "testSuiteReports" })
+@XmlType(propOrder = { "propertyEntries", "extensionReports", "testSuiteReports" })
 public class Report implements ReportEntry {
-
-    @XmlAttribute(required = true)
-    @XmlSchemaType(name = "date")
-    private long start = System.currentTimeMillis();
-
-    @XmlAttribute(required = true)
-    @XmlSchemaType(name = "date")
-    private long stop = start;
-
-    @XmlAttribute(required = true)
-    @XmlSchemaType(name = "time")
-    private long duration = 0;
 
     @XmlElement(name = "suite", required = true)
     private final List<TestSuiteReport> testSuiteReports = new ArrayList<TestSuiteReport>();
+
+    @XmlElement(name = "extension")
+    private final List<ExtensionReport> extensionReports = new ArrayList<ExtensionReport>();
 
     @XmlElements({
         @XmlElement(name = "property", type = KeyValueEntry.class),
@@ -76,13 +66,8 @@ public class Report implements ReportEntry {
         return testSuiteReports;
     }
 
-    public void setStop(long timestamp) {
-        stop = timestamp;
-        setDuration();
-    }
-
-    private void setDuration() {
-        duration = stop - start;
+    public List<ExtensionReport> getExtensionReports() {
+        return extensionReports;
     }
 
     @Override

@@ -124,7 +124,7 @@ public class VideoLifecycleObserver {
         }
     }
 
-    public void afterTest(@Observes After event) {
+    public void afterTest(@Observes(precedence = Integer.MAX_VALUE) After event) {
         if (strategy.get().isTakingAction(event, testResult.get())) {
             VideoMetaData metaData = getMetaData(event);
             metaData.setTestResult(testResult.get());
@@ -138,7 +138,7 @@ public class VideoLifecycleObserver {
         }
     }
 
-    public void afterClass(@Observes AfterClass event) {
+    public void afterClass(@Observes(precedence = Integer.MAX_VALUE) AfterClass event) {
         if (strategy.get().isTakingAction(event)) {
             VideoMetaData metaData = getClassMetaData(event);
             VideoType videoType = getVideoType();
@@ -151,7 +151,7 @@ public class VideoLifecycleObserver {
         }
     }
 
-    public void afterSuite(@Observes AfterSuite event) {
+    public void afterSuite(@Observes(precedence = Integer.MAX_VALUE) AfterSuite event) {
         if (strategy.get().isTakingAction(event)) {
             VideoMetaData metaData = getMetaData();
             VideoType videoType = getVideoType();

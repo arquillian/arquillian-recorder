@@ -93,7 +93,7 @@ public class ReporterTestCase {
         kve2.setValue("value2");
 
         FileEntry fe = new FileEntry();
-        fe.setName("someFile");
+        fe.setPath("somePath");
         fe.setSize("100MB");
 
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(kve);
@@ -124,7 +124,7 @@ public class ReporterTestCase {
         reporter.setTestClassReport(testClassReport);
 
         VideoEntry videoEntry = new VideoEntry();
-        videoEntry.setName("someVideo.mp4");
+        videoEntry.setPath("some/someVideo.mp4");
         videoEntry.setSize("54M");
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(videoEntry);
 
@@ -154,12 +154,12 @@ public class ReporterTestCase {
         reporter.setTestMethodReport(testMethodReport2);
 
         ScreenshotEntry sce = new ScreenshotEntry();
-        sce.setName("niceScreenshot.jpg");
+        sce.setPath("niceScreenshot.jpg");
         sce.setSize("56kB");
         sce.setPhase(When.BEFORE);
 
         ScreenshotEntry sce2 = new ScreenshotEntry();
-        sce2.setName("niceScreenshotBefore.jpg");
+        sce2.setPath("niceScreenshotBefore.jpg");
         sce2.setPhase(When.BEFORE);
 
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce);

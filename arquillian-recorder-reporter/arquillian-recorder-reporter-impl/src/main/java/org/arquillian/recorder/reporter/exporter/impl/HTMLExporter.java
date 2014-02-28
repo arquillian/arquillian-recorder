@@ -17,6 +17,7 @@
 package org.arquillian.recorder.reporter.exporter.impl;
 
 import java.io.File;
+import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.util.JAXBSource;
@@ -42,25 +43,39 @@ import org.arquillian.recorder.reporter.impl.type.HTMLReport;
  */
 public class HTMLExporter implements Exporter {
 
+    private static final String DEFAULT_XSL_TEMPLATE = "arquillian_reporter_template.xsl";
+
     private ReporterConfiguration configuration;
 
     private JAXBContext context;
 
+    private TransformerFactory transformerFactory;
+
     public HTMLExporter(JAXBContext context) {
         this.context = context;
+        this.transformerFactory = TransformerFactory.newInstance();
     }
 
     @Override
     public File export(Reportable report) throws Exception {
 
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        StreamSource xslt = new StreamSource(configuration.getTemplate());
-        Transformer transformer = transformerFactory.newTransformer(xslt);
+        StreamSource xslt;
+
+        if (configuration.getTemplate().exists()) {
+            xslt = new StreamSource(configuration.getTemplate());
+        } else {
+            InputStream is = getClass().getClassLoader().getResourceAsStream(DEFAULT_XSL_TEMPLATE);
+            if (is == null) {
+                throw new IllegalStateException("Unable to load default " + DEFAULT_XSL_TEMPLATE);
+            } else {
+                xslt = new StreamSource(is);
+            }
+        }
 
         JAXBSource source = new JAXBSource(context, report);
-
         StreamResult result = new StreamResult(configuration.getFile());
 
+        Transformer transformer = transformerFactory.newTransformer(xslt);
         transformer.transform(source, result);
 
         return configuration.getFile();
