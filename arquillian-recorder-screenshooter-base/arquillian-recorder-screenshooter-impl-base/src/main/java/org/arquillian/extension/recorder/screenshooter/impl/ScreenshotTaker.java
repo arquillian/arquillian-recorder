@@ -63,6 +63,8 @@ public class ScreenshotTaker {
         propertyEntry.setPhase(event.getWhen());
         propertyEntry.setType(screenshot.getResourceType().toString());
         propertyEntry.setSize(Long.toString(screenshot.getResource().length()));
+        propertyEntry.setWidth(screenshot.getWidth());
+        propertyEntry.setHeight(screenshot.getHeight());
 
         propertyReportEvent.fire(new PropertyReportEvent(propertyEntry));
     }

@@ -38,6 +38,10 @@ public class VideoEntry extends FileEntry {
 
     private When phase;
 
+    private int width;
+
+    private int height;
+
     @XmlAttribute(required = false)
     public When getPhase() {
         return phase;
@@ -45,5 +49,23 @@ public class VideoEntry extends FileEntry {
 
     public void setPhase(When phase) {
         this.phase = phase;
+    }
+
+    @XmlAttribute(required = false)
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    @XmlAttribute(required = false)
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }

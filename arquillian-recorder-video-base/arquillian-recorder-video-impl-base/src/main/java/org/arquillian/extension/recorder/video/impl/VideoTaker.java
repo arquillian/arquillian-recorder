@@ -116,6 +116,8 @@ public class VideoTaker {
         videoEntry.setPath(video.getResource().getAbsolutePath());
         videoEntry.setType(video.getResourceType().toString());
         videoEntry.setSize(Long.toString(video.getResource().length()));
+        videoEntry.setHeight(video.getHeight());
+        videoEntry.setWidth(video.getWidth());
         return videoEntry;
     }
 
