@@ -34,7 +34,7 @@ Please put this extension definition into +arquillian.xml+ in order to bootstrap
 |xml
 |+file+
 |file where to export the report
-|random file name
+|arquillian_report.{report type}
 |+rootDir+
 |root directory which prepends +file+
 |target
