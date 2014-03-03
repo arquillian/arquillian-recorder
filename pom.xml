@@ -9,8 +9,7 @@
     License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
     OF ANY KIND, either express or implied. See the License for the specific
     language governing permissions and limitations under the License. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <!-- Model Version -->
     <modelVersion>4.0.0</modelVersion>
@@ -20,14 +19,14 @@
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
         <version>12</version>
-        <relativePath></relativePath>
+        <relativePath />
     </parent>
 
     <!-- Artifact Configuration -->
     <groupId>org.arquillian.extension</groupId>
     <artifactId>arquillian-recorder</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0.Alpha1</version>
     <name>Arquillian Recorder Aggregator</name>
     <description>Arquillian Recorder Aggregator</description>
 
@@ -56,7 +55,7 @@
         <connection>scm:git:git://git@github.com:arquillian/arquillian-unified-recorder.git</connection>
         <developerConnection>scm:git:ssh://github.com/arquillian/arquillian-unified-recorder.git</developerConnection>
         <url>git://github.com/arquillian/arquillian-unified-recorder.git</url>
-        <tag>HEAD</tag>
+        <tag>1.0.0.Alpha1</tag>
     </scm>    
 
     <!-- Properties -->
