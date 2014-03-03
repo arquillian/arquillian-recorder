@@ -123,7 +123,7 @@
 				<xsl:for-each select="video">
 				<div class="video">
 					<video controls="">
-						<source src="file://{@path}" type="video/{@type}"/>
+						<source src="{@path}" type="video/{@type}"/>
 						Your browser does not support video tag.
 					</video>
 				</div>
@@ -192,7 +192,7 @@
 						<xsl:for-each select="video">
 						<div class="video">
 							<video controls="">
-								<source src="file://{@path}" type="video/{@type}"/>
+								<source src="{@path}" type="video/{@type}"/>
 								Your browser does not support video tag.
 							</video>
 						</div>
@@ -232,7 +232,7 @@
 								<xsl:for-each select="video">
 								<div class="video">
 									<video controls="">
-										<source src="file://{@path}" type="video/{@type}"/>
+										<source src="{@path}" type="video/{@type}"/>
 										Your browser does not support video tag.
 									</video>
 								</div>
@@ -241,20 +241,27 @@
 								<xsl:if test="screenshot">
 								<div class="screenshotParent">
 									<xsl:for-each select="screenshot">
-										<div class="screenshotLeft">
 										<xsl:choose>
-											<xsl:when test="@phase = 'BEFORE'">
-												<h6>Before</h6>
+											<xsl:when test="@width &gt; 500">
+												<p><a href="{@path}"><xsl:value-of select="@path"/></a></p>
 											</xsl:when>
-											<xsl:when test="@phase = 'AFTER'">
-												<h6>After</h6>
-											</xsl:when>
-											<xsl:when test="@phase = 'FAILED'">
-												<h6>Failed</h6>
-											</xsl:when>
+											<xsl:otherwise>
+												<div class="screenshotLeft">
+													<xsl:choose>
+														<xsl:when test="@phase = 'BEFORE'">
+															<h6>Before</h6>
+														</xsl:when>
+														<xsl:when test="@phase = 'AFTER'">
+															<h6>After</h6>
+														</xsl:when>
+														<xsl:when test="@phase = 'FAILED'">
+															<h6>Failed</h6>
+														</xsl:when>
+													</xsl:choose>
+												<img src="{@path}" />
+												</div>
+											</xsl:otherwise>
 										</xsl:choose>
-										<img src="file://{@path}" />
-										</div>
 									</xsl:for-each>
 									<div class="clear"></div>
 								</div>

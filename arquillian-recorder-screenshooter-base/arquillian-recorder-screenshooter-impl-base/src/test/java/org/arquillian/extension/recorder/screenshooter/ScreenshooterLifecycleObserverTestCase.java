@@ -26,6 +26,7 @@ import org.arquillian.extension.recorder.screenshooter.impl.DefaultScreenshooter
 import org.arquillian.extension.recorder.screenshooter.impl.DefaultScreenshootingStrategy;
 import org.arquillian.extension.recorder.screenshooter.impl.ScreenshooterExtensionInitializer;
 import org.arquillian.extension.recorder.screenshooter.impl.ScreenshooterLifecycleObserver;
+import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.jboss.arquillian.config.descriptor.impl.ArquillianDescriptorImpl;
 import org.jboss.arquillian.core.api.Injector;
 import org.jboss.arquillian.core.api.Instance;
@@ -57,7 +58,7 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
     private ServiceLoader serviceLoader;
 
     @Mock
-    private ScreenshooterConfiguration configuration = new ScreenshooterConfiguration();
+    private ScreenshooterConfiguration configuration = new ScreenshooterConfiguration(new ReporterConfiguration());
 
     @Mock
     private Screenshooter screenshooter;

@@ -18,8 +18,6 @@ package org.arquillian.recorder.reporter;
 
 import java.io.File;
 
-import org.arquillian.extension.recorder.Configuration;
-
 /**
  * Exports some previously done report to external resources.
  *
@@ -32,5 +30,5 @@ public interface Exporter {
 
     Class<? extends ReportType> getReportType();
 
-    void setConfiguration(Configuration<?> configuration);
+    void setConfiguration(ReporterConfiguration configuration);
 }

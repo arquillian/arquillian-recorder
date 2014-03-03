@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.recorder.reporter.configuration;
+package org.arquillian.recorder.reporter;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -86,6 +86,27 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         if (report.isEmpty()) {
             logger.info("Report type can not be empty string! Choosing default type \"xml\"");
             report = DEFAULT_TYPE;
+        }
+
+        try {
+            if (!getRootDir().exists()) {
+                boolean created = getRootDir().mkdir();
+                if (!created) {
+                    throw new ReporterConfigurationException("Unable to create root directory " + getRootDir().getAbsolutePath());
+                }
+            } else {
+                if (!getRootDir().isDirectory()) {
+                    throw new ReporterConfigurationException("Root directory you specified is not a directory - "
+                        + getRootDir().getAbsolutePath());
+                }
+                if (!getRootDir().canWrite()) {
+                    throw new ReporterConfigurationException(
+                        "You can not write to '" + getRootDir().getAbsolutePath() + "'.");
+                }
+            }
+        } catch (SecurityException ex) {
+            throw new ReporterConfigurationException(
+                "You are not permitted to operate on specified resource: " + getRootDir().getAbsolutePath() + "'.");
         }
 
         String fileProperty = getProperty("file", file);

@@ -22,11 +22,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.arquillian.extension.recorder.Configuration;
 import org.arquillian.recorder.reporter.Exporter;
 import org.arquillian.recorder.reporter.ReportType;
 import org.arquillian.recorder.reporter.Reportable;
-import org.arquillian.recorder.reporter.configuration.ReporterConfiguration;
+import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.arquillian.recorder.reporter.impl.type.XMLReport;
 
 /**
@@ -66,8 +65,8 @@ public class XMLExporter implements Exporter {
     }
 
     @Override
-    public void setConfiguration(Configuration<?> configuration) {
-        this.configuration = (ReporterConfiguration) configuration;
+    public void setConfiguration(ReporterConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     public void setContext(JAXBContext context) {

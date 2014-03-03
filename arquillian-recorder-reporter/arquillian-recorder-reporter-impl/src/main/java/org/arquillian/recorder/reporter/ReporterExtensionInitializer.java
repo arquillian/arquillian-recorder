@@ -16,8 +16,6 @@
  */
 package org.arquillian.recorder.reporter;
 
-import org.arquillian.recorder.reporter.configuration.ReporterConfiguration;
-import org.arquillian.recorder.reporter.configuration.ReporterConfigurationException;
 import org.arquillian.recorder.reporter.event.ExporterRegisterCreated;
 import org.arquillian.recorder.reporter.event.ReportingExtensionConfigured;
 import org.arquillian.recorder.reporter.exporter.DefaultExporterRegisterFactory;

@@ -23,7 +23,7 @@ import org.arquillian.extension.recorder.When;
 import org.arquillian.recorder.reporter.Exporter;
 import org.arquillian.recorder.reporter.JAXBContextFactory;
 import org.arquillian.recorder.reporter.Reporter;
-import org.arquillian.recorder.reporter.configuration.ReporterConfiguration;
+import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.arquillian.recorder.reporter.exporter.impl.XMLExporter;
 import org.arquillian.recorder.reporter.impl.ReporterImpl;
 import org.arquillian.recorder.reporter.model.ContainerReport;

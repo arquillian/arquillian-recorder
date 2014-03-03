@@ -19,6 +19,7 @@ package org.arquillian.extension.recorder.video;
 import java.io.File;
 
 import org.arquillian.extension.recorder.Configuration;
+import org.arquillian.recorder.reporter.ReporterConfiguration;
 
 /**
  * Video configuration for every recorder extension implementation.
@@ -28,9 +29,9 @@ import org.arquillian.extension.recorder.Configuration;
  */
 public class VideoConfiguration extends Configuration<VideoConfiguration> {
 
-    private String rootFolder = "target";
+    private String rootDir = "target";
 
-    private String baseFolder = "videos";
+    private String baseDir = "videos";
 
     private String videoType = VideoType.MP4.name();
 
@@ -47,6 +48,12 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
     private String testTimeout = "1800"; // 30 minutes
 
     private String frameRate = "20"; // fps
+
+    private ReporterConfiguration reporterConfiguration;
+
+    public VideoConfiguration(ReporterConfiguration reporterConfiguration) {
+        this.reporterConfiguration = reporterConfiguration;
+    }
 
     /**
      * By default set to true
@@ -80,17 +87,17 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
      *
      * @return root folder where all videos will be placed. Directory structure is left on the extension itself.
      */
-    public File getRootFolder() {
-        return new File(getProperty("rootFolder", rootFolder));
+    public File getRootDir() {
+        return new File(getProperty("rootDir", rootDir));
     }
 
     /**
      * By default set to "videos"
      *
-     * @return folder under {@link #getRootFolder()} where videos are stored.
+     * @return folder under {@link #getRootDir()} where videos are stored.
      */
-    public String getBaseFolder() {
-        return getProperty("baseFolder", baseFolder);
+    public String getBaseDir() {
+        return getProperty("baseDir", baseDir);
     }
 
     /**
@@ -140,12 +147,43 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
 
     @Override
     public void validate() throws VideoConfigurationException {
+        validate(reporterConfiguration);
+    }
+
+    private void validate(ReporterConfiguration reporterConfiguration) {
         try {
             VideoType.valueOf(VideoType.class, getVideoType());
         } catch (IllegalArgumentException ex) {
             throw new VideoConfigurationException(
                 "Video type you specified in arquillian.xml is not valid video type."
                     + "Supported video types are: " + VideoType.getAll());
+        }
+
+        if (!getRootDir().equals(reporterConfiguration.getRootDir())) {
+            if (reporterConfiguration.getReport().equals("html")) {
+                setProperty("rootDir", reporterConfiguration.getProperty("rootDir", "target"));
+            }
+        }
+
+        try {
+            if (!getRootDir().exists()) {
+                boolean created = getRootDir().mkdir();
+                if (!created) {
+                    throw new VideoConfigurationException("Unable to create root directory " + getRootDir().getAbsolutePath());
+                }
+            } else {
+                if (!getRootDir().isDirectory()) {
+                    throw new VideoConfigurationException("Root directory you specified is not a directory - " +
+                        getRootDir().getAbsolutePath());
+                }
+                if (!getRootDir().canWrite()) {
+                    throw new VideoConfigurationException(
+                        "You can not write to '" + getRootDir().getAbsolutePath() + "'.");
+                }
+            }
+        } catch (SecurityException ex) {
+            throw new VideoConfigurationException(
+                "You are not permitted to operate on specified resource: " + getRootDir().getAbsolutePath() + "'.");
         }
 
         try {
@@ -155,7 +193,6 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
         } catch (NumberFormatException ex) {
             throw new VideoConfigurationException("Provided framerate is not recognized to be an integer number.");
         }
-
     }
 
     @Override
@@ -166,8 +203,8 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
         sb.append(String.format("%-40s %s\n", "startBeforeTest", getStartBeforeTest()));
         sb.append(String.format("%-40s %s\n", "takeOnlyOnFail", getTakeOnlyOnFail()));
         sb.append(String.format("%-40s %s\n", "testTimeOut", getTestTimeout()));
-        sb.append(String.format("%-40s %s\n", "rootFolder", getRootFolder()));
-        sb.append(String.format("%-40s %s\n", "baseFolder", getBaseFolder()));
+        sb.append(String.format("%-40s %s\n", "rootDir", getRootDir()));
+        sb.append(String.format("%-40s %s\n", "baseDir", getBaseDir()));
         sb.append(String.format("%-40s %s\n", "videoName", getVideoName()));
         sb.append(String.format("%-40s %s\n", "videoType", getVideoType()));
         sb.append(String.format("%-40s %s\n", "frameRate", getFrameRate()));

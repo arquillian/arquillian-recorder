@@ -16,8 +16,6 @@
  */
 package org.arquillian.extension.recorder;
 
-import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
-
 /**
  * Configures any extension.
  *
@@ -30,15 +28,4 @@ public abstract class RecorderConfigurator<T extends Configuration<T>> {
      * When not shadowed in extended classes, an extension will be identified by this name.
      */
     public static final String EXTENSION_NAME = "recorder";
-
-    /**
-     * Observes {@link ArquillianDescriptor} event in order to configure some extension implementation.
-     *
-     * It is up to developer of the extension to validate configuration parsed from arquillian.xml in this method on his own.
-     *
-     * @param descriptor
-     * @throws RecorderConfigurationException
-     */
-    public abstract void configureExtension(ArquillianDescriptor descriptor);
-
 }

@@ -67,6 +67,6 @@ You see that you have to fire +PropertyReportEvent+ from reporter's SPI with an 
  
 All possible entries you can fire are https://github.com/arquillian/arquillian-unified-recorder/tree/master/arquillian-recorder-reporter/arquillian-recorder-reporter-api/src/main/java/org/arquillian/recorder/reporter/model/entry[here].
 
-After firing the property, it gets hooked into the right place of report tree. So when screenshot property event in +Before+ is fired, it will appear in method subtree. When videos are taken and +VideoEntry+ event was fired in +AfterClass+ or +AfterSuite+, it will be added into the right subtree as seen in the example.
+After firing the property, it gets hooked into the right place of report tree. So when screenshot property event in +Before+ is fired, it will appear in a method subtree. When videos are taken and +VideoEntry+ event was fired in +AfterClass+ or +AfterSuite+, it will be added into the right subtree as seen in the example.
 
 Due to JAXB restrictions, you can not fire nor marshall interfaces so it can not be done totally generic.

@@ -27,6 +27,8 @@ import org.arquillian.extension.recorder.When;
  * Can hold:
  * <ul>
  * <li>phase as {@link When}</li>
+ * <li>width</li>
+ * <li>height</li>
  * </ul>
  *
  * @see {@link FileEntry}

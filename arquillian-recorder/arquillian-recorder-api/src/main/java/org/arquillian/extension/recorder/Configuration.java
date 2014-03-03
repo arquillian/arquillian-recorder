@@ -75,7 +75,7 @@ public abstract class Configuration<T extends Configuration<T>> {
     }
 
     /**
-     * Sets some property. You can not add new properties, you can only overwrite existing ones.
+     * Sets some property.
      *
      * @param name acts as a key
      * @param value
@@ -84,10 +84,6 @@ public abstract class Configuration<T extends Configuration<T>> {
     public void setProperty(String name, String value) {
         Validate.notNullOrEmpty(name, "Name of property can not be a null object nor an empty string!");
         Validate.notNull(value, "Value of property can not be a null object!");
-
-        if (!configuration.containsKey(name)) {
-            return;
-        }
 
         configuration.put(name, value);
     }

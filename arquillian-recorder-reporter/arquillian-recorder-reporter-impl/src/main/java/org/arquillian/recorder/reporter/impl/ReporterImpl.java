@@ -20,8 +20,8 @@ import java.util.Date;
 
 import org.arquillian.extension.recorder.Configuration;
 import org.arquillian.recorder.reporter.Reporter;
+import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.arquillian.recorder.reporter.ReporterCursor;
-import org.arquillian.recorder.reporter.configuration.ReporterConfiguration;
 import org.arquillian.recorder.reporter.model.ContainerReport;
 import org.arquillian.recorder.reporter.model.ExtensionReport;
 import org.arquillian.recorder.reporter.model.Report;

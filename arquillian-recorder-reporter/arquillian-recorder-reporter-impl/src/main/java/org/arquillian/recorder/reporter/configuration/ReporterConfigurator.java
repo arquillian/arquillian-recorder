@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.arquillian.extension.recorder.RecorderConfigurator;
+import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.arquillian.recorder.reporter.event.ReportingExtensionConfigured;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
@@ -57,7 +58,6 @@ public class ReporterConfigurator extends RecorderConfigurator<ReporterConfigura
     @Inject
     private Event<ReportingExtensionConfigured> extensionConfigured;
 
-    @Override
     public void configureExtension(@Observes ArquillianDescriptor descriptor) {
 
         ReporterConfiguration configuration = new ReporterConfiguration();

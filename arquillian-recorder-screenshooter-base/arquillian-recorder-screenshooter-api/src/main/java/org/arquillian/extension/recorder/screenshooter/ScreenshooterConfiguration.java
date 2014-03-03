@@ -19,6 +19,7 @@ package org.arquillian.extension.recorder.screenshooter;
 import java.io.File;
 
 import org.arquillian.extension.recorder.Configuration;
+import org.arquillian.recorder.reporter.ReporterConfiguration;
 
 /**
  * Screenshooter configuration for every screenshooter extension implementation.
@@ -28,9 +29,9 @@ import org.arquillian.extension.recorder.Configuration;
  */
 public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfiguration> {
 
-    private String rootFolder = "target";
+    private String rootDir = "target";
 
-    private String baseFolder = "screenshots";
+    private String baseDir = "screenshots";
 
     private String screenshotType = ScreenshotType.PNG.toString();
 
@@ -40,22 +41,28 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
 
     private String takeWhenTestFailed = "true";
 
+    private ReporterConfiguration reporterConfiguration;
+
+    public ScreenshooterConfiguration(ReporterConfiguration reporterConfiguration) {
+        this.reporterConfiguration = reporterConfiguration;
+    }
+
     /**
      * By default set to "target"
      *
      * @return root folder where all screenshots will be placed. Directory structure is left on the extension itself
      */
-    public File getRootFolder() {
-        return new File(getProperty("rootFolder", rootFolder));
+    public File getRootDir() {
+        return new File(getProperty("rootDir", rootDir));
     }
 
     /**
      * By default set to "screenshots"
      *
-     * @return folder inside the root folder where the screenshots be placed.
+     * @return folder inside the root directory where the screenshots will be placed.
      */
-    public String getBaseFolder() {
-        return getProperty("baseFolder", baseFolder);
+    public String getBaseDir() {
+        return getProperty("baseDir", baseDir);
     }
 
     /**
@@ -96,6 +103,22 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
 
     @Override
     public void validate() throws ScreenshooterConfigurationException {
+        validate(reporterConfiguration);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-40s %s\n", "rootDir", getRootDir()));
+        sb.append(String.format("%-40s %s\n", "baseDir", getBaseDir()));
+        sb.append(String.format("%-40s %s\n", "screenshotType", getScreenshotType()));
+        sb.append(String.format("%-40s %s\n", "takeBeforeTest", getTakeBeforeTest()));
+        sb.append(String.format("%-40s %s\n", "takeAfterTest", getTakeAfterTest()));
+        sb.append(String.format("%-40s %s\n", "takeWhenTestFailed", getTakeWhenTestFailed()));
+        return sb.toString();
+    }
+
+    private void validate(ReporterConfiguration reporterConfiguration) {
 
         try {
             ScreenshotType.valueOf(ScreenshotType.class, getScreenshotType());
@@ -105,37 +128,33 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
                     + "Supported screenshot types are: " + ScreenshotType.getAll());
         }
 
+        if (!getRootDir().equals(reporterConfiguration.getRootDir())) {
+            if (reporterConfiguration.getReport().equals("html")) {
+                setProperty("rootDir", reporterConfiguration.getProperty("rootDir", "target"));
+            }
+        }
+
         try {
-            if (!getRootFolder().exists()) {
-                boolean created = getRootFolder().mkdir();
+            if (!getRootDir().exists()) {
+                boolean created = getRootDir().mkdir();
                 if (!created) {
-                    throw new ScreenshooterConfigurationException("Unable to create root folder directory");
+                    throw new ScreenshooterConfigurationException("Unable to create root directory "
+                        + getRootDir().getAbsolutePath());
                 }
             } else {
-                if (!getRootFolder().isDirectory()) {
-                    throw new ScreenshooterConfigurationException("Root directory you specified is not a directory.");
+                if (!getRootDir().isDirectory()) {
+                    throw new ScreenshooterConfigurationException("Root directory you specified is not a directory - " +
+                        getRootDir().getAbsolutePath());
                 }
-                if (!getRootFolder().canWrite()) {
+                if (!getRootDir().canWrite()) {
                     throw new ScreenshooterConfigurationException(
-                        "You can not write to '" + getRootFolder().getAbsolutePath() + "'.");
+                        "You can not write to '" + getRootDir().getAbsolutePath() + "'.");
                 }
             }
         } catch (SecurityException ex) {
             throw new ScreenshooterConfigurationException(
-                "You are not permitted to operate on specified resource: " + getRootFolder().getAbsolutePath() + "'.");
+                "You are not permitted to operate on specified resource: " + getRootDir().getAbsolutePath() + "'.");
         }
-    }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%-40s %s\n", "rootFolder", getRootFolder()));
-        sb.append(String.format("%-40s %s\n", "baseFolder", getBaseFolder()));
-        sb.append(String.format("%-40s %s\n", "screenshotType", getScreenshotType()));
-        sb.append(String.format("%-40s %s\n", "takeBeforeTest", getTakeBeforeTest()));
-        sb.append(String.format("%-40s %s\n", "takeAfterTest", getTakeAfterTest()));
-        sb.append(String.format("%-40s %s\n", "takeWhenTestFailed", getTakeWhenTestFailed()));
-        return sb.toString();
     }
-
 }

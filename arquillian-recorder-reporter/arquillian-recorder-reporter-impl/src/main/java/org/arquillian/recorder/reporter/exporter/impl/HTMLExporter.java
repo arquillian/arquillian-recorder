@@ -26,12 +26,18 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.arquillian.extension.recorder.Configuration;
 import org.arquillian.recorder.reporter.Exporter;
+import org.arquillian.recorder.reporter.PropertyEntry;
 import org.arquillian.recorder.reporter.ReportType;
 import org.arquillian.recorder.reporter.Reportable;
-import org.arquillian.recorder.reporter.configuration.ReporterConfiguration;
+import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.arquillian.recorder.reporter.impl.type.HTMLReport;
+import org.arquillian.recorder.reporter.model.Report;
+import org.arquillian.recorder.reporter.model.TestClassReport;
+import org.arquillian.recorder.reporter.model.TestMethodReport;
+import org.arquillian.recorder.reporter.model.TestSuiteReport;
+import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
+import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 
 /**
  * Exports reports to HTML file according to XSLT transformation. Template can be set in configuration.
@@ -72,6 +78,8 @@ public class HTMLExporter implements Exporter {
             }
         }
 
+        normalizeFilePaths(report);
+
         JAXBSource source = new JAXBSource(context, report);
         StreamResult result = new StreamResult(configuration.getFile());
 
@@ -87,12 +95,51 @@ public class HTMLExporter implements Exporter {
     }
 
     @Override
-    public void setConfiguration(Configuration<?> configuration) {
-        this.configuration = (ReporterConfiguration) configuration;
+    public void setConfiguration(ReporterConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     public void setContext(JAXBContext context) {
         this.context = context;
     }
 
+    /**
+     * In case of html exporter, all resources which have some file path in final html and are displayed to user (e.g. videos or
+     * screenshots) have file paths in absolute form. This prevents html to be portable from one place to another (from one host
+     * to another) since file paths do not match anymore. By normalization, screenshot and video directories are moved to the
+     * same parent as the final html file is stored under and paths are relativized.
+     *
+     * Only screenshot and video entries are taken into account.
+     *
+     * @param report
+     */
+    private void normalizeFilePaths(Reportable report) {
+        for (TestSuiteReport testSuiteReport : ((Report) report).getTestSuiteReports()) {
+            for (PropertyEntry entry : testSuiteReport.getPropertyEntries()) {
+                if (entry instanceof VideoEntry) {
+                    VideoEntry e = (VideoEntry) entry;
+                    e.setPath(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
+                }
+            }
+            for (TestClassReport testClassReport : testSuiteReport.getTestClassReports()) {
+                for (PropertyEntry entry : testClassReport.getPropertyEntries()) {
+                    if (entry instanceof VideoEntry) {
+                        VideoEntry e = (VideoEntry) entry;
+                        e.setPath(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
+                    }
+                }
+                for (TestMethodReport testMethodReport : testClassReport.getTestMethodReports()) {
+                    for (PropertyEntry entry : testMethodReport.getPropertyEntries()) {
+                        if (entry instanceof VideoEntry) {
+                            VideoEntry e = (VideoEntry) entry;
+                            e.setPath(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
+                        } else if (entry instanceof ScreenshotEntry) {
+                            ScreenshotEntry e = (ScreenshotEntry) entry;
+                            e.setPath(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

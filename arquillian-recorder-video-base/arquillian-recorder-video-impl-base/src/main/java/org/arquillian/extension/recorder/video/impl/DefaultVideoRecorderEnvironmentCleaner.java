@@ -32,7 +32,7 @@ public class DefaultVideoRecorderEnvironmentCleaner implements VideoRecorderEnvi
     @Override
     public void clean(VideoConfiguration configuration) throws Exception {
         Validate.notNull(configuration, "Configuration passed to video cleaner can not be a null object!");
-        FileUtils.deleteDirectory(new File(configuration.getRootFolder(), configuration.getBaseFolder()));
+        FileUtils.deleteDirectory(new File(configuration.getRootDir(), configuration.getBaseDir()));
     }
 
 }

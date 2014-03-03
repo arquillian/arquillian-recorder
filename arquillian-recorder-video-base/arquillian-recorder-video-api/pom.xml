@@ -45,7 +45,12 @@
         <dependency>
             <groupId>org.arquillian.extension</groupId>
             <artifactId>arquillian-recorder-api</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.arquillian.extension</groupId>
+            <artifactId>arquillian-recorder-reporter-api</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 </project>
