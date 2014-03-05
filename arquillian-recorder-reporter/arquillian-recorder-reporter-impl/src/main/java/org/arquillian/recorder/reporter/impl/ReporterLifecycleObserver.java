@@ -16,6 +16,7 @@
  */
 package org.arquillian.recorder.reporter.impl;
 
+import java.lang.reflect.Method;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,7 @@ import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
+import org.junit.Test;
 
 /**
  * Observes events from Arquillian and delegates them to {@link Reporter} implementation.<br>
@@ -163,7 +165,11 @@ public class ReporterLifecycleObserver {
 
         if (result.getStatus() == Status.FAILED) {
             if (result.getThrowable() != null) {
-                testMethodReport.setException(getStackTrace(result.getThrowable()));
+                if (!isThrowingExpectedException(event.getTestMethod(), result.getThrowable().getClass())) {
+                    testMethodReport.setException(getStackTrace(result.getThrowable()));
+                } else {
+                    testMethodReport.setStatus(Status.PASSED);
+                }
             }
         }
 
@@ -212,4 +218,16 @@ public class ReporterLifecycleObserver {
         }
         return sb.toString();
     }
+
+    private boolean isThrowingExpectedException(Method testMethod, Class<?> throwable) {
+        Test JUNITtestAnnotation = testMethod.getAnnotation(Test.class);
+
+        if (JUNITtestAnnotation != null) {
+            return JUNITtestAnnotation.expected() == throwable;
+        } else {
+            throw new IllegalStateException("Test method is not annotated with @Test annotation");
+        }
+
+    }
+
 }
