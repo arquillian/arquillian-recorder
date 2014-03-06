@@ -42,6 +42,9 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 /**
  * Exports reports to HTML file according to XSLT transformation. Template can be set in configuration.
  *
+ * In case you want to override core xsl template (of name arquillian_reporter_template.xsl bundled in api jar), you need to
+ * bundle file arquillian_reporter_template_base.xsl to target implementation. That one will be picked then instead of core one.
+ *
  * @see {@link HTMLReport}
  *
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
@@ -49,7 +52,18 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
  */
 public class HTMLExporter implements Exporter {
 
+    /**
+     * Core template which will be used when user do not use his own in configuration and there is not any template in
+     * implementation itself.
+     */
     private static final String DEFAULT_XSL_TEMPLATE = "arquillian_reporter_template.xsl";
+
+    /**
+     * This is base template which will be used when implementators of screenshooter or video recorder base implementations
+     * implements its own target screenshooter so implementator can override core template and not force user to specify his own
+     * in configuration.
+     */
+    private static final String DEFAULT_BASE_XSL_TEMPLATE = "arquillian_reporter_template_base.xsl";
 
     private ReporterConfiguration configuration;
 
@@ -67,10 +81,14 @@ public class HTMLExporter implements Exporter {
 
         StreamSource xslt;
 
+        InputStream is;
+
         if (configuration.getTemplate().exists()) {
             xslt = new StreamSource(configuration.getTemplate());
+        } else if ((is = getClass().getClassLoader().getResourceAsStream(DEFAULT_BASE_XSL_TEMPLATE)) != null) {
+            xslt = new StreamSource(is);
         } else {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(DEFAULT_XSL_TEMPLATE);
+            is = getClass().getClassLoader().getResourceAsStream(DEFAULT_XSL_TEMPLATE);
             if (is == null) {
                 throw new IllegalStateException("Unable to load default " + DEFAULT_XSL_TEMPLATE);
             } else {
