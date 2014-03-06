@@ -36,7 +36,6 @@ import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.jboss.arquillian.test.spi.TestResult.Status;
 
@@ -57,40 +56,34 @@ public class VideoTaker {
 
     private DefaultFileNameBuilder nb = DefaultFileNameBuilder.getInstance();
 
-    public void onStartSuiteRecording(@Observes EventContext<StartRecordSuiteVideo> context) {
+    public void onStartSuiteRecording(@Observes StartRecordSuiteVideo event) {
         File videoTarget = new File("suite", configuration.get().getVideoName());
-        recorder.get().startRecording(videoTarget, context.getEvent().getVideoType());
-
-        context.proceed();
+        recorder.get().startRecording(videoTarget, event.getVideoType());
     }
 
-    public void onStartRecording(@Observes EventContext<StartRecordVideo> context) {
+    public void onStartRecording(@Observes StartRecordVideo event) {
 
-        VideoMetaData metaData = context.getEvent().getVideoMetaData();
-        metaData.setResourceType(context.getEvent().getVideoType());
+        VideoMetaData metaData = event.getVideoMetaData();
+        metaData.setResourceType(event.getVideoType());
         String fileName = nb
             .withMetaData(metaData)
             .build();
 
-        File videoTarget = new File(context.getEvent().getVideoMetaData().getTestClassName(), fileName);
-        recorder.get().startRecording(videoTarget, context.getEvent().getVideoType());
-
-        context.proceed();
+        File videoTarget = new File(event.getVideoMetaData().getTestClassName(), fileName);
+        recorder.get().startRecording(videoTarget, event.getVideoType());
     }
 
-    public void onStopSuiteRecording(@Observes EventContext<StopRecordSuiteVideo> context) {
+    public void onStopSuiteRecording(@Observes StopRecordSuiteVideo event) {
         Video video = recorder.get().stopRecording();
-        video.setResourceMetaData(context.getEvent().getVideoMetaData());
+        video.setResourceMetaData(event.getVideoMetaData());
 
         propertyReportEvent.fire(new PropertyReportEvent(getVideoEntry(video)));
-
-        context.proceed();
     }
 
-    public void onStopRecording(@Observes EventContext<StopRecordVideo> context) throws IOException {
+    public void onStopRecording(@Observes StopRecordVideo event) throws IOException {
         Video video = recorder.get().stopRecording();
 
-        TestResult testResult = context.getEvent().getVideoMetaData().getTestResult();
+        TestResult testResult = event.getVideoMetaData().getTestResult();
 
         if (testResult != null) {
             Status status = testResult.getStatus();
@@ -107,8 +100,6 @@ public class VideoTaker {
         }
 
         propertyReportEvent.fire(new PropertyReportEvent(getVideoEntry(video)));
-
-        context.proceed();
     }
 
     private PropertyEntry getVideoEntry(Video video) {

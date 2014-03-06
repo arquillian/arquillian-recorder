@@ -39,6 +39,8 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
 
     private String template = "template.xsl";
 
+    private String reportAfterEvery = ReportFrequency.CLASS.toString();
+
     /**
      *
      * @return type of report we want to get, it defaults to "xml"
@@ -73,6 +75,10 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         return new File(getProperty("template", template));
     }
 
+    public String getReportAfterEvery() {
+        return getProperty("reportAfterEvery", reportAfterEvery).toLowerCase();
+    }
+
     private String getFileDefaultFileName() {
         return new StringBuilder()
             .append("arquillian_report")
@@ -86,6 +92,14 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         if (report.isEmpty()) {
             logger.info("Report type can not be empty string! Choosing default type \"xml\"");
             report = DEFAULT_TYPE;
+        }
+
+        try {
+            ReportFrequency.valueOf(ReportFrequency.class, getReportAfterEvery().toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            throw new ReporterConfigurationException(
+                "Report frequency you specified in arquillian.xml is not valid. "
+                    + "Supported frequencies are: " + ReportFrequency.getAll());
         }
 
         try {
@@ -133,6 +147,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         sb.append(String.format("%-40s %s\n", "rootDir", getRootDir().getPath()));
         sb.append(String.format("%-40s %s\n", "file", getFile().getPath()));
         sb.append(String.format("%-40s %s\n", "template", getTemplate().getPath()));
+        sb.append(String.format("%-40s %s\n", "reportAfterEvery", getReportAfterEvery()));
         return sb.toString();
     }
 

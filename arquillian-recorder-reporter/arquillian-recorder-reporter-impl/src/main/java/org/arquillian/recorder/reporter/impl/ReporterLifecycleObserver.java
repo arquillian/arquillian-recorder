@@ -19,10 +19,12 @@ package org.arquillian.recorder.reporter.impl;
 import java.lang.reflect.Method;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import org.arquillian.recorder.reporter.Reportable;
+import org.arquillian.recorder.reporter.ReportFrequency;
 import org.arquillian.recorder.reporter.Reporter;
+import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.arquillian.recorder.reporter.ReporterCursor;
 import org.arquillian.recorder.reporter.event.ExportReport;
 import org.arquillian.recorder.reporter.event.PropertyReportEvent;
@@ -45,7 +47,6 @@ import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.core.api.event.ManagerStopping;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.jboss.arquillian.test.spi.TestResult.Status;
 import org.jboss.arquillian.test.spi.event.suite.After;
@@ -71,6 +72,12 @@ public class ReporterLifecycleObserver {
 
     @Inject
     private Instance<Reporter> reporter;
+
+    @Inject
+    private Instance<ReporterConfiguration> configuration;
+
+    @Inject
+    private Instance<ArquillianDescriptor> descriptor;
 
     @Inject
     private Event<ExportReport> exportReportEvent;
@@ -131,7 +138,7 @@ public class ReporterLifecycleObserver {
 
     }
 
-    public void observeBeforeClass(@Observes BeforeClass event) {
+    public void observeBeforeClass(@Observes(precedence = Integer.MAX_VALUE) BeforeClass event) {
         TestClassReport testClassReport = new TestClassReport();
         testClassReport.setTestClassName(event.getTestClass().getName());
         testClassReport.setRunAsClient(event.getTestClass().isAnnotationPresent(RunAsClient.class));
@@ -140,7 +147,7 @@ public class ReporterLifecycleObserver {
         reporter.get().setTestClassReport(testClassReport);
     }
 
-    public void observeBeforeTest(@Observes Before event) {
+    public void observeBeforeTest(@Observes(precedence = Integer.MAX_VALUE) Before event) {
         TestMethodReport testMethodReport = new TestMethodReport();
         testMethodReport.setName(event.getTestMethod().getName());
 
@@ -157,7 +164,7 @@ public class ReporterLifecycleObserver {
         reporter.get().setTestMethodReport(testMethodReport);
     }
 
-    public void observeAfterTest(@Observes After event, TestResult result) {
+    public void observeAfterTest(@Observes(precedence = Integer.MIN_VALUE) After event, TestResult result) {
         TestMethodReport testMethodReport = reporter.get().getLastTestMethodReport();
 
         testMethodReport.setStatus(result.getStatus());
@@ -174,19 +181,51 @@ public class ReporterLifecycleObserver {
         }
 
         reporter.get().setReporterCursor(new ReporterCursor(reporter.get().getLastTestClassReport()));
+
+        report(event, descriptor.get());
     }
 
-    public void observeAfterClass(@Observes AfterClass event) {
-        reporter.get().getLastTestClassReport().setStop(new Date(System.currentTimeMillis()));
+    public void observeAfterClass(@Observes(precedence = Integer.MIN_VALUE) AfterClass event) {
         reporter.get().setReporterCursor(new ReporterCursor(reporter.get().getLastTestSuiteReport()));
+
+        report(event, descriptor.get());
     }
 
-    public void observeAfterSuite(@Observes AfterSuite event) {
+    public void observeAfterSuite(@Observes(precedence = Integer.MIN_VALUE) AfterSuite event) {
+        reporter.get().getLastTestClassReport().setStop(new Date(System.currentTimeMillis()));
         reporter.get().getLastTestSuiteReport().setStop(new Date(System.currentTimeMillis()));
+
+        exportReportEvent.fire(new ExportReport(reporter.get().getReport()));
     }
 
-    public void observeManagerStopping(@Observes(precedence = 1) ManagerStopping event, ArquillianDescriptor descriptor) {
+    public void observeReportEvent(@Observes PropertyReportEvent event) {
+        reporter.get().getReporterCursor().getCursor().getPropertyEntries().add(event.getPropertyEntry());
+    }
 
+    private void report(org.jboss.arquillian.core.spi.event.Event event, ArquillianDescriptor descriptor) {
+        if (shouldReport(event, configuration.get().getReportAfterEvery())) {
+            List<ExtensionReport> extensionReports = reporter.get().getReport().getExtensionReports();
+            if (extensionReports.isEmpty()) {
+                extensionReports.addAll(getExtensionReports(descriptor));
+            }
+
+            reporter.get().getLastTestClassReport().setStop(new Date(System.currentTimeMillis()));
+            reporter.get().getLastTestSuiteReport().setStop(new Date(System.currentTimeMillis()));
+
+            exportReportEvent.fire(new ExportReport(reporter.get().getReport()));
+        }
+    }
+
+    private boolean shouldReport(org.jboss.arquillian.core.spi.event.Event event, String frequency) {
+        if (event instanceof AfterClass && ReportFrequency.CLASS.toString().equals(frequency)) {
+            return true;
+        } else if (event instanceof After && ReportFrequency.METHOD.toString().equals(frequency)) {
+            return true;
+        }
+        return false;
+    }
+
+    private Collection<? extends ExtensionReport> getExtensionReports(ArquillianDescriptor descriptor) {
         List<ExtensionReport> extensionReports = new ArrayList<ExtensionReport>();
 
         for (ExtensionDef extensionDef : descriptor.getExtensions()) {
@@ -195,15 +234,7 @@ public class ReporterLifecycleObserver {
             extensionReport.setConfiguration(extensionDef.getExtensionProperties());
             extensionReports.add(extensionReport);
         }
-
-        reporter.get().getReport().getExtensionReports().addAll(extensionReports);
-
-        Reportable report = reporter.get().getReport();
-        exportReportEvent.fire(new ExportReport(report));
-    }
-
-    public void observeReportEvent(@Observes PropertyReportEvent event) {
-        reporter.get().getReporterCursor().getCursor().getPropertyEntries().add(event.getPropertyEntry());
+        return extensionReports;
     }
 
     private String getStackTrace(Throwable aThrowable) {

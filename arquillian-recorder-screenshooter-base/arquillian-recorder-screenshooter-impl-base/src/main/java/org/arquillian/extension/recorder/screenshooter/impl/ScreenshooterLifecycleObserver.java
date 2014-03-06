@@ -62,7 +62,7 @@ public class ScreenshooterLifecycleObserver {
     @Inject
     private Instance<Screenshooter> screenshooter;
 
-    public void beforeTest(@Observes(precedence = Integer.MIN_VALUE) Before event) {
+    public void beforeTest(@Observes Before event) {
         if (strategy.get().isTakingAction(event)) {
             ScreenshotMetaData metaData = getMetaData(event);
             metaData.setResourceType(getScreenshotType());
@@ -81,7 +81,7 @@ public class ScreenshooterLifecycleObserver {
         }
     }
 
-    public void afterTest(@Observes(precedence = Integer.MAX_VALUE) After event) {
+    public void afterTest(@Observes After event) {
         TestResult result = testResult.get();
         if (strategy.get().isTakingAction(event, result)) {
             ScreenshotMetaData metaData = getMetaData(event);

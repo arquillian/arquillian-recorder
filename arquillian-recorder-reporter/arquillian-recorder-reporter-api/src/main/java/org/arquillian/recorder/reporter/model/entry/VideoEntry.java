@@ -18,6 +18,8 @@ package org.arquillian.recorder.reporter.model.entry;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 import org.arquillian.extension.recorder.When;
 
@@ -36,6 +38,7 @@ import org.arquillian.extension.recorder.When;
  *
  */
 @XmlRootElement(name = "video")
+@XmlType(propOrder = { "phase", "width", "height", "link" })
 public class VideoEntry extends FileEntry {
 
     private When phase;
@@ -43,6 +46,9 @@ public class VideoEntry extends FileEntry {
     private int width;
 
     private int height;
+
+    @XmlTransient
+    private String link;
 
     @XmlAttribute(required = false)
     public When getPhase() {
@@ -70,4 +76,13 @@ public class VideoEntry extends FileEntry {
     public void setHeight(int height) {
         this.height = height;
     }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
 }

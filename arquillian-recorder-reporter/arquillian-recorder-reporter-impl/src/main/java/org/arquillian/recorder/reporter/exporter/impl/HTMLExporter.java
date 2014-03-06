@@ -118,24 +118,24 @@ public class HTMLExporter implements Exporter {
             for (PropertyEntry entry : testSuiteReport.getPropertyEntries()) {
                 if (entry instanceof VideoEntry) {
                     VideoEntry e = (VideoEntry) entry;
-                    e.setPath(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
+                    e.setLink(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
                 }
             }
             for (TestClassReport testClassReport : testSuiteReport.getTestClassReports()) {
                 for (PropertyEntry entry : testClassReport.getPropertyEntries()) {
                     if (entry instanceof VideoEntry) {
                         VideoEntry e = (VideoEntry) entry;
-                        e.setPath(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
+                        e.setLink(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
                     }
                 }
                 for (TestMethodReport testMethodReport : testClassReport.getTestMethodReports()) {
                     for (PropertyEntry entry : testMethodReport.getPropertyEntries()) {
                         if (entry instanceof VideoEntry) {
                             VideoEntry e = (VideoEntry) entry;
-                            e.setPath(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
+                            e.setLink(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
                         } else if (entry instanceof ScreenshotEntry) {
                             ScreenshotEntry e = (ScreenshotEntry) entry;
-                            e.setPath(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
+                            e.setLink(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
                         }
                     }
                 }
