@@ -18,7 +18,6 @@ package org.arquillian.recorder.reporter.model.entry;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.arquillian.extension.recorder.When;
@@ -47,7 +46,6 @@ public class ScreenshotEntry extends FileEntry {
 
     private int height;
 
-    @XmlTransient
     private String link;
 
     @XmlAttribute(required = false)
@@ -77,6 +75,7 @@ public class ScreenshotEntry extends FileEntry {
         this.height = height;
     }
 
+    @XmlAttribute
     public String getLink() {
         return link;
     }

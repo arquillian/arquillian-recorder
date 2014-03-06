@@ -129,7 +129,7 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
         }
 
         if (!getRootDir().equals(reporterConfiguration.getRootDir())) {
-            if (reporterConfiguration.getReport().equals("html")) {
+            if (reporterConfiguration.getReport().toLowerCase().startsWith("htm")) {
                 setProperty("rootDir", reporterConfiguration.getProperty("rootDir", "target"));
             }
         }
