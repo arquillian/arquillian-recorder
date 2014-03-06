@@ -24,11 +24,11 @@ import org.arquillian.recorder.reporter.ReportType;
  */
 public class XMLReport implements ReportType {
 
-    private static final String TYPE = "xml";
+    private static final String[] TYPES = { "xml" };
 
     @Override
-    public String getType() {
-        return TYPE;
+    public String[] getTypes() {
+        return TYPES;
     }
 
 }

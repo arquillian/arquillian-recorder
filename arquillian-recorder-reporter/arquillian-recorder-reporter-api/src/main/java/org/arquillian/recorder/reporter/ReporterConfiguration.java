@@ -123,8 +123,13 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
                 "You are not permitted to operate on specified resource: " + getRootDir().getAbsolutePath() + "'.");
         }
 
+        setFileName(getProperty("report", report));
+    }
+
+    public void setFileName(String reportType) {
         String fileProperty = getProperty("file", file);
-        String reportProperty = getProperty("report", report);
+        setProperty("report", reportType);
+        String reportProperty = getProperty("report", reportType);
 
         if (!fileProperty.endsWith(reportProperty)) {
             StringBuilder sb = new StringBuilder();

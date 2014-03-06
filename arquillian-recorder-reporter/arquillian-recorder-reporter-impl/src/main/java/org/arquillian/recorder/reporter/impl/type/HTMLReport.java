@@ -24,11 +24,11 @@ import org.arquillian.recorder.reporter.ReportType;
  */
 public class HTMLReport implements ReportType {
 
-    private static final String TYPE = "html";
+    private static final String[] TYPES = { "html", "html4", "html5", "htm" };
 
     @Override
-    public String getType() {
-        return TYPE;
+    public String[] getTypes() {
+        return TYPES;
     }
 
 }

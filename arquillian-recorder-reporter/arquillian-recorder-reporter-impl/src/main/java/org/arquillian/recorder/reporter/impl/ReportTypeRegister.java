@@ -38,8 +38,10 @@ public class ReportTypeRegister {
 
     public ReportType get(String report) {
         for (ReportType reportType : reportTypes) {
-            if (reportType.getType().equalsIgnoreCase(report)) {
-                return reportType;
+            for (String type : reportType.getTypes()) {
+                if (type.equalsIgnoreCase(report)) {
+                    return reportType;
+                }
             }
         }
         return null;

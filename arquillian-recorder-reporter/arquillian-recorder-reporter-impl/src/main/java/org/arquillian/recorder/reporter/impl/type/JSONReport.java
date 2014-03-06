@@ -24,11 +24,11 @@ import org.arquillian.recorder.reporter.ReportType;
  */
 public class JSONReport implements ReportType {
 
-    private static final String TYPE = "json";
+    private static final String[] TYPES = { "json" };
 
     @Override
-    public String getType() {
-        return TYPE;
+    public String[] getTypes() {
+        return TYPES;
     }
 
 }

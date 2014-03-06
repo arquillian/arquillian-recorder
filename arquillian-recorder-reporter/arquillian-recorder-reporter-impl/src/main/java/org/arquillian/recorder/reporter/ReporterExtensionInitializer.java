@@ -113,6 +113,7 @@ public class ReporterExtensionInitializer {
         ReportType reportType = reportTypeRegister.get().get(report);
 
         if (reportType != null) {
+            configuration.get().setFileName(reportType.getTypes()[0]);
             Exporter exporterToUse = exporterRegister.get().get(reportType.getClass());
             if (exporterToUse != null) {
                 exporterToUse.setConfiguration(configuration.get());

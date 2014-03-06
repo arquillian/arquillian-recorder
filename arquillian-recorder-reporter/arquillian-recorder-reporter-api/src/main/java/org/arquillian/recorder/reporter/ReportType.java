@@ -17,7 +17,7 @@
 package org.arquillian.recorder.reporter;
 
 /**
- * Type of report.
+ * Type of report. File extension of some format should be created from first element of possible types.
  *
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
  *
@@ -26,7 +26,7 @@ public interface ReportType {
 
     /**
      *
-     * @return type of report to get, e.g. "xml"
+     * @return all possible types for some format, e.g. adoc, asciidoc, ad
      */
-    String getType();
+    String[] getTypes();
 }

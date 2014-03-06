@@ -36,7 +36,7 @@ Please put this extension definition into +arquillian.xml+ in order to bootstrap
 |Configuration property|Description|Default value
 
 |+report+
-|type of report you want to get, possible values are _xml_, _json_ or _html_
+|type of report you want to get, possible values are _xml_, _json_ or _html_, _html4_, _html5_ or _htm_ for html format
 |xml
 |+file+
 |file where to export the report
