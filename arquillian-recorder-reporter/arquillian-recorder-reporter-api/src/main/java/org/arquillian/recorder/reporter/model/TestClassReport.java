@@ -54,7 +54,7 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
  *
  */
 @XmlRootElement(name = "class")
-@XmlType(propOrder = { "testClassName", "runAsClient", "duration", "propertyEntries", "testMethodReports" })
+@XmlType(propOrder = { "testClassName", "runAsClient", "stop", "duration", "propertyEntries", "testMethodReports" })
 public class TestClassReport implements ReportEntry {
 
     private String testClassName;
@@ -114,6 +114,14 @@ public class TestClassReport implements ReportEntry {
 
     private void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public Date getStop() {
+        return stop;
+    }
+
+    public Date getStart() {
+        return start;
     }
 
     public long getDuration() {

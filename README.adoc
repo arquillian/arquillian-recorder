@@ -19,7 +19,7 @@ Arquillian Reporter is an extension to Arquillian platform which provides the po
 </dependency>
 ----
 
-The examples of how reports are taken can be seen http://bit.ly/1kvVOB4[here] for JSON, http://bit.ly/1cs1k2D[here] for XML and http://devio.us/~stewe/report/arquillian_report.html[here] for HTML type of reporting.
+The examples of how reports are taken can be seen http://bit.ly/1kvVOB4[here] for JSON, http://bit.ly/1cs1k2D[here] for XML, http://devio.us/~stewe/report/arquillian_report.html[here] for HTML type of reporting and http://devio.us/~stewe/adoc/arquillian_report.html[here] for Asciidoctor reporting.
 
 === Settings
 
@@ -36,7 +36,7 @@ Please put this extension definition into +arquillian.xml+ in order to bootstrap
 |Configuration property|Description|Default value
 
 |+report+
-|type of report you want to get, possible values are _xml_, _json_ or _html_, _html4_, _html5_ or _htm_ for html format
+|type of report you want to get, possible values are _xml_, _json_ or _html_, _html4_, _html5_ or _htm_ for html format and _ad_, _adoc_ or _asciidoc_ for Asciidoctor
 |xml
 |+file+
 |file where to export the report

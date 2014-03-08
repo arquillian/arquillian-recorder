@@ -79,6 +79,18 @@ public class TestSuiteReport implements ReportEntry {
     })
     private final List<PropertyEntry> propertyEntries = new ArrayList<PropertyEntry>();
 
+    public Date getStart() {
+        return start;
+    }
+
+    public Date getStop() {
+        return stop;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
     public List<ContainerReport> getContainerReports() {
         return containerReports;
     }

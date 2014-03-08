@@ -75,6 +75,6 @@ public class ExtensionReport implements ReportEntry {
 
     @Override
     public List<PropertyEntry> getPropertyEntries() {
-        throw new UnsupportedOperationException("It is not possible to add any properties to container report.");
+        throw new UnsupportedOperationException("It is not possible to add any properties to extension report.");
     }
 }
