@@ -50,6 +50,9 @@ Please put this extension definition into +arquillian.xml+ in order to bootstrap
 |+reportAfterEvery+
 |when should report be exported - _method_, _class_, _suite_
 |default is after every class, it is exported after every suite every time
+|language
+|language you want to get your HTML report in, only English right now
+|en
 |===
 
 === How does it work?

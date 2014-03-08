@@ -17,6 +17,8 @@
 package org.arquillian.recorder.reporter;
 
 import java.io.File;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.arquillian.extension.recorder.Configuration;
@@ -29,7 +31,9 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
 
     private static final Logger logger = Logger.getLogger(ReporterConfiguration.class.getName());
 
-    private static final String DEFAULT_TYPE = "xml";
+    public static final String DEFAULT_TYPE = "xml";
+
+    public static final String DEFAULT_LANGUAGE = "en";
 
     private String report = DEFAULT_TYPE;
 
@@ -40,6 +44,8 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
     private String template = "template.xsl";
 
     private String reportAfterEvery = ReportFrequency.CLASS.toString();
+
+    private String language = "en";
 
     /**
      *
@@ -79,6 +85,17 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         return getProperty("reportAfterEvery", reportAfterEvery).toLowerCase();
     }
 
+    /**
+     * Language to use for resulting report. Defaults to "en" as English.
+     *
+     * Supported languages are
+     *
+     * @return
+     */
+    public String getLanguage() {
+        return getProperty("language", language).toLowerCase();
+    }
+
     private String getFileDefaultFileName() {
         return new StringBuilder()
             .append("arquillian_report")
@@ -100,6 +117,21 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
             throw new ReporterConfigurationException(
                 "Report frequency you specified in arquillian.xml is not valid. "
                     + "Supported frequencies are: " + ReportFrequency.getAll());
+        }
+
+        // we check language only for html output
+        if (getProperty("report", report).startsWith("htm")) {
+            LanguageResolver languageResolver = new LanguageResolver();
+
+            List<String> supportedLanguages = languageResolver.getSupportedLanguages();
+
+            if (!languageResolver.isLanguageSupported(getLanguage())) {
+                logger.log(Level.INFO, "Language you set ({0}) for HTML report is not supported. It will default to "
+                    + "\"{1}\". When you are executing this from IDE, put reporter api jar to build path among external "
+                    + "jars in order to scan it.",
+                    new Object[] { getLanguage(), DEFAULT_LANGUAGE, supportedLanguages });
+                setProperty("language", DEFAULT_LANGUAGE);
+            }
         }
 
         try {
@@ -153,6 +185,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         sb.append(String.format("%-40s %s\n", "file", getFile().getPath()));
         sb.append(String.format("%-40s %s\n", "template", getTemplate().getPath()));
         sb.append(String.format("%-40s %s\n", "reportAfterEvery", getReportAfterEvery()));
+        sb.append(String.format("%-40s %s\n", "language", getLanguage()));
         return sb.toString();
     }
 

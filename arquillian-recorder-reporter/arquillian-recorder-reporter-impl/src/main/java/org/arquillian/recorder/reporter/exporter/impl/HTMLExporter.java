@@ -53,6 +53,12 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 public class HTMLExporter implements Exporter {
 
     /**
+     * Default template directory where all templates are saved. Template for some language is saved under another dir, like
+     * template/en/arquillian_reporter_template.xsl for English templates.
+     */
+    private static final String DEFAULT_TEMPLATE_DIR = "arquillian_reporter_templates/";
+
+    /**
      * Core template which will be used when user do not use his own in configuration and there is not any template in
      * implementation itself.
      */
@@ -83,14 +89,17 @@ public class HTMLExporter implements Exporter {
 
         InputStream is;
 
+        String baseTemplatePath = DEFAULT_TEMPLATE_DIR + configuration.getLanguage() + "/" + DEFAULT_BASE_XSL_TEMPLATE;
+        String coreTemplatePath = DEFAULT_TEMPLATE_DIR + configuration.getLanguage() + "/" + DEFAULT_XSL_TEMPLATE;
+
         if (configuration.getTemplate().exists()) {
             xslt = new StreamSource(configuration.getTemplate());
-        } else if ((is = getClass().getClassLoader().getResourceAsStream(DEFAULT_BASE_XSL_TEMPLATE)) != null) {
+        } else if ((is = getClass().getClassLoader().getResourceAsStream(baseTemplatePath)) != null) {
             xslt = new StreamSource(is);
         } else {
-            is = getClass().getClassLoader().getResourceAsStream(DEFAULT_XSL_TEMPLATE);
+            is = getClass().getClassLoader().getResourceAsStream(coreTemplatePath);
             if (is == null) {
-                throw new IllegalStateException("Unable to load default " + DEFAULT_XSL_TEMPLATE);
+                throw new IllegalStateException("Unable to load default " + coreTemplatePath);
             } else {
                 xslt = new StreamSource(is);
             }
