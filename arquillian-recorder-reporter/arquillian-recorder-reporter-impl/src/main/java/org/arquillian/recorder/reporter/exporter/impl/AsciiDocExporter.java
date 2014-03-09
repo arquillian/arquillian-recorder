@@ -92,11 +92,6 @@ public class AsciiDocExporter implements Exporter {
     @Override
     public File export(Reportable reportable) throws Exception {
 
-        //TODO moure el IMPORTANT fora del properties just sota el nom del mètode
-        //Mirar perquè en les propietats del test surten com a key value les imatges
-        //treure key/value quan no hi ha res a mostrar (surt al container)
-        //perquè no va el go to class
-        
         Report report = (Report) reportable;
         createWriter();
 
@@ -148,9 +143,11 @@ public class AsciiDocExporter implements Exporter {
 
         writer.append(".").append("Time").append(NEW_LINE);
         writer.append("****").append(NEW_LINE);
-        writer.append("Start:").append(" ").append(SIMPLE_DATE_FORMAT.format(start)).append(NEW_LINE).append(NEW_LINE);
-        writer.append("Stop:").append(" ").append(SIMPLE_DATE_FORMAT.format(stop)).append(NEW_LINE).append(NEW_LINE);
-        writer.append("Duration:").append(" ")
+        writer.append("*").append("Start:").append("*").append(" ").append(SIMPLE_DATE_FORMAT.format(start))
+                .append(NEW_LINE).append(NEW_LINE);
+        writer.append("*").append("Stop:").append("*").append(" ").append(SIMPLE_DATE_FORMAT.format(stop))
+                .append(NEW_LINE).append(NEW_LINE);
+        writer.append("*").append("Duration:").append("*").append(" ")
                 .append(convertDuration(duration, TimeUnit.MILLISECONDS, TimeUnit.SECONDS)).append("s")
                 .append(NEW_LINE);
         writer.append("****").append(NEW_LINE).append(NEW_LINE);
@@ -168,34 +165,40 @@ public class AsciiDocExporter implements Exporter {
 
     private void writePropertiesTable(Map<String, String> properties) throws IOException {
 
-        writer.append("[cols=\"2*\", options=\"header\"]").append(NEW_LINE);
-        writer.append(".").append("Properties").append(NEW_LINE);
-        writer.append("|===").append(NEW_LINE).append(NEW_LINE);
-        writer.append("|KEY").append(NEW_LINE);
-        writer.append("|VALUE").append(NEW_LINE).append(NEW_LINE);
+        if (properties.size() > 0) {
 
-        Set<Entry<String, String>> entrySet = properties.entrySet();
+            writer.append("[cols=\"2*\", options=\"header\"]").append(NEW_LINE);
+            writer.append(".").append("Properties").append(NEW_LINE);
+            writer.append("|===").append(NEW_LINE).append(NEW_LINE);
+            writer.append("|KEY").append(NEW_LINE);
+            writer.append("|VALUE").append(NEW_LINE).append(NEW_LINE);
 
-        for (Entry<String, String> entry : entrySet) {
-            writer.append("|").append(entry.getKey()).append(NEW_LINE);
-            writer.append("|").append(entry.getValue()).append(NEW_LINE).append(NEW_LINE);
+            Set<Entry<String, String>> entrySet = properties.entrySet();
+
+            for (Entry<String, String> entry : entrySet) {
+                writer.append("|").append(entry.getKey()).append(NEW_LINE);
+                writer.append("|").append(entry.getValue()).append(NEW_LINE).append(NEW_LINE);
+            }
+
+            writer.append("|===").append(NEW_LINE).append(NEW_LINE);
         }
-
-        writer.append("|===").append(NEW_LINE).append(NEW_LINE);
 
     }
 
     private void writePropertiesTable(List<PropertyEntry> propertyEntries) throws IOException {
 
-        writer.append("[cols=\"2*\", options=\"header\"]").append(NEW_LINE);
-        writer.append(".").append("Properties").append(NEW_LINE);
-        writer.append("|===").append(NEW_LINE).append(NEW_LINE);
-        writer.append("|KEY").append(NEW_LINE);
-        writer.append("|VALUE").append(NEW_LINE).append(NEW_LINE);
+        if (containsAnyKeyValueEntryOrFileEntry(propertyEntries) > 0) {
 
-        writePropertiesRows(propertyEntries);
+            writer.append("[cols=\"2*\", options=\"header\"]").append(NEW_LINE);
+            writer.append(".").append("Properties").append(NEW_LINE);
+            writer.append("|===").append(NEW_LINE).append(NEW_LINE);
+            writer.append("|KEY").append(NEW_LINE);
+            writer.append("|VALUE").append(NEW_LINE).append(NEW_LINE);
 
-        writer.append("|===").append(NEW_LINE).append(NEW_LINE);
+            writePropertiesRows(propertyEntries);
+
+            writer.append("|===").append(NEW_LINE).append(NEW_LINE);
+        }
 
     }
 
@@ -209,7 +212,8 @@ public class AsciiDocExporter implements Exporter {
 
             } else {
 
-                if (propertyEntry instanceof FileEntry) {
+                if (propertyEntry instanceof FileEntry
+                        && !(propertyEntry instanceof ScreenshotEntry || propertyEntry instanceof VideoEntry)) {
                     FileEntry fileEntry = (FileEntry) propertyEntry;
                     writer.append("2x|").append(fileEntry.getPath()).append(NEW_LINE).append(NEW_LINE);
                 }
@@ -348,7 +352,7 @@ public class AsciiDocExporter implements Exporter {
                 .append("s");
 
         if (testClassReport.getRunAsClient()) {
-            writer.append(" ").append("(run as client)");
+            writer.append(" ").append("_").append("(run as client)").append("_");
         }
 
         writer.append(NEW_LINE).append(NEW_LINE);
@@ -360,9 +364,12 @@ public class AsciiDocExporter implements Exporter {
 
         writer.append(".").append("Test Result").append(NEW_LINE);
         writer.append("****").append(NEW_LINE);
-        writer.append("Passed:").append(" ").append(Integer.toString(results[PASSED_INDEX])).append(NEW_LINE).append(NEW_LINE);
-        writer.append("Failed:").append(" ").append(Integer.toString(results[FAILED_INDEX])).append(NEW_LINE).append(NEW_LINE);
-        writer.append("Skipped:").append(" ").append(Integer.toString(results[SKIPPED_INDEX])).append(NEW_LINE).append(NEW_LINE);
+        writer.append("*").append("Passed:").append("*").append(" ").append(Integer.toString(results[PASSED_INDEX]))
+                .append(NEW_LINE).append(NEW_LINE);
+        writer.append("*").append("Failed:").append("*").append(" ").append(Integer.toString(results[FAILED_INDEX]))
+                .append(NEW_LINE).append(NEW_LINE);
+        writer.append("*").append("Skipped:").append("*").append(" ").append(Integer.toString(results[SKIPPED_INDEX]))
+                .append(NEW_LINE).append(NEW_LINE);
         writer.append("****").append(NEW_LINE).append(NEW_LINE);
 
         writePropertiesTable(testClassReport.getPropertyEntries());
@@ -413,6 +420,15 @@ public class AsciiDocExporter implements Exporter {
                 .append("s").append(") -> ").append("<<").append(testClassName).append(", ")
                 .append("Go To Test Class>>").append(NEW_LINE).append(NEW_LINE);
 
+        boolean isTestFailed = testMethodReport.getException() != null && !"".equals(testMethodReport.getException());
+
+        if (isTestFailed) {
+            writer.append("[IMPORTANT]").append(NEW_LINE);
+            writer.append("====").append(NEW_LINE);
+            writer.append(testMethodReport.getException()).append(NEW_LINE);
+            writer.append("====").append(NEW_LINE).append(NEW_LINE);
+        }
+
     }
 
     private String getIcon(TestMethodReport testMethodReport) {
@@ -436,30 +452,55 @@ public class AsciiDocExporter implements Exporter {
 
     private void writeTestMethodProperties(TestMethodReport testMethodReport) throws IOException {
 
-        writer.append(".").append("Properties").append(NEW_LINE);
-        writer.append("****").append(NEW_LINE).append(NEW_LINE);
+        if (containsAnyMethodProperty(testMethodReport)) {
 
-        if (testMethodReport.getRunAsClient() || !"_DEFAULT_".equals(testMethodReport.getOperateOnDeployment())) {
-            writer.append("[NOTE]").append(NEW_LINE);
-            writer.append("====").append(NEW_LINE);
-            writer.append("Run As Client ").append(Boolean.toString(testMethodReport.getRunAsClient()))
-                    .append(NEW_LINE);
-            writer.append("Operate On Deployment ").append(testMethodReport.getOperateOnDeployment()).append(NEW_LINE);
-            writer.append("====").append(NEW_LINE).append(NEW_LINE);
+            writer.append(".").append("Properties").append(NEW_LINE);
+            writer.append("****").append(NEW_LINE).append(NEW_LINE);
+
+            if (runAsClientOrOperateOnDeployment(testMethodReport)) {
+
+                writer.append("[NOTE]").append(NEW_LINE);
+                writer.append("====").append(NEW_LINE);
+                writer.append("*").append("Run As Client ").append("*")
+                        .append(Boolean.toString(testMethodReport.getRunAsClient())).append(NEW_LINE).append(NEW_LINE);
+                writer.append("*").append("Operate On Deployment ").append("*")
+                        .append(testMethodReport.getOperateOnDeployment()).append(NEW_LINE);
+                writer.append("====").append(NEW_LINE).append(NEW_LINE);
+
+            }
+
+            writePropertiesTable(testMethodReport.getPropertyEntries());
+
+            writer.append("****").append(NEW_LINE).append(NEW_LINE);
         }
 
-        writePropertiesTable(testMethodReport.getPropertyEntries());
+    }
 
-        boolean isTestFailed = testMethodReport.getException() != null && !"".equals(testMethodReport.getException());
+    private boolean runAsClientOrOperateOnDeployment(TestMethodReport testMethodReport) {
+        return testMethodReport.getRunAsClient()
+                || (testMethodReport.getOperateOnDeployment() != null && !"_DEFAULT_".equals(testMethodReport
+                        .getOperateOnDeployment()));
+    }
 
-        if (isTestFailed) {
-            writer.append("[IMPORTANT]").append(NEW_LINE);
-            writer.append("====").append(NEW_LINE);
-            writer.append(testMethodReport.getException()).append(NEW_LINE);
-            writer.append("====").append(NEW_LINE).append(NEW_LINE);
+    private boolean containsAnyMethodProperty(TestMethodReport testMethodReport) {
+        return containsAnyKeyValueEntryOrFileEntry(testMethodReport.getPropertyEntries()) > 0
+                || runAsClientOrOperateOnDeployment(testMethodReport);
+    }
+
+    private int containsAnyKeyValueEntryOrFileEntry(List<PropertyEntry> propertyEntries) {
+
+        int count = 0;
+
+        for (PropertyEntry propertyEntry : propertyEntries) {
+
+            if (propertyEntries instanceof KeyValueEntry
+                    || (propertyEntry instanceof FileEntry && !(propertyEntry instanceof ScreenshotEntry || propertyEntry instanceof VideoEntry))) {
+                count++;
+            }
+
         }
 
-        writer.append("****").append(NEW_LINE).append(NEW_LINE);
+        return count;
 
     }
 
