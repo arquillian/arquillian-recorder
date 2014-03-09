@@ -61,16 +61,17 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
  */
 public class AsciiDocExporter implements Exporter {
 
+
+    protected static final String NEW_LINE = System.getProperty("line.separator");
+    protected static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("MM.dd.yyyy '-' HH:mm:ss");
+    
     private static final int PASSED_INDEX = 0;
     private static final int FAILED_INDEX = 1;
     private static final int SKIPPED_INDEX = 2;
 
-    private static final String NEW_LINE = System.getProperty("line.separator");
-    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("MM.dd.yyyy '-' HH:mm:ss");
-
-    private BufferedWriter writer = null;
+    protected BufferedWriter writer = null;
+    
     private OutputStream outputStream;
-
     private static final String FAILED_COLOR = "red";
     private static final String SUCCESS_COLOR = "green";
     private static final String WARNING_COLOR = "yellow";
