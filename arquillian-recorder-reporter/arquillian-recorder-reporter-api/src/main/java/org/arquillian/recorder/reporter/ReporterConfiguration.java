@@ -35,6 +35,8 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
 
     public static final String DEFAULT_LANGUAGE = "en";
 
+    public static final String DEFAULT_MAX_IMAGE_WIDTH = "500";
+
     private String report = DEFAULT_TYPE;
 
     private String file = getFileDefaultFileName();
@@ -46,6 +48,8 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
     private String reportAfterEvery = ReportFrequency.CLASS.toString();
 
     private String language = "en";
+
+    private String maxImageWidth = DEFAULT_MAX_IMAGE_WIDTH;
 
     /**
      *
@@ -88,12 +92,20 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
     /**
      * Language to use for resulting report. Defaults to "en" as English.
      *
-     * Supported languages are
-     *
      * @return
      */
     public String getLanguage() {
         return getProperty("language", language).toLowerCase();
+    }
+
+    /**
+     * Gets width for displayed images. When some image has its width lower than this number, it will be displayed as a link
+     * instead as an image directly displayed on a resulting HTML page.
+     *
+     * @return
+     */
+    public String getMaxImageWidth() {
+        return getProperty("maxImageWidth", maxImageWidth);
     }
 
     private String getFileDefaultFileName() {
@@ -109,6 +121,15 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         if (report.isEmpty()) {
             logger.info("Report type can not be empty string! Choosing default type \"xml\"");
             report = DEFAULT_TYPE;
+        }
+
+        try {
+            int width = Integer.parseInt(getMaxImageWidth());
+            if (width <= 0) {
+                setProperty("maxImageWidth", DEFAULT_MAX_IMAGE_WIDTH);
+            }
+        } catch (NumberFormatException ex) {
+            setProperty("maxImageWidth", DEFAULT_MAX_IMAGE_WIDTH);
         }
 
         try {
@@ -186,6 +207,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         sb.append(String.format("%-40s %s\n", "template", getTemplate().getPath()));
         sb.append(String.format("%-40s %s\n", "reportAfterEvery", getReportAfterEvery()));
         sb.append(String.format("%-40s %s\n", "language", getLanguage()));
+        sb.append(String.format("%-40s %s\n", "maxImageWidth", getMaxImageWidth()));
         return sb.toString();
     }
 

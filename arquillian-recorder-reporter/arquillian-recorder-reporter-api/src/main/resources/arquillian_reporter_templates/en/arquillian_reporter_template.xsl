@@ -252,7 +252,7 @@
 								<div class="screenshotParent">
 									<xsl:for-each select="screenshot">
 										<xsl:choose>
-											<xsl:when test="@width &gt; 500">
+											<xsl:when test="@width &gt; /report/reportConfiguration/maxImageWidth">
 												<p><a href="{@link}"><xsl:value-of select="@path"/></a></p>
 											</xsl:when>
 											<xsl:otherwise>

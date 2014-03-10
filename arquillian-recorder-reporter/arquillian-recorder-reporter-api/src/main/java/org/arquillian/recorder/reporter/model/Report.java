@@ -38,6 +38,7 @@ import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
  * </ul>
  * Can hold:
  * <ul>
+ * <li>{@link ReportConfiguration}</li>
  * <li>list of {@link ExtensionReport}</li>
  * <li>list of {@link KeyValueEntry}</li>
  * <li>list of {@link FileEntry}</li>
@@ -47,8 +48,11 @@ import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
  *
  */
 @XmlRootElement(name = "report")
-@XmlType(propOrder = { "propertyEntries", "extensionReports", "testSuiteReports" })
+@XmlType(propOrder = { "reportConfiguration", "propertyEntries", "extensionReports", "testSuiteReports" })
 public class Report implements ReportEntry {
+
+    @XmlElement(name = "reportConfiguration")
+    private final ReportConfiguration reportConfiguration = new ReportConfiguration();
 
     @XmlElement(name = "suite", required = true)
     private final List<TestSuiteReport> testSuiteReports = new ArrayList<TestSuiteReport>();
@@ -61,6 +65,10 @@ public class Report implements ReportEntry {
         @XmlElement(name = "file", type = FileEntry.class)
     })
     private final List<PropertyEntry> propertyEntries = new ArrayList<PropertyEntry>();
+
+    public ReportConfiguration getReportConfiguration() {
+        return reportConfiguration;
+    }
 
     public List<TestSuiteReport> getTestSuiteReports() {
         return testSuiteReports;
