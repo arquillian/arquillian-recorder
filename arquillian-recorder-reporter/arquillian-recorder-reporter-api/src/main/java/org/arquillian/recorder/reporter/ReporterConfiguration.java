@@ -37,6 +37,8 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
 
     public static final String DEFAULT_MAX_IMAGE_WIDTH = "500";
 
+    public static final String DEFAULT_TITLE = "Arquillian test run report";
+
     private String report = DEFAULT_TYPE;
 
     private String file = getFileDefaultFileName();
@@ -50,6 +52,8 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
     private String language = "en";
 
     private String maxImageWidth = DEFAULT_MAX_IMAGE_WIDTH;
+
+    private String title = DEFAULT_TITLE;
 
     /**
      *
@@ -108,6 +112,10 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         return getProperty("maxImageWidth", maxImageWidth);
     }
 
+    public String getTitle() {
+        return getProperty("title", title);
+    }
+
     private String getFileDefaultFileName() {
         return new StringBuilder()
             .append("arquillian_report")
@@ -121,6 +129,10 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         if (report.isEmpty()) {
             logger.info("Report type can not be empty string! Choosing default type \"xml\"");
             report = DEFAULT_TYPE;
+        }
+
+        if (getTitle() == null || getTitle().isEmpty()) {
+            setProperty("title", DEFAULT_TITLE);
         }
 
         try {

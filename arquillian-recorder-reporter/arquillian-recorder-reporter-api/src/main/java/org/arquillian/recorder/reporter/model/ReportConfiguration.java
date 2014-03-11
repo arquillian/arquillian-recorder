@@ -35,6 +35,8 @@ public class ReportConfiguration implements ReportEntry {
 
     private String maxImageWidth;
 
+    private String title;
+
     @XmlElement
     public String getMaxImageWidth() {
         return maxImageWidth;
@@ -53,6 +55,23 @@ public class ReportConfiguration implements ReportEntry {
         } catch (NumberFormatException ex) {
             // intentionally empty
         }
+    }
+
+    @XmlElement
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Title has to be non-null and non-empty string.
+     *
+     * @param title
+     */
+    public void setTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            return;
+        }
+        this.title = title;
     }
 
     @Override

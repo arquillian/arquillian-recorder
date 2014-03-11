@@ -108,6 +108,7 @@ public class HTMLExporter implements Exporter {
         normalizeFilePaths(report);
 
         ((Report) report).getReportConfiguration().setMaxImageWidth(configuration.getMaxImageWidth());
+        ((Report) report).getReportConfiguration().setTitle(configuration.getTitle());
 
         JAXBSource source = new JAXBSource(context, report);
         StreamResult result = new StreamResult(configuration.getFile());
