@@ -16,6 +16,7 @@
  */
 package org.arquillian.recorder.reporter.impl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.arquillian.recorder.reporter.ReportFrequency;
+import org.arquillian.recorder.reporter.ReportMessage;
 import org.arquillian.recorder.reporter.Reporter;
 import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.arquillian.recorder.reporter.ReporterCursor;
@@ -169,6 +171,7 @@ public class ReporterLifecycleObserver {
 
         testMethodReport.setStatus(result.getStatus());
         testMethodReport.setDuration(result.getEnd() - result.getStart());
+        testMethodReport.setReportMessage(parseTestReportMessage(event.getTestMethod()));
 
         if (result.getStatus() == Status.FAILED) {
             if (result.getThrowable() != null) {
@@ -259,6 +262,18 @@ public class ReporterLifecycleObserver {
             throw new IllegalStateException("Test method is not annotated with @Test annotation");
         }
 
+    }
+
+    private String parseTestReportMessage(Method testMethod) {
+
+        Annotation[] annotations = testMethod.getAnnotations();
+        for (Annotation annotation : annotations) {
+            if (annotation.annotationType().isAssignableFrom(ReportMessage.class)) {
+                return ((ReportMessage) annotation).value();
+            }
+        }
+
+        return null;
     }
 
 }

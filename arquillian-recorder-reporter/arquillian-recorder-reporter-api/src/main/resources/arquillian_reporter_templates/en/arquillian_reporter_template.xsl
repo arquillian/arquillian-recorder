@@ -221,6 +221,7 @@
 								<div class="properties">
 									<table>
 										<tbody>
+											<xsl:if test="@reportMessage"><tr><td colspan="2"><xsl:value-of select="@reportMessage"/></td></tr></xsl:if>
 											<xsl:if test="@runAsClient = 'true'"><tr><td colspan="2">runs as client</td></tr></xsl:if>
 											<xsl:if test="@operateOnDeployment != '_DEFAULT_'"><tr><td>operates on deployment</td><td><xsl:value-of select="@operateOnDeployment"/></td></tr></xsl:if>
 											<!-- properties hooked to method -->

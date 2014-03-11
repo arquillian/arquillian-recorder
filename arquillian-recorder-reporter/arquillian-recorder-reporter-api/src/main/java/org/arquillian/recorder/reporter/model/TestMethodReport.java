@@ -45,6 +45,7 @@ import org.jboss.arquillian.test.spi.TestResult.Status;
  * </ul>
  * Can hold:
  * <ul>
+ * <li>report message</li>
  * <li>exception message</li>
  * <li>duration</li>
  * <li>list of {@link KeyValueEntry}</li>
@@ -57,7 +58,7 @@ import org.jboss.arquillian.test.spi.TestResult.Status;
  *
  */
 @XmlRootElement(name = "method")
-@XmlType(propOrder = { "name", "status", "duration", "operateOnDeployment", "runAsClient", "exception", "propertyEntries" })
+@XmlType(propOrder = { "name", "status", "reportMessage", "duration", "operateOnDeployment", "runAsClient", "exception", "propertyEntries" })
 public class TestMethodReport implements ReportEntry {
 
     private String name;
@@ -71,6 +72,8 @@ public class TestMethodReport implements ReportEntry {
     private String operateOnDeployment;
 
     private boolean runAsClient;
+
+    private String reportMessage;
 
     @XmlElements({
         @XmlElement(name = "property", type = KeyValueEntry.class),
@@ -139,6 +142,15 @@ public class TestMethodReport implements ReportEntry {
 
     public boolean getRunAsClient() {
         return runAsClient;
+    }
+
+    public String getReportMessage() {
+        return reportMessage;
+    }
+
+    @XmlAttribute
+    public void setReportMessage(String reportMessage) {
+        this.reportMessage = reportMessage;
     }
 
 }
