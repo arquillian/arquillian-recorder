@@ -54,6 +54,10 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
  * The final output of document will depend on how you render the AsciiDoc
  * document.
  * 
+ * This class can be extended to override any of the methods used to write the
+ * output so you can implement your own AsciiDoc report. Keep in mind that if
+ * method is not overridden the default output is generated.
+ * 
  * @see {@link AsciiDocReport}
  * 
  * @author <a href="asotobu@gmail.com">Alex Soto</a>
@@ -61,26 +65,24 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
  */
 public class AsciiDocExporter implements Exporter {
 
-
     protected static final String NEW_LINE = System.getProperty("line.separator");
     protected static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("MM.dd.yyyy '-' HH:mm:ss");
-    
-    private static final int PASSED_INDEX = 0;
-    private static final int FAILED_INDEX = 1;
-    private static final int SKIPPED_INDEX = 2;
+
+    protected static final int PASSED_INDEX = 0;
+    protected static final int FAILED_INDEX = 1;
+    protected static final int SKIPPED_INDEX = 2;
+
+    protected static final String FAILED_COLOR = "red";
+    protected static final String SUCCESS_COLOR = "green";
+    protected static final String WARNING_COLOR = "yellow";
+
+    protected static final String SUCCESS_STEP = "thumbs-up";
+    protected static final String FAIL_STEP = "thumbs-down";
+    protected static final String NOT_PERFORMED_STEP = "unlink";
 
     protected BufferedWriter writer = null;
-    
-    private OutputStream outputStream;
-    private static final String FAILED_COLOR = "red";
-    private static final String SUCCESS_COLOR = "green";
-    private static final String WARNING_COLOR = "yellow";
-
-    private static final String SUCCESS_STEP = "thumbs-up";
-    private static final String FAIL_STEP = "thumbs-down";
-    private static final String NOT_PERFORMED_STEP = "unlink";
-
-    private ReporterConfiguration configuration;
+    protected OutputStream outputStream;
+    protected ReporterConfiguration configuration;
 
     public AsciiDocExporter() {
         super();
@@ -98,7 +100,7 @@ public class AsciiDocExporter implements Exporter {
 
         normalizeFilePaths(reportable);
         writeDocumentHeader();
-        writePropertiesTable(report.getPropertyEntries());
+        writeProperties(report.getPropertyEntries());
         writeExtensions(report.getExtensionReports());
         writeTestSuite(report.getTestSuiteReports());
 
@@ -126,13 +128,22 @@ public class AsciiDocExporter implements Exporter {
         }
     }
 
-    private void writeTestSuite(List<TestSuiteReport> testSuiteReports) throws IOException {
+    /**
+     * Method that is called to write properties to AsciiDoc document. Case of
+     * not override it, this method calls next methods in order (writeTime,
+     * writeProperties, writeMedia, writeContainers, writeTestResults).
+     * 
+     * @param testSuiteReports
+     *            list;
+     * @throws IOException
+     */
+    protected void writeTestSuite(List<TestSuiteReport> testSuiteReports) throws IOException {
 
         for (TestSuiteReport testSuiteReport : testSuiteReports) {
 
             writer.append("== ").append("Suite").append(NEW_LINE).append(NEW_LINE);
             writeTime(testSuiteReport.getStart(), testSuiteReport.getStop(), testSuiteReport.getDuration());
-            writePropertiesTable(testSuiteReport.getPropertyEntries());
+            writeProperties(testSuiteReport.getPropertyEntries());
             writeMedia(testSuiteReport.getPropertyEntries());
             writeContainers(testSuiteReport.getContainerReports());
             writeTestResults(testSuiteReport.getTestClassReports());
@@ -140,7 +151,18 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
-    private void writeTime(Date start, Date stop, long duration) throws IOException {
+    /**
+     * Method that is called to write test suite time to AsciiDoc document.
+     * 
+     * @param start
+     *            time.
+     * @param stop
+     *            end time.
+     * @param duration
+     *            in millis.
+     * @throws IOException
+     */
+    protected void writeTime(Date start, Date stop, long duration) throws IOException {
 
         writer.append(".").append("Time").append(NEW_LINE);
         writer.append("****").append(NEW_LINE);
@@ -159,12 +181,24 @@ public class AsciiDocExporter implements Exporter {
         return Long.toString(toTimeUnit.convert(duration, fromTimeUnit));
     }
 
-    private void writeDocumentHeader() throws IOException {
+    /**
+     * First method called when report is being created. This method is used to
+     * set the document title and AsciiDoc document attributes.
+     * 
+     * @throws IOException
+     */
+    protected void writeDocumentHeader() throws IOException {
         writer.append("= ").append("Arquillian test run report").append(NEW_LINE);
         writer.append(":icons: font").append(NEW_LINE).append(NEW_LINE);
     }
 
-    private void writePropertiesTable(Map<String, String> properties) throws IOException {
+    /**
+     * Method that is called to write container properties to AsciiDoc document.
+     * 
+     * @param properties
+     * @throws IOException
+     */
+    protected void writeContainerProperties(Map<String, String> properties) throws IOException {
 
         if (properties.size() > 0) {
 
@@ -186,9 +220,16 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
-    private void writePropertiesTable(List<PropertyEntry> propertyEntries) throws IOException {
+    /**
+     * Method that is called to write properties to AsciiDoc document.
+     * 
+     * @param propertyEntries
+     *            list.
+     * @throws IOException
+     */
+    protected void writeProperties(List<PropertyEntry> propertyEntries) throws IOException {
 
-        if (containsAnyKeyValueEntryOrFileEntry(propertyEntries) > 0) {
+        if (containsAnyKeyValueEntryOrFileEntry(propertyEntries)) {
 
             writer.append("[cols=\"2*\", options=\"header\"]").append(NEW_LINE);
             writer.append(".").append("Properties").append(NEW_LINE);
@@ -223,7 +264,14 @@ public class AsciiDocExporter implements Exporter {
         }
     }
 
-    private void writeExtensions(List<ExtensionReport> extensionReports) throws IOException {
+    /**
+     * Method that is called to write extensions to AsciiDoc document.
+     * 
+     * @param extensionReports
+     *            list.
+     * @throws IOException
+     */
+    protected void writeExtensions(List<ExtensionReport> extensionReports) throws IOException {
 
         writer.append("== ").append("Extensions").append(NEW_LINE).append(NEW_LINE);
 
@@ -246,7 +294,16 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
-    private void writeMedia(List<PropertyEntry> propertyEntries) throws IOException {
+    /**
+     * Method that is called to write media (screenshots and videos) to AsciiDoc
+     * document. Case of not override it, this method calls next methods
+     * (writeVideo for videos and writeScreenshot for screenshots).
+     * 
+     * @param propertyEntries
+     *            list.
+     * @throws IOException
+     */
+    protected void writeMedia(List<PropertyEntry> propertyEntries) throws IOException {
 
         for (PropertyEntry propertyEntry : propertyEntries) {
             if (propertyEntry instanceof VideoEntry) {
@@ -262,15 +319,28 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
-    private void writeVideo(VideoEntry videoEntry) throws IOException {
+    /**
+     * Method that is called to write video.
+     * 
+     * @param videoEntry
+     * @throws IOException
+     */
+    protected void writeVideo(VideoEntry videoEntry) throws IOException {
 
         writer.append("video::").append(videoEntry.getPath()).append("[]").append(NEW_LINE).append(NEW_LINE);
 
     }
 
-    private void writeScreenshot(ScreenshotEntry screenshotEntry) throws IOException {
+    /**
+     * Method that is called to write screenshot. This method is responsible to
+     * check the size of image.
+     * 
+     * @param screenshotEntry
+     * @throws IOException
+     */
+    protected void writeScreenshot(ScreenshotEntry screenshotEntry) throws IOException {
 
-        boolean large = screenshotEntry.getWidth() > 500;
+        boolean large = screenshotEntry.getWidth() > Integer.parseInt(this.configuration.getMaxImageWidth());
 
         if (large) {
 
@@ -287,7 +357,17 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
-    private void writeContainers(List<ContainerReport> containerReports) throws IOException {
+    /**
+     * 
+     * Method that is called to write containers to AsciiDoc document. Case of
+     * not override it, this method calls next methods in order
+     * (writeContainerProperties and writeDeployments).
+     * 
+     * @param containerReports
+     *            list.
+     * @throws IOException
+     */
+    protected void writeContainers(List<ContainerReport> containerReports) throws IOException {
 
         writer.append("=== ").append("Containers").append(NEW_LINE).append(NEW_LINE);
 
@@ -296,7 +376,7 @@ public class AsciiDocExporter implements Exporter {
             writer.append(".").append(containerReport.getQualifier()).append(NEW_LINE);
             writer.append("****").append(NEW_LINE);
 
-            writePropertiesTable(containerReport.getConfiguration());
+            writeContainerProperties(containerReport.getConfiguration());
             writeDeployments(containerReport.getDeploymentReports());
 
             writer.append("****").append(NEW_LINE).append(NEW_LINE);
@@ -304,7 +384,15 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
-    private void writeDeployments(List<DeploymentReport> deploymentReports) throws IOException {
+    /**
+     * Method that is called to write deployment information to AsciiDoc
+     * document.
+     * 
+     * @param deploymentReports
+     *            list.
+     * @throws IOException
+     */
+    protected void writeDeployments(List<DeploymentReport> deploymentReports) throws IOException {
 
         for (DeploymentReport deploymentReport : deploymentReports) {
 
@@ -330,7 +418,16 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
-    private void writeTestResults(List<TestClassReport> testClassReports) throws IOException {
+    /**
+     * Method that is called to write test results to AsciiDoc document. Case of
+     * not override it, this method calls next methods in order
+     * (writeTestClassTitle, writeSummary, writeMedia and writeTestMethods).
+     * 
+     * @param testClassReports
+     *            list.
+     * @throws IOException
+     */
+    protected void writeTestResults(List<TestClassReport> testClassReports) throws IOException {
 
         writer.append("=== ").append("Tests").append(NEW_LINE).append(NEW_LINE);
 
@@ -345,7 +442,14 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
-    private void writeTestClassTitle(TestClassReport testClassReport) throws IOException {
+    /**
+     * Method that is called to write test class title to AsciiDoc document.
+     * 
+     * @param testClassReport
+     *            element.
+     * @throws IOException
+     */
+    protected void writeTestClassTitle(TestClassReport testClassReport) throws IOException {
 
         writer.append("[[").append(testClassReport.getTestClassName()).append("]]").append(NEW_LINE);
         writer.append("==== ").append(testClassReport.getTestClassName()).append(" - ")
@@ -359,7 +463,15 @@ public class AsciiDocExporter implements Exporter {
         writer.append(NEW_LINE).append(NEW_LINE);
     }
 
-    private void writeSummary(TestClassReport testClassReport) throws IOException {
+    /**
+     * Method that is called to write test summary (passed, failed and skipped
+     * tests) to AsciiDoc document.
+     * 
+     * @param testClassReport
+     *            element.
+     * @throws IOException
+     */
+    protected void writeSummary(TestClassReport testClassReport) throws IOException {
 
         int[] results = countSummary(testClassReport.getTestMethodReports());
 
@@ -373,7 +485,7 @@ public class AsciiDocExporter implements Exporter {
                 .append(NEW_LINE).append(NEW_LINE);
         writer.append("****").append(NEW_LINE).append(NEW_LINE);
 
-        writePropertiesTable(testClassReport.getPropertyEntries());
+        writeProperties(testClassReport.getPropertyEntries());
 
     }
 
@@ -399,13 +511,24 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
-    private void writeTestMethods(TestClassReport testClassReport) throws IOException {
+    /**
+     * 
+     * Method that is called to write all test method results of testClass
+     * report to AsciiDoc document. Case of not override it, this method calls
+     * next methods in order for each method (writeTestMethodHeader,
+     * writeTestMethodProperties and writeMedia).
+     * 
+     * @param testClassReport
+     *            element.
+     * @throws IOException
+     */
+    protected void writeTestMethods(TestClassReport testClassReport) throws IOException {
 
         List<TestMethodReport> testMethodReports = testClassReport.getTestMethodReports();
 
         for (TestMethodReport testMethodReport : testMethodReports) {
 
-            writeTestMethodTitle(testClassReport.getTestClassName(), testMethodReport);
+            writeTestMethodHeader(testClassReport.getTestClassName(), testMethodReport);
             writeTestMethodProperties(testMethodReport);
             writeMedia(testMethodReport.getPropertyEntries());
 
@@ -413,7 +536,15 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
-    private void writeTestMethodTitle(String testClassName, TestMethodReport testMethodReport) throws IOException {
+    /**
+     * Method that is called to write test method header (that is the title,
+     * result, stack trace, ...) to AsciiDoc document.
+     * 
+     * @param testClassName
+     * @param testMethodReport
+     * @throws IOException
+     */
+    protected void writeTestMethodHeader(String testClassName, TestMethodReport testMethodReport) throws IOException {
 
         writer.append("[.lead]").append(NEW_LINE);
         writer.append(getIcon(testMethodReport)).append(" ").append(testMethodReport.getName()).append(" (")
@@ -451,7 +582,14 @@ public class AsciiDocExporter implements Exporter {
         return "icon:" + iconName + "[role=\"" + role + "\"]";
     }
 
-    private void writeTestMethodProperties(TestMethodReport testMethodReport) throws IOException {
+    /**
+     * Method that is called to write test method properties to AsciiDoc
+     * document.
+     * 
+     * @param testMethodReport
+     * @throws IOException
+     */
+    protected void writeTestMethodProperties(TestMethodReport testMethodReport) throws IOException {
 
         if (containsAnyMethodProperty(testMethodReport)) {
 
@@ -470,7 +608,7 @@ public class AsciiDocExporter implements Exporter {
 
             }
 
-            writePropertiesTable(testMethodReport.getPropertyEntries());
+            writeProperties(testMethodReport.getPropertyEntries());
 
             writer.append("****").append(NEW_LINE).append(NEW_LINE);
         }
@@ -484,24 +622,22 @@ public class AsciiDocExporter implements Exporter {
     }
 
     private boolean containsAnyMethodProperty(TestMethodReport testMethodReport) {
-        return containsAnyKeyValueEntryOrFileEntry(testMethodReport.getPropertyEntries()) > 0
+        return containsAnyKeyValueEntryOrFileEntry(testMethodReport.getPropertyEntries())
                 || runAsClientOrOperateOnDeployment(testMethodReport);
     }
 
-    private int containsAnyKeyValueEntryOrFileEntry(List<PropertyEntry> propertyEntries) {
-
-        int count = 0;
+    protected boolean containsAnyKeyValueEntryOrFileEntry(List<PropertyEntry> propertyEntries) {
 
         for (PropertyEntry propertyEntry : propertyEntries) {
 
             if (propertyEntries instanceof KeyValueEntry
                     || (propertyEntry instanceof FileEntry && !(propertyEntry instanceof ScreenshotEntry || propertyEntry instanceof VideoEntry))) {
-                count++;
+                return true;
             }
 
         }
 
-        return count;
+        return false;
 
     }
 
