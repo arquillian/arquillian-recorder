@@ -19,7 +19,7 @@ Arquillian Reporter is an extension to Arquillian platform which provides the po
 </dependency>
 ----
 
-The examples of how reports are taken can be seen http://bit.ly/1kvVOB4[here] for JSON, http://bit.ly/1cs1k2D[here] for XML, http://devio.us/~stewe/report/arquillian_report.html[here] for HTML type of reporting and http://devio.us/~stewe/adoc/arquillian_report.html[here] for Asciidoctor reporting.
+The examples of how reports are taken can be seen http://bit.ly/1kvVOB4[here] for JSON, http://bit.ly/1cs1k2D[here] for XML, http://bit.ly/1i9bjie[here] for HTML type of reporting and http://bit.ly/1cEDAOc[here] for Asciidoctor reporting.
 
 === Settings
 
