@@ -100,6 +100,7 @@ public class AsciiDocReporterTestCase {
         testResult.setStatus(Status.PASSED);
         testResult.setStart(System.currentTimeMillis());
         testResult.setEnd(testResult.getStart() + 1000);
+        testMethodReport.setReportMessage("This test should be executed manually too.");
         testMethodReport.setStatus(testResult.getStatus());
         testMethodReport.setDuration(testResult.getEnd() - testResult.getStart());
 

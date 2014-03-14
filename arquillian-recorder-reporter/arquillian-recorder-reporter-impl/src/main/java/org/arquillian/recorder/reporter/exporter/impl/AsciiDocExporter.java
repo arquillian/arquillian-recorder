@@ -555,7 +555,7 @@ public class AsciiDocExporter implements Exporter {
         boolean isTestFailed = testMethodReport.getException() != null && !"".equals(testMethodReport.getException());
 
         if (isTestFailed) {
-            writer.append("[IMPORTANT]").append(NEW_LINE);
+            writer.append("[WARNING]").append(NEW_LINE);
             writer.append("====").append(NEW_LINE);
             writer.append(testMethodReport.getException()).append(NEW_LINE);
             writer.append("====").append(NEW_LINE).append(NEW_LINE);
@@ -591,6 +591,15 @@ public class AsciiDocExporter implements Exporter {
      */
     protected void writeTestMethodProperties(TestMethodReport testMethodReport) throws IOException {
 
+        if(isReportMessage(testMethodReport)) {
+            
+            writer.append("[IMPORTANT]").append(NEW_LINE);
+            writer.append("====").append(NEW_LINE);
+            writer.append(testMethodReport.getReportMessage()).append(NEW_LINE);
+            writer.append("====").append(NEW_LINE).append(NEW_LINE);
+            
+        }
+        
         if (containsAnyMethodProperty(testMethodReport)) {
 
             writer.append(".").append("Properties").append(NEW_LINE);
@@ -615,6 +624,12 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
+    private boolean isReportMessage(TestMethodReport testMethodReport) {
+        
+        return testMethodReport.getReportMessage() != null && !"".equals(testMethodReport.getReportMessage().trim());
+        
+    }
+    
     private boolean runAsClientOrOperateOnDeployment(TestMethodReport testMethodReport) {
         return testMethodReport.getRunAsClient()
                 || (testMethodReport.getOperateOnDeployment() != null && !"_DEFAULT_".equals(testMethodReport
