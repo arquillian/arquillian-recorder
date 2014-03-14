@@ -257,7 +257,7 @@ public class AsciiDocExporter implements Exporter {
                 if (propertyEntry instanceof FileEntry
                         && !(propertyEntry instanceof ScreenshotEntry || propertyEntry instanceof VideoEntry)) {
                     FileEntry fileEntry = (FileEntry) propertyEntry;
-                    writer.append("2x|").append(fileEntry.getPath()).append(NEW_LINE).append(NEW_LINE);
+                    writer.append("2+|").append(fileEntry.getPath()).append(NEW_LINE).append(NEW_LINE);
                 }
 
             }
