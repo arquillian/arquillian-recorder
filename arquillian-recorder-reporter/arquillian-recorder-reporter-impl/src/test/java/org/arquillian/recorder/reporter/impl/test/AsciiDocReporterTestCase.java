@@ -1,5 +1,8 @@
 package org.arquillian.recorder.reporter.impl.test;
 
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -140,8 +143,13 @@ public class AsciiDocReporterTestCase {
 
         exporter.export(reporter.getReport());
         
-        System.out.println(new String(byteArrayOutputStream.toByteArray()));
+        //Not the best way to test it but for now it is enough
+        String content = new String(byteArrayOutputStream.toByteArray()).trim();
         
+        assertThat(content, containsString("Arquillian"));
+        assertThat(content, containsString("Extensions"));
+        assertThat(content, containsString("Test Result"));
+        assertThat(content, containsString("some exception"));
     }
     
 }
