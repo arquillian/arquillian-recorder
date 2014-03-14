@@ -188,7 +188,7 @@ public class AsciiDocExporter implements Exporter {
      * @throws IOException
      */
     protected void writeDocumentHeader() throws IOException {
-        writer.append("= ").append("Arquillian test run report").append(NEW_LINE);
+        writer.append("= ").append(this.configuration.getTitle()).append(NEW_LINE);
         writer.append(":icons: font").append(NEW_LINE).append(NEW_LINE);
     }
 
