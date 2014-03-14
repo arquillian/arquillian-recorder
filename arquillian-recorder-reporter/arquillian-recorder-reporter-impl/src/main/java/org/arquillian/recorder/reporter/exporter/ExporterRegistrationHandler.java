@@ -23,10 +23,12 @@ import org.arquillian.recorder.reporter.Exporter;
 import org.arquillian.recorder.reporter.ExporterRegister;
 import org.arquillian.recorder.reporter.JAXBContextFactory;
 import org.arquillian.recorder.reporter.event.ExporterRegisterCreated;
+import org.arquillian.recorder.reporter.exporter.impl.AsciiDocExporter;
 import org.arquillian.recorder.reporter.exporter.impl.HTMLExporter;
 import org.arquillian.recorder.reporter.exporter.impl.JSONExporter;
 import org.arquillian.recorder.reporter.exporter.impl.XMLExporter;
 import org.arquillian.recorder.reporter.impl.ReportTypeRegister;
+import org.arquillian.recorder.reporter.impl.type.AsciiDocReport;
 import org.arquillian.recorder.reporter.impl.type.HTMLReport;
 import org.arquillian.recorder.reporter.impl.type.JSONReport;
 import org.arquillian.recorder.reporter.impl.type.XMLReport;
@@ -62,12 +64,14 @@ public class ExporterRegistrationHandler {
         exporterRegister.get()
             .add(new XMLExporter(context))
             .add(new JSONExporter(context))
-            .add(new HTMLExporter(context));
+            .add(new HTMLExporter(context))
+            .add(new AsciiDocExporter());
 
         reportTypeRegister.get()
             .add(new XMLReport())
             .add(new JSONReport())
-            .add(new HTMLReport());
+            .add(new HTMLReport())
+            .add(new AsciiDocReport());
     }
 
     private JAXBContext getContext() {

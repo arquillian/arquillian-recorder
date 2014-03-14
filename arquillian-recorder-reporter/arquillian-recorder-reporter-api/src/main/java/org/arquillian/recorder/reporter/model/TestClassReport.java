@@ -116,6 +116,14 @@ public class TestClassReport implements ReportEntry {
         this.duration = duration;
     }
 
+    public Date getStop() {
+        return stop;
+    }
+    
+    public Date getStart() {
+        return start;
+    }
+    
     public long getDuration() {
         return this.duration;
     }
