@@ -48,6 +48,7 @@
         <module>arquillian-recorder-reporter</module>
         <module>arquillian-recorder-screenshooter-base</module>
         <module>arquillian-recorder-video-base</module>
+		<module>arquillian-desktop-video-recorder</module>
     </modules>
 
     <!-- SCM -->

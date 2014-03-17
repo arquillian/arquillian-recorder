@@ -4,9 +4,19 @@ Arquillian Recorder project brings realtime reports of your Arquillian tests. Yo
 
 Reporter subproject is gathering all information from Arquillian test as it proceeds in your test run and it generates reports even after every test method if you want to. You can export some report to various formats like xml, json or html (with custom template) and you can easily integrate your own export format according to your preferencies.
 
+== Arquillian Desktop Video Recorder extension
+
+It records your desktop during tests. You find all documentation in its respective directory.
+
 == Arquillian Reporter
 
-Arquillian Reporter is an extension to Arquillian platform which provides the possibility to make reports of your Arquillian tests. In order to use it, please place this artifact configuration into Maven dependencies:
+Arquillian Reporter is an extension to Arquillian platform which provides the possibility to make reports of your Arquillian tests. 
+
+You can use reporter standalone - meaning it will not take any screenshots nor videos (Maven dependency snippet below) and only raw reports will be generated. However when you put e.g. desktop video recorder on class path, it means that videos will be added dynamically into your report as you can see on the examples of reports below. It holds as well for screenshooters from Graphene and Droidium. It will be automatically reported when it is on classpath.
+
+However, using just desktop video recorder or screenshooter implementation is sufficient to get reports since these implementations automatically contains reporter below so just by putting video recorder on class path you will get reporter for free.
+
+In order to use it in standalone mode, please place this artifact configuration into Maven dependencies:
 
 === Making it part of your project
 

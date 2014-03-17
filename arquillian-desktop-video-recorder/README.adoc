@@ -1,0 +1,92 @@
+= Arquillian Desktop Video Recorder
+
+Desktop video recorder is an extension to Arquillian platform which provides the possibility to record tests as videos. Whole desktop is recorded. In order to use it, please place this artifact configuration into Maven dependencies.
+
+== Making it part of your extension
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.arquillian.extension</groupId>
+    <artifactId>arquillian-desktop-video-recorder</artifactId>
+    <version>${version.desktop.recorder}</version>
+</dependency>
+----
+
+== Settings
+
+=== rootDir
+==== default: target
+
++rootFolder+ is a folder where all videos will be saved, it is top level root.
+
+=== baseDir
+==== default: videos
+
+name of the folder which contains video record(s), it is placed inside +rootFolder+.
+
+=== videoType
+==== default: MPEG
+
+In which format you want to save videos. Right now the only supported format.
+
+=== startBeforeTest
+==== default: false
+
+Tells if video recording should start before test method is executed.
+
+=== startBeforeClass
+==== default: false
+
+Tells if video recording should start before all test methods so there will be video of one test class.
+
+=== startBeforeSuite
+==== default: false
+
+Takes video of whole test suite.
+
+=== takeOnlyOnFail
+==== default: true
+
+Video is recorder for a test and it is not deleted when the test method fails. When test method finishes with success, video is not saved.
+
+=== videoName:
+==== default: record
+
+=== testTimeout
+==== default 1800
+
+You can set default timeout for each test, this timeout will be used to stop the video recording in order to save space on hard drive, measured in seconds.
+
+=== frameRate
+==== default: 20
+
+You can adjust frame rate of video by this property. One frame is 1000 / frameRate property. Default is 20, so test video is recorded in 50 frames per second
+
+== Injection into the test
+
+You can inject video recorder into Arquillian test like this:
+
+[source,java]
+----
+@ArquillianResource Recorder recorder;
+----
+
+You can then start and stop recording as you wish directly in your test via +startRecording()+ and +stopRecording()+ methods. Feel free to explore. You can not start recording when you have already started to do so and you can not stop recording when you have not started to record yet.
+
+When you want to record manually by injecting Recorder into test, you can not record by automatic manner because Recorder is able to record only one video in some particular moment. In order not to record videos automatically, all +start*+ properties and +takeOnlyOnFail+ property _have to_ be set to false in order to successfully inject Recorder as +@ArquillianResource+.
+
+Videos are saved in mp4 and are playable by mplayer.
+
+== Example configuration
+
+Put this in +arquillian.xml+.
+
+[source,xml]
+----
+<extension qualifier="recorder">
+    <property name="rootDir">target</property>
+    <property name="baseDir">videos</property>
+    <property name="startBeforeClass">true</property>
+</extension>
+----
