@@ -16,8 +16,6 @@
  */
 package org.arquillian.extension.recorder.video.impl;
 
-import java.io.File;
-
 import org.apache.commons.io.FileUtils;
 import org.arquillian.extension.recorder.video.VideoConfiguration;
 import org.arquillian.extension.recorder.video.VideoRecorderEnvironmentCleaner;
@@ -32,7 +30,7 @@ public class DefaultVideoRecorderEnvironmentCleaner implements VideoRecorderEnvi
     @Override
     public void clean(VideoConfiguration configuration) throws Exception {
         Validate.notNull(configuration, "Configuration passed to video cleaner can not be a null object!");
-        FileUtils.deleteDirectory(new File(configuration.getRootDir(), configuration.getBaseDir()));
+        FileUtils.deleteDirectory(configuration.getRootDir());
     }
 
 }

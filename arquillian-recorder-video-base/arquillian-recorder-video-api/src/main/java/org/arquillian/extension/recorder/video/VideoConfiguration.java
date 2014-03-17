@@ -29,9 +29,7 @@ import org.arquillian.recorder.reporter.ReporterConfiguration;
  */
 public class VideoConfiguration extends Configuration<VideoConfiguration> {
 
-    private String rootDir = "target";
-
-    private String baseDir = "videos";
+    private String rootDir = "target/videos";
 
     private String videoType = VideoType.MP4.name();
 
@@ -83,21 +81,12 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
     }
 
     /**
-     * By default set to "target"
+     * By default set to "target/videos"
      *
      * @return root folder where all videos will be placed. Directory structure is left on the extension itself.
      */
     public File getRootDir() {
         return new File(getProperty("rootDir", rootDir));
-    }
-
-    /**
-     * By default set to "videos"
-     *
-     * @return folder under {@link #getRootDir()} where videos are stored.
-     */
-    public String getBaseDir() {
-        return getProperty("baseDir", baseDir);
     }
 
     /**
@@ -204,7 +193,6 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
         sb.append(String.format("%-40s %s\n", "takeOnlyOnFail", getTakeOnlyOnFail()));
         sb.append(String.format("%-40s %s\n", "testTimeOut", getTestTimeout()));
         sb.append(String.format("%-40s %s\n", "rootDir", getRootDir()));
-        sb.append(String.format("%-40s %s\n", "baseDir", getBaseDir()));
         sb.append(String.format("%-40s %s\n", "videoName", getVideoName()));
         sb.append(String.format("%-40s %s\n", "videoType", getVideoType()));
         sb.append(String.format("%-40s %s\n", "frameRate", getFrameRate()));

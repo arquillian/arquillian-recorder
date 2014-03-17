@@ -29,9 +29,7 @@ import org.arquillian.recorder.reporter.ReporterConfiguration;
  */
 public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfiguration> {
 
-    private String rootDir = "target";
-
-    private String baseDir = "screenshots";
+    private String rootDir = "target/screenshots";
 
     private String screenshotType = ScreenshotType.PNG.toString();
 
@@ -48,21 +46,12 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
     }
 
     /**
-     * By default set to "target"
+     * By default set to "target/screenshots"
      *
      * @return root folder where all screenshots will be placed. Directory structure is left on the extension itself
      */
     public File getRootDir() {
         return new File(getProperty("rootDir", rootDir));
-    }
-
-    /**
-     * By default set to "screenshots"
-     *
-     * @return folder inside the root directory where the screenshots will be placed.
-     */
-    public String getBaseDir() {
-        return getProperty("baseDir", baseDir);
     }
 
     /**
@@ -110,7 +99,6 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%-40s %s\n", "rootDir", getRootDir()));
-        sb.append(String.format("%-40s %s\n", "baseDir", getBaseDir()));
         sb.append(String.format("%-40s %s\n", "screenshotType", getScreenshotType()));
         sb.append(String.format("%-40s %s\n", "takeBeforeTest", getTakeBeforeTest()));
         sb.append(String.format("%-40s %s\n", "takeAfterTest", getTakeAfterTest()));

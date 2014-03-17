@@ -16,8 +16,6 @@
  */
 package org.arquillian.extension.recorder.screenshooter.impl;
 
-import java.io.File;
-
 import org.apache.commons.io.FileUtils;
 import org.arquillian.extension.recorder.screenshooter.ScreenshooterConfiguration;
 import org.arquillian.extension.recorder.screenshooter.ScreenshooterEnvironmentCleaner;
@@ -32,7 +30,7 @@ public class DefaultScreenshooterEnvironmentCleaner implements ScreenshooterEnvi
     @Override
     public void clean(ScreenshooterConfiguration configuration) throws Exception {
         Validate.notNull(configuration, "Configuration passed to screenshooter cleaner can not be a null object!");
-        FileUtils.deleteDirectory(new File(configuration.getRootDir(), configuration.getBaseDir()));
+        FileUtils.deleteDirectory(configuration.getRootDir());
     }
 
 }
