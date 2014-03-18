@@ -16,17 +16,12 @@ Desktop video recorder is an extension to Arquillian platform which provides the
 == Settings
 
 === rootDir
-==== default: target
+==== default: target/videos
 
-+rootFolder+ is a folder where all videos will be saved, it is top level root.
-
-=== baseDir
-==== default: videos
-
-name of the folder which contains video record(s), it is placed inside +rootFolder+.
++rootFolder+ is a folder where all videos will be saved.
 
 === videoType
-==== default: MPEG
+==== default: MP4
 
 In which format you want to save videos. Right now the only supported format.
 
@@ -76,8 +71,6 @@ You can then start and stop recording as you wish directly in your test via +sta
 
 When you want to record manually by injecting Recorder into test, you can not record by automatic manner because Recorder is able to record only one video in some particular moment. In order not to record videos automatically, all +start*+ properties and +takeOnlyOnFail+ property _have to_ be set to false in order to successfully inject Recorder as +@ArquillianResource+.
 
-Videos are saved in mp4 and are playable by mplayer.
-
 == Example configuration
 
 Put this in +arquillian.xml+.
@@ -85,8 +78,6 @@ Put this in +arquillian.xml+.
 [source,xml]
 ----
 <extension qualifier="recorder">
-    <property name="rootDir">target</property>
-    <property name="baseDir">videos</property>
     <property name="startBeforeClass">true</property>
 </extension>
 ----
