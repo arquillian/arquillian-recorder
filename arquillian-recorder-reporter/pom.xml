@@ -41,10 +41,10 @@
     </prerequisites>
 
 	<!-- Modules -->
-	<modules>
-		<module>arquillian-recorder-reporter-api</module>
-		<module>arquillian-recorder-reporter-spi</module>
-		<module>arquillian-recorder-reporter-impl</module>
-	</modules>
+    <modules>
+        <module>arquillian-recorder-reporter-api</module>
+        <module>arquillian-recorder-reporter-spi</module>
+        <module>arquillian-recorder-reporter-impl</module>
+    </modules>
 
 </project>
