@@ -25,8 +25,10 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -82,6 +84,8 @@ public class AsciiDocExporter implements Exporter {
     protected OutputStream outputStream;
     protected ReporterConfiguration configuration;
 
+    protected ResourceBundle resourceBundle;
+
     public AsciiDocExporter() {
         super();
     }
@@ -95,6 +99,7 @@ public class AsciiDocExporter implements Exporter {
 
         Report report = (Report) reportable;
         createWriter();
+        resolveResourceBundle();
 
         normalizeFilePaths(reportable);
         writeDocumentHeader();
@@ -106,6 +111,18 @@ public class AsciiDocExporter implements Exporter {
         this.writer.close();
 
         return this.configuration.getFile();
+    }
+
+    private void resolveResourceBundle() {
+
+        String language = this.configuration.getLanguage();
+
+        if (language != null) {
+            this.resourceBundle = ResourceBundle.getBundle("AsciiDocResources", new Locale(language));
+        } else {
+            this.resourceBundle = ResourceBundle.getBundle("AsciiDocResources");
+        }
+
     }
 
     @Override
@@ -137,7 +154,8 @@ public class AsciiDocExporter implements Exporter {
 
         for (TestSuiteReport testSuiteReport : testSuiteReports) {
 
-            writer.append("== ").append("Suite").append(NEW_LINE).append(NEW_LINE);
+            writer.append("== ").append(this.resourceBundle.getString("asciidoc.reporter.suite")).append(NEW_LINE)
+                .append(NEW_LINE);
             writeTime(testSuiteReport.getStart(), testSuiteReport.getStop(), testSuiteReport.getDuration());
             writeProperties(testSuiteReport.getPropertyEntries());
             writeMedia(testSuiteReport.getPropertyEntries());
@@ -157,13 +175,13 @@ public class AsciiDocExporter implements Exporter {
      */
     protected void writeTime(Date start, Date stop, long duration) throws IOException {
 
-        writer.append(".").append("Time").append(NEW_LINE);
+        writer.append(".").append(this.resourceBundle.getString("asciidoc.reporter.time")).append(NEW_LINE);
         writer.append("****").append(NEW_LINE);
-        writer.append("*").append("Start:").append("*").append(" ").append(SIMPLE_DATE_FORMAT.format(start))
-            .append(NEW_LINE).append(NEW_LINE);
-        writer.append("*").append("Stop:").append("*").append(" ").append(SIMPLE_DATE_FORMAT.format(stop))
-            .append(NEW_LINE).append(NEW_LINE);
-        writer.append("*").append("Duration:").append("*").append(" ")
+        writer.append("*").append(this.resourceBundle.getString("asciidoc.reporter.start")).append("*").append(" ")
+            .append(SIMPLE_DATE_FORMAT.format(start)).append(NEW_LINE).append(NEW_LINE);
+        writer.append("*").append(this.resourceBundle.getString("asciidoc.reporter.stop")).append("*").append(" ")
+            .append(SIMPLE_DATE_FORMAT.format(stop)).append(NEW_LINE).append(NEW_LINE);
+        writer.append("*").append(this.resourceBundle.getString("asciidoc.reporter.duration")).append("*").append(" ")
             .append(convertDuration(duration, TimeUnit.MILLISECONDS, TimeUnit.SECONDS)).append("s")
             .append(NEW_LINE);
         writer.append("****").append(NEW_LINE).append(NEW_LINE);
@@ -196,7 +214,7 @@ public class AsciiDocExporter implements Exporter {
         if (properties.size() > 0) {
 
             writer.append("[cols=\"2*\", options=\"header\"]").append(NEW_LINE);
-            writer.append(".").append("Properties").append(NEW_LINE);
+            writer.append(".").append(this.resourceBundle.getString("asciidoc.reporter.properties")).append(NEW_LINE);
             writer.append("|===").append(NEW_LINE).append(NEW_LINE);
             writer.append("|KEY").append(NEW_LINE);
             writer.append("|VALUE").append(NEW_LINE).append(NEW_LINE);
@@ -224,7 +242,7 @@ public class AsciiDocExporter implements Exporter {
         if (containsAnyKeyValueEntryOrFileEntry(propertyEntries)) {
 
             writer.append("[cols=\"2*\", options=\"header\"]").append(NEW_LINE);
-            writer.append(".").append("Properties").append(NEW_LINE);
+            writer.append(".").append(this.resourceBundle.getString("asciidoc.reporter.properties")).append(NEW_LINE);
             writer.append("|===").append(NEW_LINE).append(NEW_LINE);
             writer.append("|KEY").append(NEW_LINE);
             writer.append("|VALUE").append(NEW_LINE).append(NEW_LINE);
@@ -271,7 +289,8 @@ public class AsciiDocExporter implements Exporter {
      */
     protected void writeExtensions(List<ExtensionReport> extensionReports) throws IOException {
 
-        writer.append("== ").append("Extensions").append(NEW_LINE).append(NEW_LINE);
+        writer.append("== ").append(this.resourceBundle.getString("asciidoc.reporter.extensions")).append(NEW_LINE)
+            .append(NEW_LINE);
 
         for (ExtensionReport extensionReport : extensionReports) {
 
@@ -340,7 +359,8 @@ public class AsciiDocExporter implements Exporter {
         if (large) {
 
             writer.append(".").append(screenshotEntry.getPhase().name()).append(NEW_LINE);
-            writer.append(screenshotEntry.getLink()).append("[").append("Screenshot").append(" - ")
+            writer.append(screenshotEntry.getLink()).append("[")
+                .append(this.resourceBundle.getString("asciidoc.reporter.screenshot")).append(" - ")
                 .append(screenshotEntry.getPath()).append("]").append(NEW_LINE).append(NEW_LINE);
 
         } else {
@@ -362,7 +382,8 @@ public class AsciiDocExporter implements Exporter {
      */
     protected void writeContainers(List<ContainerReport> containerReports) throws IOException {
 
-        writer.append("=== ").append("Containers").append(NEW_LINE).append(NEW_LINE);
+        writer.append("=== ").append(this.resourceBundle.getString("asciidoc.reporter.containers")).append(NEW_LINE)
+            .append(NEW_LINE);
 
         for (ContainerReport containerReport : containerReports) {
 
@@ -388,7 +409,7 @@ public class AsciiDocExporter implements Exporter {
         for (DeploymentReport deploymentReport : deploymentReports) {
 
             writer.append("[cols=\"3*\", options=\"header\"]").append(NEW_LINE);
-            writer.append(".").append("Deployment").append(NEW_LINE);
+            writer.append(".").append(this.resourceBundle.getString("asciidoc.reporter.deployment")).append(NEW_LINE);
             writer.append("|===").append(NEW_LINE).append(NEW_LINE);
 
             writer.append("|NAME").append(NEW_LINE);
@@ -418,7 +439,8 @@ public class AsciiDocExporter implements Exporter {
      */
     protected void writeTestResults(List<TestClassReport> testClassReports) throws IOException {
 
-        writer.append("=== ").append("Tests").append(NEW_LINE).append(NEW_LINE);
+        writer.append("=== ").append(this.resourceBundle.getString("asciidoc.reporter.tests")).append(NEW_LINE)
+            .append(NEW_LINE);
 
         for (TestClassReport testClassReport : testClassReports) {
 
@@ -445,7 +467,7 @@ public class AsciiDocExporter implements Exporter {
             .append("s");
 
         if (testClassReport.getRunAsClient()) {
-            writer.append(" ").append("_").append("(run as client)").append("_");
+            writer.append(" ").append("_").append(this.resourceBundle.getString("asciidoc.reporter.runAsClient")).append("_");
         }
 
         writer.append(NEW_LINE).append(NEW_LINE);
@@ -461,11 +483,11 @@ public class AsciiDocExporter implements Exporter {
 
         int[] results = countSummary(testClassReport.getTestMethodReports());
 
-        writer.append(".").append("Test Result").append(NEW_LINE);
+        writer.append(".").append(this.resourceBundle.getString("asciidoc.reporter.testResult")).append(NEW_LINE);
         writer.append("****").append(NEW_LINE);
-        writer.append("*").append("Passed:").append("*").append(" ").append(Integer.toString(results[PASSED_INDEX]))
+        writer.append("*").append(this.resourceBundle.getString("asciidoc.reporter.passed")).append("*").append(" ").append(Integer.toString(results[PASSED_INDEX]))
             .append(NEW_LINE).append(NEW_LINE);
-        writer.append("*").append("Failed:").append("*").append(" ").append(Integer.toString(results[FAILED_INDEX]))
+        writer.append("*").append(this.resourceBundle.getString("asciidoc.reporter.failed")).append("*").append(" ").append(Integer.toString(results[FAILED_INDEX]))
             .append(NEW_LINE).append(NEW_LINE);
         writer.append("****").append(NEW_LINE).append(NEW_LINE);
 
@@ -531,7 +553,7 @@ public class AsciiDocExporter implements Exporter {
         writer.append(getIcon(testMethodReport)).append(" ").append(testMethodReport.getName()).append(" (")
             .append(convertDuration(testMethodReport.getDuration(), TimeUnit.MILLISECONDS, TimeUnit.SECONDS))
             .append("s").append(") -> ").append("<<").append(testClassName).append(", ")
-            .append("Go To Test Class>>").append(NEW_LINE).append(NEW_LINE);
+            .append(this.resourceBundle.getString("asciidoc.reporter.goToTestClass")).append(">>").append(NEW_LINE).append(NEW_LINE);
 
         boolean isTestFailed = testMethodReport.getException() != null && !"".equals(testMethodReport.getException());
 
@@ -589,9 +611,9 @@ public class AsciiDocExporter implements Exporter {
 
                 writer.append("[NOTE]").append(NEW_LINE);
                 writer.append("====").append(NEW_LINE);
-                writer.append("*").append("Run As Client").append("* ")
+                writer.append("*").append(this.resourceBundle.getString("asciidoc.reporter.runAsClient")).append("* ")
                     .append(Boolean.toString(testMethodReport.getRunAsClient())).append(NEW_LINE).append(NEW_LINE);
-                writer.append("*").append("Operate On Deployment").append("* ")
+                writer.append("*").append(this.resourceBundle.getString("asciidoc.reporter.operateOnDeployment")).append("* ")
                     .append(testMethodReport.getOperateOnDeployment()).append(NEW_LINE);
                 writer.append("====").append(NEW_LINE).append(NEW_LINE);
 
