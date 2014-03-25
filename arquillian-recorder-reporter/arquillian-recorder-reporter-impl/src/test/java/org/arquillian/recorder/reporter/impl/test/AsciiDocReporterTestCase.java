@@ -161,8 +161,6 @@ public class AsciiDocReporterTestCase {
         // Not the best way to test it but for now it is enough
         String content = new String(byteArrayOutputStream.toByteArray()).trim();
 
-        System.out.println(content);
-        
         assertThat(content, containsString("Arquillian"));
         assertThat(content, containsString("Extensions"));
         assertThat(content, containsString("Test Result"));
