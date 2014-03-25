@@ -107,7 +107,7 @@ public interface Screenshooter {
      *
      * @param type type of screenshots to take from now on
      */
-    void setScreensthotType(ScreenshotType type);
+    void setScreenshotType(ScreenshotType type);
 
     /**
      *
