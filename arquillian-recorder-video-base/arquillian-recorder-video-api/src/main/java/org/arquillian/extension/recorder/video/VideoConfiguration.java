@@ -148,9 +148,12 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
                     + "Supported video types are: " + VideoType.getAll());
         }
 
-        if (!getRootDir().equals(reporterConfiguration.getRootDir())) {
-            if (reporterConfiguration.getReport().toLowerCase().startsWith("htm")) {
-                setProperty("rootDir", reporterConfiguration.getProperty("rootDir", "target"));
+        final String report = reporterConfiguration.getReport().toLowerCase();
+
+        if (report.contains("htm") || report.contains("ad") || report.equals("asciidoc")) {
+            final File recorderRootDir = new File(reporterConfiguration.getRootDir(), "videos");
+            if (!getRootDir().equals(recorderRootDir)) {
+                setProperty("rootDir", recorderRootDir.getAbsolutePath());
             }
         }
 

@@ -116,9 +116,12 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
                     + "Supported screenshot types are: " + ScreenshotType.getAll());
         }
 
-        if (!getRootDir().equals(reporterConfiguration.getRootDir())) {
-            if (reporterConfiguration.getReport().toLowerCase().startsWith("htm")) {
-                setProperty("rootDir", reporterConfiguration.getProperty("rootDir", "target"));
+        final String report = reporterConfiguration.getReport().toLowerCase();
+
+        if (report.contains("htm") || report.contains("ad") || report.equals("asciidoc")) {
+            final File screenshooterRootDir = new File(reporterConfiguration.getRootDir(), "screenshots");
+            if (!getRootDir().equals(screenshooterRootDir)) {
+                setProperty("rootDir", screenshooterRootDir.getAbsolutePath());
             }
         }
 

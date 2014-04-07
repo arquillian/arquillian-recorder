@@ -16,7 +16,7 @@
 
     <groupId>org.arquillian.extension</groupId>
     <artifactId>arquillian-desktop-video-recorder</artifactId>
-    <version>1.0.0.Alpha2-SNAPSHOT</version>
+    <version>1.0.0.Alpha3-SNAPSHOT</version>
     <name>Arquillian Desktop Video Recorder</name>
     <description>Arquillian Desktop Video Recorder</description>
 
