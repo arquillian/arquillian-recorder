@@ -1,6 +1,6 @@
-/*
+/**
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2014, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -14,32 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.extension.recorder;
+package org.arquillian.recorder.reporter.event;
 
 /**
- * Enumeration which signifies if an event was fired before test or after test or test has failed or it was taken in test
- * method.
  *
- * @author <a href="mailto:pmensik@redhat.com">Petr Mensik</a>
- * @author <a href="mailto:jhuska@redhat.com">Juraj Huska</a>
+ * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
+ *
  */
-public enum When {
-
-    AFTER("after"),
-    BEFORE("before"),
-    FAILED("failed"),
-    ON_EVERY_ACTION("onEveryAction"),
-    IN_TEST("in_test");
-
-    private final String name;
-
-    private When(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
+public class InTestResourceReport {
 
 }

@@ -31,6 +31,7 @@ import org.arquillian.extension.recorder.video.event.StopRecordSuiteVideo;
 import org.arquillian.extension.recorder.video.event.StopRecordVideo;
 import org.arquillian.recorder.reporter.PropertyEntry;
 import org.arquillian.recorder.reporter.event.PropertyReportEvent;
+import org.arquillian.recorder.reporter.impl.TakenResourceRegister;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
@@ -54,6 +55,9 @@ public class VideoTaker {
     @Inject
     private Event<PropertyReportEvent> propertyReportEvent;
 
+    @Inject
+    private Instance<TakenResourceRegister> takenResourceRegister;
+
     private DefaultFileNameBuilder nb = DefaultFileNameBuilder.getInstance();
 
     public void onStartSuiteRecording(@Observes StartRecordSuiteVideo event) {
@@ -75,13 +79,16 @@ public class VideoTaker {
 
     public void onStopSuiteRecording(@Observes StopRecordSuiteVideo event) {
         Video video = recorder.get().stopRecording();
+        takenResourceRegister.get().addTaken(video);
         video.setResourceMetaData(event.getVideoMetaData());
 
+        takenResourceRegister.get().addReported(video);
         propertyReportEvent.fire(new PropertyReportEvent(getVideoEntry(video)));
     }
 
     public void onStopRecording(@Observes StopRecordVideo event) throws IOException {
         Video video = recorder.get().stopRecording();
+        takenResourceRegister.get().addTaken(video);
 
         TestResult testResult = event.getVideoMetaData().getTestResult();
 
@@ -99,6 +106,7 @@ public class VideoTaker {
             }
         }
 
+        takenResourceRegister.get().addReported(video);
         propertyReportEvent.fire(new PropertyReportEvent(getVideoEntry(video)));
     }
 

@@ -71,6 +71,34 @@ You can then start and stop recording as you wish directly in your test via +sta
 
 When you want to record manually by injecting Recorder into test, you can not record by automatic manner because Recorder is able to record only one video in some particular moment. In order not to record videos automatically, all +start*+ properties and +takeOnlyOnFail+ property _have to_ be set to false in order to successfully inject Recorder as +@ArquillianResource+.
 
+You can record videos which span multiple test methods, like this:
+
+----
+@ArquillianResource
+private Recorder recorder;
+
+@Test
+@InSequence(1)
+public void test1()
+{
+    recorder.startRecording();
+}
+
+@Test
+@InSequence(2)
+public void test2()
+{
+    // we are still recording, whatever happens here is recorded
+}
+
+@Test
+@InSequence(3)
+public void test3()
+{
+    recorder.stopRecording();
+}
+----
+
 == Example configuration
 
 Put this in +arquillian.xml+.

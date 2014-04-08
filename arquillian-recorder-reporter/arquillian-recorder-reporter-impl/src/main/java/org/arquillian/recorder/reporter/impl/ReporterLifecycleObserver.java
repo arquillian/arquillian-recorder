@@ -29,6 +29,7 @@ import org.arquillian.recorder.reporter.Reporter;
 import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.arquillian.recorder.reporter.ReporterCursor;
 import org.arquillian.recorder.reporter.event.ExportReport;
+import org.arquillian.recorder.reporter.event.InTestResourceReport;
 import org.arquillian.recorder.reporter.event.PropertyReportEvent;
 import org.arquillian.recorder.reporter.model.ContainerReport;
 import org.arquillian.recorder.reporter.model.DeploymentReport;
@@ -83,6 +84,9 @@ public class ReporterLifecycleObserver {
 
     @Inject
     private Event<ExportReport> exportReportEvent;
+
+    @Inject
+    private Event<InTestResourceReport> inTestResourceReportEvent;
 
     public void observeBeforeSuite(@Observes(precedence = Integer.MAX_VALUE) BeforeSuite event) {
         TestSuiteReport testSuiteReport = new TestSuiteReport();
@@ -183,18 +187,22 @@ public class ReporterLifecycleObserver {
             }
         }
 
+        inTestResourceReportEvent.fire(new InTestResourceReport());
+
         reporter.get().setReporterCursor(new ReporterCursor(reporter.get().getLastTestClassReport()));
 
         report(event, descriptor.get());
     }
 
     public void observeAfterClass(@Observes(precedence = Integer.MIN_VALUE) AfterClass event) {
+
         reporter.get().setReporterCursor(new ReporterCursor(reporter.get().getLastTestSuiteReport()));
 
         report(event, descriptor.get());
     }
 
     public void observeAfterSuite(@Observes(precedence = Integer.MIN_VALUE) AfterSuite event) {
+
         reporter.get().getLastTestClassReport().setStop(new Date(System.currentTimeMillis()));
         reporter.get().getLastTestSuiteReport().setStop(new Date(System.currentTimeMillis()));
 

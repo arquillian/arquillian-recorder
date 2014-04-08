@@ -23,6 +23,7 @@ import org.arquillian.extension.recorder.screenshooter.Screenshot;
 import org.arquillian.extension.recorder.screenshooter.ScreenshotType;
 import org.arquillian.extension.recorder.screenshooter.event.TakeScreenshot;
 import org.arquillian.recorder.reporter.event.PropertyReportEvent;
+import org.arquillian.recorder.reporter.impl.TakenResourceRegister;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
@@ -45,6 +46,9 @@ public class ScreenshotTaker {
     @Inject
     private Event<PropertyReportEvent> propertyReportEvent;
 
+    @Inject
+    private Instance<TakenResourceRegister> takenScreenshotsRegister;
+
     public void onTakeScreenshot(@Observes TakeScreenshot event) {
 
         ScreenshotType type = screenshooter.get().getScreenshotType();
@@ -54,6 +58,8 @@ public class ScreenshotTaker {
             event.getFileName());
 
         Screenshot screenshot = screenshooter.get().takeScreenshot(screenshotTarget, type);
+        takenScreenshotsRegister.get().addTaken(screenshot);
+
         event.getMetaData().setHeight(screenshot.getHeight());
         event.getMetaData().setWidth(screenshot.getWidth());
         screenshot.setResourceMetaData(event.getMetaData());
@@ -66,6 +72,7 @@ public class ScreenshotTaker {
         propertyEntry.setWidth(screenshot.getWidth());
         propertyEntry.setHeight(screenshot.getHeight());
 
+        takenScreenshotsRegister.get().addReported(screenshot);
         propertyReportEvent.fire(new PropertyReportEvent(propertyEntry));
     }
 }

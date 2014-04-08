@@ -48,7 +48,7 @@
 			.video > video { margin: 0 0 0 2em; }
 			.screenshotParent { margin: 0 0 0 2em; }
 			.screenshotLeft { display: inline-block; float: left; }
-			.screenshotLeft:nth-child(2n) { margin: 0 0 0 2em; }
+			.screenshotLeft:nth-child(1n) { margin: 0 0 0 2em; }
 			.passed { color: #336633; }
 			.failed { color: #FF0000; }
 			.skipped { color: #FF9900; }
@@ -243,12 +243,19 @@
 								</div>
 
 								<xsl:for-each select="video">
-								<div class="video">
-									<video controls="">
-										<source src="{@link}" type="video/{@type}"/>
-										Your browser does not support video tag.
-									</video>
-								</div>
+                                    <div class="video">
+                                        <xsl:choose>
+                                            <xsl:when test="@phase = 'IN_TEST'">
+                                                <h6>In-test video</h6>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                            </xsl:otherwise>
+                                        </xsl:choose>                                    
+                                        <video controls="">
+                                            <source src="{@link}" type="video/{@type}"/>
+                                            Your browser does not support video tag.
+                                        </video>
+                                    </div>
 								</xsl:for-each>
 
 								<xsl:if test="screenshot">
@@ -256,29 +263,53 @@
 									<xsl:for-each select="screenshot">
 										<xsl:choose>
 											<xsl:when test="@width &gt; /report/reportConfiguration/maxImageWidth">
-												<p><a href="{@link}"><xsl:value-of select="@path"/></a></p>
+                                                <xsl:if test="@phase != 'IN_TEST'">
+                                                    <p><a href="{@link}"><xsl:value-of select="@link"/></a></p>
+                                                </xsl:if>
 											</xsl:when>
 											<xsl:otherwise>
 												<div class="screenshotLeft">
 													<xsl:choose>
 														<xsl:when test="@phase = 'BEFORE'">
 															<h6>Before</h6>
+                                                            <img src="{@link}" />
 														</xsl:when>
 														<xsl:when test="@phase = 'AFTER'">
 															<h6>After</h6>
+                                                            <img src="{@link}" />
 														</xsl:when>
 														<xsl:when test="@phase = 'FAILED'">
 															<h6>Failed</h6>
+                                                            <img src="{@link}" />
 														</xsl:when>
 													</xsl:choose>
-												<img src="{@link}" />
 												</div>
 											</xsl:otherwise>
 										</xsl:choose>
 									</xsl:for-each>
-									<div class="clear"></div>
+									<div class="clear"/>
 								</div>
 								</xsl:if>
+                                <xsl:if test="screenshot">
+                                    <xsl:for-each select="screenshot">
+                                        <xsl:if test="@phase = 'IN_TEST'">
+                                            <div class="screenshotParent">
+                                                <div class="screenshotLeft">
+                                                    <h6>In-test screenshot</h6>
+                                                    <xsl:choose>
+                                                        <xsl:when test="@width &gt; /report/reportConfiguration/maxImageWidth">
+                                                            <p><a href="{@link}"><xsl:value-of select="@link"/></a></p>
+                                                        </xsl:when>
+                                                        <xsl:otherwise>
+                                                            <img src="{@link}"/>    
+                                                        </xsl:otherwise>
+                                                    </xsl:choose>
+                                                </div>
+                                            </div>
+                                            <div class="clear"/>
+                                        </xsl:if>
+                                    </xsl:for-each>
+                                </xsl:if>
 							</div>
 						</xsl:for-each>
 					</div>

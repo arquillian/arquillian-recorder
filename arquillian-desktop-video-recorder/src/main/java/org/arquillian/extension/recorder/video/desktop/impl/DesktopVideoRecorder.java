@@ -25,6 +25,7 @@ import org.arquillian.extension.recorder.video.Video;
 import org.arquillian.extension.recorder.video.VideoConfiguration;
 import org.arquillian.extension.recorder.video.VideoMetaData;
 import org.arquillian.extension.recorder.video.VideoType;
+import org.arquillian.recorder.reporter.impl.TakenResourceRegister;
 import org.jboss.arquillian.core.spi.Validate;
 
 /**
@@ -44,6 +45,14 @@ public class DesktopVideoRecorder implements Recorder {
     private VideoConfiguration configuration;
 
     private VideoRecorder recorder;
+
+    private TakenResourceRegister takenResourceRegister;
+
+    public DesktopVideoRecorder(TakenResourceRegister takenResourceRegister) {
+        if (takenResourceRegister != null) {
+            this.takenResourceRegister = takenResourceRegister;
+        }
+    }
 
     @Override
     public void init(VideoConfiguration configuration) {
@@ -114,7 +123,9 @@ public class DesktopVideoRecorder implements Recorder {
     @Override
     public Video stopRecording() {
         if (recorder != null && recorder.isRecording()) {
-            return recorder.stopRecording();
+            Video video = recorder.stopRecording();
+            takenResourceRegister.addTaken(video);
+            return video;
         }
         throw new IllegalStateException("It seems you have not called init() method of this video recorder yet.");
     }

@@ -16,6 +16,7 @@
  */
 package org.arquillian.extension.recorder.screenshooter;
 
+import org.arquillian.extension.recorder.screenshooter.impl.InTestScreenshotResourceReportObserver;
 import org.arquillian.extension.recorder.screenshooter.impl.ScreenshooterExtensionInitializer;
 import org.arquillian.extension.recorder.screenshooter.impl.ScreenshooterProvider;
 import org.arquillian.extension.recorder.screenshooter.impl.ScreenshotTaker;
@@ -33,5 +34,6 @@ public class ScreenshooterExtension implements LoadableExtension {
         builder.observer(ScreenshooterExtensionInitializer.class);
         builder.observer(ScreenshotTaker.class);
         builder.service(ResourceProvider.class, ScreenshooterProvider.class);
+        builder.observer(InTestScreenshotResourceReportObserver.class);
     }
 }

@@ -19,6 +19,7 @@ package org.arquillian.extension.recorder.video.desktop.impl;
 import org.arquillian.extension.recorder.video.Recorder;
 import org.arquillian.extension.recorder.video.VideoConfiguration;
 import org.arquillian.extension.recorder.video.event.VideoExtensionConfigured;
+import org.arquillian.recorder.reporter.impl.TakenResourceRegister;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
@@ -36,11 +37,19 @@ public class DesktopVideoRecorderCreator {
     private InstanceProducer<Recorder> recorder;
 
     @Inject
+    @ApplicationScoped
+    private InstanceProducer<TakenResourceRegister> takenResourceRegister;
+
+    @Inject
     private Instance<VideoConfiguration> configuration;
 
     public void onVideoRecorderExtensionConfigured(@Observes VideoExtensionConfigured event) {
 
-        Recorder recorder = new DesktopVideoRecorder();
+        if (takenResourceRegister.get() == null) {
+            this.takenResourceRegister.set(new TakenResourceRegister());
+        }
+
+        Recorder recorder = new DesktopVideoRecorder(takenResourceRegister.get());
         recorder.init(configuration.get());
 
         this.recorder.set(recorder);
