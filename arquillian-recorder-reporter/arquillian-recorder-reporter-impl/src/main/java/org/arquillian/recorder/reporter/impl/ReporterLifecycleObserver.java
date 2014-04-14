@@ -40,10 +40,8 @@ import org.arquillian.recorder.reporter.model.TestSuiteReport;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
 import org.jboss.arquillian.container.spi.Container;
-import org.jboss.arquillian.container.spi.ContainerRegistry;
 import org.jboss.arquillian.container.spi.client.deployment.DeploymentDescription;
 import org.jboss.arquillian.container.spi.event.container.BeforeDeploy;
-import org.jboss.arquillian.container.spi.event.container.BeforeStart;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.core.api.Event;
@@ -95,21 +93,14 @@ public class ReporterLifecycleObserver {
         reporter.get().setTestSuiteReport(testSuiteReport);
     }
 
-    public void observeBeforeStart(@Observes BeforeStart event, ContainerRegistry registry) {
+    public void observeBeforeStart(@Observes Container event) {
         ContainerReport containerReport = new ContainerReport();
 
-        for (Container container : registry.getContainers()) {
-            if (container.getDeployableContainer().getConfigurationClass() == event.getDeployableContainer()
-                .getConfigurationClass()) {
+        containerReport.setQualifier(event.getName());
+        containerReport.setConfiguration(event.getContainerConfiguration().getContainerProperties());
 
-                containerReport.setQualifier(container.getName());
-                containerReport.setConfiguration(container.getContainerConfiguration().getContainerProperties());
-
-                reporter.get().getLastTestSuiteReport().getContainerReports().add(containerReport);
-                reporter.get().setContainerReport(containerReport);
-                break;
-            }
-        }
+        reporter.get().getLastTestSuiteReport().getContainerReports().add(containerReport);
+        reporter.get().setContainerReport(containerReport);
 
     }
 
@@ -122,7 +113,7 @@ public class ReporterLifecycleObserver {
         deploymentReport.setName(description.getName());
 
         int order = description.getOrder();
-        if (order != -1) {
+        if (order > 0) {
             deploymentReport.setOrder(order);
         }
 
