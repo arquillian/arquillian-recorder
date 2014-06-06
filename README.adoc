@@ -77,6 +77,27 @@ There is a lifecycle observer which listens to all important Arquillian lifecycl
 
 JAXB is after all marshalled to various formats depending of what you want. There is one underlying model which just marshalls to the format you need by some specific exporter.
 
+=== Add report messages
+
+For better reporting experience, you can add custom report messages to your tests by +@ReportMessage+ annotation. Report messages will appear in the resulting test reports of every report format.
+
+----
+@RunWith(Arquillian.class)
+@ReportMessage("This test case is not stable")
+public class TestCase
+{
+    @Test
+    @ReportMessage("This test method is not stable")
+    public void test()
+    {
+    }
+}
+----
+
+=== How to add custom language support?
+
+You just have to provide translated xsl template in your preffered language, for example for French support, you need to put translated arquillian_reporter_template.xsl to +src/main/resources/arquillian_reporter_templates/fr/+ in arquillian-recorder-reporter-api artifact.
+
 === You say what to report
 
 It is impossible to know in advance what some particular Arquillian extension will need to report. For that matter, you can report you own properties into report tree by firing ordinary Arquillian event. Let's see an example:

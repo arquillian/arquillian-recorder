@@ -58,7 +58,7 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
  * This class can be extended to override any of the methods used to write the output so you can implement your own AsciiDoc
  * report. Keep in mind that if method is not overridden the default output is generated.
  *
- * @see {@link AsciiDocReport}
+ * @see AsciiDocReport
  *
  * @author <a href="asotobu@gmail.com">Alex Soto</a>
  *

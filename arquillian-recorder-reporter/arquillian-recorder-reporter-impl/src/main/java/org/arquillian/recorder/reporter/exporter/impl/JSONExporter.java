@@ -32,7 +32,7 @@ import org.eclipse.persistence.jaxb.JAXBContextProperties;
 /**
  * Exports reports to JSON file. Output is formatted.
  *
- * @see {@link JSONReport}
+ * @see JSONReport
  *
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
  *

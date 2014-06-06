@@ -32,7 +32,7 @@ import org.arquillian.extension.recorder.When;
  * <li>height</li>
  * </ul>
  *
- * @see {@link FileEntry}
+ * @see FileEntry
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */

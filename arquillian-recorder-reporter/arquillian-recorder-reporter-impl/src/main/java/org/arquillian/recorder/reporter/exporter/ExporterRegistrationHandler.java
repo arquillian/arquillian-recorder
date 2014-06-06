@@ -42,9 +42,9 @@ import org.jboss.arquillian.core.api.annotation.Observes;
  * {@link ExporterRegisterCreated} event before this class observes it and registers its own. Any positive precedence on 3rd
  * party extension which listens to {@link ExporterRegisterCreated} does the job.
  *
- * @see {@link Exporter}
- * @see {@link ExporterRegister}
- * @see {@link ReportTypeRegister}
+ * @see Exporter
+ * @see ExporterRegister
+ * @see ReportTypeRegister
  *
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
  *

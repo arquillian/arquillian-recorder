@@ -31,7 +31,7 @@ import org.arquillian.recorder.reporter.impl.type.XMLReport;
 /**
  * Exports reports to XML file. Output is formatted.
  *
- * @see {@link XMLReport}
+ * @see XMLReport
  *
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
  *

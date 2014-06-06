@@ -45,7 +45,7 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
  * In case you want to override core xsl template (of name arquillian_reporter_template.xsl bundled in api jar), you need to
  * bundle file arquillian_reporter_template_base.xsl to target implementation. That one will be picked then instead of core one.
  *
- * @see {@link HTMLReport}
+ * @see HTMLReport
  *
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
  *
