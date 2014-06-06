@@ -48,10 +48,15 @@ public class DesktopVideoRecorder implements Recorder {
 
     private TakenResourceRegister takenResourceRegister;
 
+    /**
+     * 
+     * @param takenResourceRegister
+     * @throws IllegalArgumentException if {@code takenResourceRegister} is a null object
+     * 
+     */
     public DesktopVideoRecorder(TakenResourceRegister takenResourceRegister) {
-        if (takenResourceRegister != null) {
-            this.takenResourceRegister = takenResourceRegister;
-        }
+        Validate.notNull(takenResourceRegister, "Resource register can not be a null object!");
+        this.takenResourceRegister = takenResourceRegister;
     }
 
     @Override

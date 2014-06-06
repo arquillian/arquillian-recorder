@@ -35,7 +35,18 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 
 /**
- *
+ * Observes:
+ * <ul>
+ * <li>{@link ReportingExtensionConfigured}</li>
+ * </ul>
+ * Produces {@link ApplicationScoped}:
+ * <ul>
+ * <li>{@link VideoConfiguration}</li>
+ * </ul>
+ * Fires:
+ * <ul>
+ * <li>{@link VideoExtensionConfigured}</li>
+ * </ul>
  * @author <a href="mailto:pmensik@redhat.com">Petr Mensik</a>
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  */

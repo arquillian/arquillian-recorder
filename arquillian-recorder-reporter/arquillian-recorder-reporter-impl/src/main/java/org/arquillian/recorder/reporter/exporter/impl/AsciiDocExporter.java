@@ -481,6 +481,15 @@ public class AsciiDocExporter implements Exporter {
      */
     protected void writeSummary(TestClassReport testClassReport) throws IOException {
 
+        if (isReportMessage(testClassReport)) {
+
+            writer.append("[IMPORTANT]").append(NEW_LINE);
+            writer.append("====").append(NEW_LINE);
+            writer.append(testClassReport.getReportMessage()).append(NEW_LINE);
+            writer.append("====").append(NEW_LINE).append(NEW_LINE);
+
+        }
+
         int[] results = countSummary(testClassReport.getTestMethodReports());
 
         writer.append(".").append(this.resourceBundle.getString("asciidoc.reporter.testResult")).append(NEW_LINE);
@@ -626,10 +635,12 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
+    private boolean isReportMessage(TestClassReport testClassReport) {
+        return testClassReport.getReportMessage() != null && !"".equals(testClassReport.getReportMessage().trim());
+    }
+
     private boolean isReportMessage(TestMethodReport testMethodReport) {
-
         return testMethodReport.getReportMessage() != null && !"".equals(testMethodReport.getReportMessage().trim());
-
     }
 
     private boolean runAsClientOrOperateOnDeployment(TestMethodReport testMethodReport) {

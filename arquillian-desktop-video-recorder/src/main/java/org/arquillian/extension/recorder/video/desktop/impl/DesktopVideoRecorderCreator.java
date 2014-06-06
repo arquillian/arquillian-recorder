@@ -27,7 +27,15 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 
 /**
- *
+ * Observes:
+ * <ul>
+ * <li>{@link VideoExtensionConfigured}</li>
+ * </ul>
+ * Produces {@link ApplicationScoped}:
+ * <ul>
+ * <li>{@link Recorder}</li>
+ * <li>{@link TakenResourceRegister}</li>
+ * </ul>
  * @author <a href="mailto:pmensik@redhat.com">Petr Mensik</a>
  */
 public class DesktopVideoRecorderCreator {

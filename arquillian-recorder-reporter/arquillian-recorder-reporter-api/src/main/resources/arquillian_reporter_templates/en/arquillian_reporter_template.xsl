@@ -178,6 +178,9 @@
 						<div class="properties">
 							<table>
 								<tbody>
+                                    <xsl:if test="@reportMessage">
+                                        <tr><td colspan="2"><xsl:value-of select="@reportMessage"/></td></tr>
+                                    </xsl:if>
 									<xsl:if test="method[@result = 'PASSED']">
 										<tr><td>passed</td><td><xsl:value-of select='count(method[@result = "PASSED"])'/></td></tr>
 									</xsl:if>

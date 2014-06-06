@@ -139,6 +139,7 @@ public class ReporterLifecycleObserver {
         TestClassReport testClassReport = new TestClassReport();
         testClassReport.setTestClassName(event.getTestClass().getName());
         testClassReport.setRunAsClient(event.getTestClass().isAnnotationPresent(RunAsClient.class));
+        testClassReport.setReportMessage(parseTestClassReportMessage(event.getTestClass().getJavaClass()));
 
         reporter.get().getLastTestSuiteReport().getTestClassReports().add(testClassReport);
         reporter.get().setTestClassReport(testClassReport);
@@ -264,11 +265,19 @@ public class ReporterLifecycleObserver {
     }
 
     private String parseTestReportMessage(Method testMethod) {
+        return getReportMessage(testMethod.getAnnotations());
+    }
 
-        Annotation[] annotations = testMethod.getAnnotations();
-        for (Annotation annotation : annotations) {
-            if (annotation.annotationType().isAssignableFrom(ReportMessage.class)) {
-                return ((ReportMessage) annotation).value();
+    private String parseTestClassReportMessage(Class<?> testClass) {
+        return getReportMessage(testClass.getAnnotations());
+    }
+
+    private String getReportMessage(Annotation[] annotations) {
+        if (annotations != null) {
+            for (Annotation annotation : annotations) {
+                if (annotation.annotationType().isAssignableFrom(ReportMessage.class)) {
+                    return ((ReportMessage) annotation).value();
+                }
             }
         }
 
