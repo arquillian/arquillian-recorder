@@ -46,4 +46,11 @@ public interface RecorderStrategy<T extends Configuration<T>> {
      * @return true if some action should should be taken, false otherwise
      */
     boolean isTakingAction(Event event);
+
+    /**
+     * The lower the precedence is, the sooner this strategy is treated
+     *
+     * @return
+     */
+    int precedence();
 }

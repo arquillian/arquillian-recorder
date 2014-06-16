@@ -75,4 +75,9 @@ public class DefaultVideoStrategy implements VideoStrategy {
 
         return false;
     }
+
+    @Override
+    public int precedence() {
+        return 0;
+    }
 }

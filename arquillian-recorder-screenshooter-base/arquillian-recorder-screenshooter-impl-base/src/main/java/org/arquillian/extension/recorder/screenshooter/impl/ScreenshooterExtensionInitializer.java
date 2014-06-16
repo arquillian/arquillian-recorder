@@ -16,6 +16,12 @@
  */
 package org.arquillian.extension.recorder.screenshooter.impl;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.arquillian.extension.recorder.RecorderStrategy;
+import org.arquillian.extension.recorder.RecorderStrategyRegister;
 import org.arquillian.extension.recorder.screenshooter.ScreenshooterConfiguration;
 import org.arquillian.extension.recorder.screenshooter.ScreenshooterConfigurationException;
 import org.arquillian.extension.recorder.screenshooter.ScreenshooterEnvironmentCleaner;
@@ -36,11 +42,11 @@ public class ScreenshooterExtensionInitializer {
 
     @Inject
     @ApplicationScoped
-    private InstanceProducer<ScreenshootingStrategy> strategy;
+    private InstanceProducer<ScreenshooterEnvironmentCleaner> cleaner;
 
     @Inject
     @ApplicationScoped
-    private InstanceProducer<ScreenshooterEnvironmentCleaner> cleaner;
+    private InstanceProducer<RecorderStrategyRegister> recorderStrategyRegister;
 
     @Inject
     private Instance<ScreenshooterConfiguration> configuration;
@@ -50,14 +56,20 @@ public class ScreenshooterExtensionInitializer {
 
     public void afterExtensionConfigured(@Observes ScreenshooterExtensionConfigured event) {
 
-        ScreenshootingStrategy strategy = serviceLoader.get()
-            .onlyOne(ScreenshootingStrategy.class, DefaultScreenshootingStrategy.class);
-        strategy.setConfiguration(configuration.get());
+        Collection<ScreenshootingStrategy> strategies = serviceLoader.get().all(ScreenshootingStrategy.class);
+
+        for (ScreenshootingStrategy strategy : strategies) {
+            strategy.setConfiguration(configuration.get());
+        }
+
+        Set<RecorderStrategy<?>> recorderStrategies = new HashSet<RecorderStrategy<?>>(strategies);
+
+        recorderStrategyRegister.set(new RecorderStrategyRegister());
+        recorderStrategyRegister.get().addAll(recorderStrategies);
 
         ScreenshooterEnvironmentCleaner cleaner = serviceLoader.get()
             .onlyOne(ScreenshooterEnvironmentCleaner.class, DefaultScreenshooterEnvironmentCleaner.class);
 
-        this.strategy.set(strategy);
         this.cleaner.set(cleaner);
 
         try {

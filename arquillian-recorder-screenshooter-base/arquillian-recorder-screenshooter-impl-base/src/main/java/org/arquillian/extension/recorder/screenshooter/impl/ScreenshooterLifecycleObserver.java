@@ -17,10 +17,12 @@
 package org.arquillian.extension.recorder.screenshooter.impl;
 
 import org.arquillian.extension.recorder.DefaultFileNameBuilder;
+import org.arquillian.extension.recorder.RecorderStrategy;
+import org.arquillian.extension.recorder.RecorderStrategyRegister;
 import org.arquillian.extension.recorder.When;
+import org.arquillian.extension.recorder.screenshooter.AnnotationScreenshootingStrategy;
 import org.arquillian.extension.recorder.screenshooter.Screenshooter;
 import org.arquillian.extension.recorder.screenshooter.ScreenshooterConfiguration;
-import org.arquillian.extension.recorder.screenshooter.ScreenshootingStrategy;
 import org.arquillian.extension.recorder.screenshooter.ScreenshotMetaData;
 import org.arquillian.extension.recorder.screenshooter.ScreenshotType;
 import org.arquillian.extension.recorder.screenshooter.event.AfterScreenshotTaken;
@@ -42,7 +44,7 @@ import org.jboss.arquillian.test.spi.event.suite.TestLifecycleEvent;
 public class ScreenshooterLifecycleObserver {
 
     @Inject
-    private Instance<ScreenshootingStrategy> strategy;
+    private Instance<RecorderStrategyRegister> recorderStrategyRegister;
 
     @Inject
     private Instance<ScreenshooterConfiguration> configuration;
@@ -63,7 +65,8 @@ public class ScreenshooterLifecycleObserver {
     private Instance<Screenshooter> screenshooter;
 
     public void beforeTest(@Observes Before event) {
-        if (strategy.get().isTakingAction(event)) {
+
+        if (new TakingScreenshotDecider(recorderStrategyRegister.get()).decide(event, null)) {
             ScreenshotMetaData metaData = getMetaData(event);
             metaData.setResourceType(getScreenshotType());
 
@@ -82,13 +85,13 @@ public class ScreenshooterLifecycleObserver {
     }
 
     public void afterTest(@Observes After event) {
+
         TestResult result = testResult.get();
-        if (strategy.get().isTakingAction(event, result)) {
+
+        if (new TakingScreenshotDecider(recorderStrategyRegister.get()).decide(event, result)) {
             ScreenshotMetaData metaData = getMetaData(event);
             metaData.setTestResult(result);
             metaData.setResourceType(getScreenshotType());
-
-            beforeScreenshotTaken.fire(new BeforeScreenshotTaken(metaData));
 
             When when = result.getStatus() == TestResult.Status.FAILED ? When.FAILED : When.AFTER;
 
@@ -97,6 +100,8 @@ public class ScreenshooterLifecycleObserver {
                 .withMetaData(metaData)
                 .withStage(when)
                 .build();
+
+            beforeScreenshotTaken.fire(new BeforeScreenshotTaken(metaData));
 
             takeScreenshot.fire(new TakeScreenshot(screenshotName, metaData, when));
 
@@ -116,6 +121,43 @@ public class ScreenshooterLifecycleObserver {
 
     private ScreenshotType getScreenshotType() {
         return screenshooter.get().getScreenshotType();
+    }
+
+    private class TakingScreenshotDecider {
+
+        private RecorderStrategyRegister recorderStrategyRegister;
+
+        public TakingScreenshotDecider(RecorderStrategyRegister recorderStrategyRegister) {
+            this.recorderStrategyRegister = recorderStrategyRegister;
+        }
+
+        public boolean decide(org.jboss.arquillian.core.spi.event.Event event, TestResult testResult) {
+
+            boolean taking = false;
+
+            for (final RecorderStrategy<?> recorderStrategy : recorderStrategyRegister.getAll()) {
+                if (recorderStrategy instanceof AnnotationScreenshootingStrategy && !hasScreenshotAnnotation(event)) {
+                    continue;
+                }
+                if (testResult == null) {
+                    taking = recorderStrategy.isTakingAction(event);
+                } else {
+                    taking = recorderStrategy.isTakingAction(event, testResult);
+                }
+
+            }
+
+            return taking;
+        }
+
+        private boolean hasScreenshotAnnotation(org.jboss.arquillian.core.spi.event.Event event) {
+            if (event instanceof Before) {
+                return ScreenshotAnnotationScanner.getScreenshotAnnotation(((Before) event).getTestMethod()) != null;
+            } else if (event instanceof After) {
+                return ScreenshotAnnotationScanner.getScreenshotAnnotation(((After) event).getTestMethod()) != null;
+            }
+            return false;
+        }
     }
 
 }
