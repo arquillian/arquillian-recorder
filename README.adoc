@@ -1,4 +1,4 @@
-= Arquillian Recorder
+= Arquillian Recorder image:https://travis-ci.org/arquillian/arquillian-recorder.png[Build status, link="https://travis-ci.org/arquillian/arquillian-recorder.png"]
 
 Arquillian Recorder project brings realtime reports of your Arquillian tests. You can report your own report informations by firing SPI events from your extension and you can implement your own screenshooters and video recorders of your tests by base screenshooter and video recorder implementations on which you build your target implementation very easily.
 
