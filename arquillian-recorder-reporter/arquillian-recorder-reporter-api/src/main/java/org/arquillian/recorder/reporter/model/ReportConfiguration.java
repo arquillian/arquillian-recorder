@@ -17,6 +17,7 @@
 package org.arquillian.recorder.reporter.model;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,9 +34,19 @@ import org.arquillian.recorder.reporter.ReportEntry;
 @XmlRootElement(name = "reportConfiguration")
 public class ReportConfiguration implements ReportEntry {
 
+    private static final Logger logger = Logger.getLogger(ReportConfiguration.class.getName());
+
+    private static final int MAX_HEIGHT_IN_PERCENT = 100;
+
     private String maxImageWidth;
 
     private String title;
+
+    // in percents
+
+    private String imageWidth = "100";
+
+    private String imageHeight = "100";
 
     @XmlElement
     public String getMaxImageWidth() {
@@ -53,7 +64,39 @@ public class ReportConfiguration implements ReportEntry {
                 this.maxImageWidth = maxImageWidth;
             }
         } catch (NumberFormatException ex) {
-            // intentionally empty
+            logger.info(String.format("You are trying to parse '%s' as a number for maxImageWidth.", maxImageWidth));
+        }
+    }
+
+    @XmlElement
+    public String getImageWidth() {
+        return imageWidth;
+    }
+
+    public void setImageWidth(String imageWidth) {
+        try {
+            int parsedInt = Integer.parseInt(imageWidth);
+            if (parsedInt > 0 && parsedInt <= MAX_HEIGHT_IN_PERCENT) {
+                this.imageWidth = imageWidth;
+            }
+        } catch (NumberFormatException ex) {
+            logger.info(String.format("You are trying to parse '%s' as a number for imageWidth.", imageWidth));
+        }
+    }
+
+    @XmlElement
+    public String getImageHeight() {
+        return imageHeight;
+    }
+
+    public void setImageHeight(String imageHeight) {
+        try {
+            int parsedInt = Integer.parseInt(imageHeight);
+            if (parsedInt > 0 && parsedInt <= MAX_HEIGHT_IN_PERCENT) {
+                this.imageHeight = imageHeight;
+            }
+        } catch (NumberFormatException ex) {
+            logger.info(String.format("You are trying to parse '%s' as a number for imageHeight.", imageHeight));
         }
     }
 

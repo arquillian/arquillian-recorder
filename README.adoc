@@ -66,6 +66,12 @@ Please put this extension definition into +arquillian.xml+ in order to bootstrap
 |+maxImageWidth+
 |maximal width of taken screenshot to display directly into resulting HTML page, otherwise it is displayed as a link, measured in pixels.
 |500
+|+imageWidth+
+|Image width will be shrinked to such number of percents from its original width. Range (0,100).
+|100
+|+imageHeight+
+|Image height will be shrinked to such number of percents from its original height. Range (0,100).
+|100
 |+title+
 |custom title for your report
 |_Arquillian test run report_

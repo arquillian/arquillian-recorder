@@ -139,13 +139,17 @@ public class AsciiDocReporterTestCase {
         sce.setPath(configuration.getRootDir().getAbsolutePath() + "/niceScreenshot.jpg");
         sce.setSize("56kB");
         sce.setPhase(When.BEFORE);
+        sce.setWidth(300);
+        sce.setHeight(500);
 
         ScreenshotEntry sce2 = new ScreenshotEntry();
         sce2.setPath(configuration.getRootDir().getAbsolutePath() + "/niceScreenshotBefore.jpg");
         sce2.setPhase(When.BEFORE);
+        sce2.setWidth(300);
+        sce2.setHeight(500);
 
-        reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce);
-        reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce2);
+        reporter.getLastTestMethodReport().getPropertyEntries().add(sce);
+        reporter.getLastTestMethodReport().getPropertyEntries().add(sce2);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 

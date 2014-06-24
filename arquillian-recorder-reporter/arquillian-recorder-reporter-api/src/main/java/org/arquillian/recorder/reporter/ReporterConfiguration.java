@@ -37,6 +37,12 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
 
     public static final String DEFAULT_MAX_IMAGE_WIDTH = "500";
 
+    // in percents
+
+    public static final String DEFAULT_IMAGE_WIDTH = "100";
+
+    public static final String DEFAULT_IMAGE_HEIGHT = "100";
+
     public static final String DEFAULT_TITLE = "Arquillian test run report";
 
     private String report = DEFAULT_TYPE;
@@ -52,6 +58,10 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
     private String language = "en";
 
     private String maxImageWidth = DEFAULT_MAX_IMAGE_WIDTH;
+
+    private String imageWidth = DEFAULT_IMAGE_WIDTH;
+
+    private String imageHeight = DEFAULT_IMAGE_HEIGHT;
 
     private String title = DEFAULT_TITLE;
 
@@ -106,10 +116,28 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
      * Gets width for displayed images. When some image has its width lower than this number, it will be displayed as a link
      * instead as an image directly displayed on a resulting HTML page.
      *
-     * @return
+     * @return maximum width of an image to be displayed
      */
     public String getMaxImageWidth() {
         return getProperty("maxImageWidth", maxImageWidth);
+    }
+
+    /**
+     *
+     * @return the width of all images in percents. If this number is smaller then 100, the width of all images will be resized
+     *         from presentation point of view.
+     */
+    public String getImageWidth() {
+        return getProperty("imageWidth", imageWidth);
+    }
+
+    /**
+     *
+     * @return the height of all images in percets. If this number is smaller then 100, the height of all images will be resized
+     *         from presentation point of view.
+     */
+    public String getImageHeight() {
+        return getProperty("imageHeight", imageHeight);
     }
 
     public String getTitle() {
@@ -142,6 +170,24 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
             }
         } catch (NumberFormatException ex) {
             setProperty("maxImageWidth", DEFAULT_MAX_IMAGE_WIDTH);
+        }
+
+        try {
+            int width = Integer.parseInt(getImageWidth());
+            if (width <= 0 || width > 100) {
+                setProperty("imageWidth", DEFAULT_IMAGE_WIDTH);
+            }
+        } catch (NumberFormatException ex) {
+            setProperty("imageWidth", DEFAULT_IMAGE_WIDTH);
+        }
+
+        try {
+            int height = Integer.parseInt(getImageHeight());
+            if (height <= 0 || height > 100) {
+                setProperty("imageHeight", DEFAULT_IMAGE_HEIGHT);
+            }
+        } catch (NumberFormatException ex) {
+            setProperty("imageHeight", DEFAULT_IMAGE_HEIGHT);
         }
 
         try {
@@ -220,6 +266,8 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         sb.append(String.format("%-40s %s\n", "reportAfterEvery", getReportAfterEvery()));
         sb.append(String.format("%-40s %s\n", "language", getLanguage()));
         sb.append(String.format("%-40s %s\n", "maxImageWidth", getMaxImageWidth()));
+        sb.append(String.format("%-40s %s%%\n", "imageWidth", getImageWidth()));
+        sb.append(String.format("%-40s %s%%\n", "imageHeight", getImageHeight()));
         return sb.toString();
     }
 

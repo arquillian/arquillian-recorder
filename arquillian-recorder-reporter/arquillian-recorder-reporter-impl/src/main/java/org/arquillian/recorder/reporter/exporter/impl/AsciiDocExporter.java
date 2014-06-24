@@ -354,7 +354,10 @@ public class AsciiDocExporter implements Exporter {
      */
     protected void writeScreenshot(ScreenshotEntry screenshotEntry) throws IOException {
 
-        boolean large = screenshotEntry.getWidth() > Integer.parseInt(this.configuration.getMaxImageWidth());
+        int heigth = screenshotEntry.getHeight() * Integer.valueOf(this.configuration.getImageHeight()) / 100;
+        int width = screenshotEntry.getWidth() * Integer.valueOf(this.configuration.getImageWidth()) / 100;
+
+        boolean large = width > Integer.valueOf(this.configuration.getMaxImageWidth());
 
         if (large) {
 
@@ -366,8 +369,9 @@ public class AsciiDocExporter implements Exporter {
         } else {
 
             writer.append(".").append(screenshotEntry.getPhase().name()).append(NEW_LINE);
-            writer.append("image::").append(screenshotEntry.getLink()).append("[]").append(NEW_LINE).append(NEW_LINE);
-
+            writer.append("image::").append(screenshotEntry.getLink())
+                .append("[screenshot," + width + "," + heigth + "]")
+                .append(NEW_LINE).append(NEW_LINE);
         }
 
     }
