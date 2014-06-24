@@ -35,7 +35,6 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.spi.ServiceLoader;
 import org.jboss.arquillian.core.spi.context.ApplicationContext;
 import org.jboss.arquillian.test.spi.TestResult;
-import org.jboss.arquillian.test.spi.TestResult.Status;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.Before;
@@ -152,7 +151,7 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
         fire(new ScreenshooterExtensionConfigured());
         fire(new Before(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest")));
 
-        bind(TestScoped.class, TestResult.class, new TestResult(Status.PASSED));
+        bind(TestScoped.class, TestResult.class, TestResult.passed());
 
         fire(new After(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest")));
 
@@ -171,7 +170,7 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
         fire(new ScreenshooterExtensionConfigured());
         fire(new Before(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest")));
 
-        bind(TestScoped.class, TestResult.class, new TestResult(Status.FAILED));
+        bind(TestScoped.class, TestResult.class, TestResult.failed(new RuntimeException()));
 
         fire(new After(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest")));
 
@@ -190,7 +189,7 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
         fire(new ScreenshooterExtensionConfigured());
         fire(new Before(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest")));
 
-        bind(TestScoped.class, TestResult.class, new TestResult(Status.FAILED));
+        bind(TestScoped.class, TestResult.class, TestResult.failed(new RuntimeException()));
 
         fire(new After(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest")));
 
@@ -208,7 +207,7 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
         fire(new ScreenshooterExtensionConfigured());
         fire(new Before(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest")));
 
-        bind(TestScoped.class, TestResult.class, new TestResult(Status.PASSED));
+        bind(TestScoped.class, TestResult.class, TestResult.passed());
 
         fire(new After(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest")));
 

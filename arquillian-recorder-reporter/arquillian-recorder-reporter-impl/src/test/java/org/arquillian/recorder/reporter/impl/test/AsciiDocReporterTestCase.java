@@ -40,7 +40,6 @@ import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 import org.jboss.arquillian.test.spi.TestResult;
-import org.jboss.arquillian.test.spi.TestResult.Status;
 import org.junit.Test;
 
 public class AsciiDocReporterTestCase {
@@ -114,8 +113,7 @@ public class AsciiDocReporterTestCase {
 
         TestMethodReport testMethodReport = new TestMethodReport();
         testMethodReport.setName("someTestMethod");
-        TestResult testResult = new TestResult();
-        testResult.setStatus(Status.PASSED);
+        TestResult testResult = TestResult.passed();
         testResult.setStart(System.currentTimeMillis());
         testResult.setEnd(testResult.getStart() + 1000);
         testMethodReport.setReportMessage("This test should be executed manually too.");
@@ -127,9 +125,7 @@ public class AsciiDocReporterTestCase {
 
         TestMethodReport testMethodReport2 = new TestMethodReport();
         testMethodReport2.setName("someTestMethod2");
-        TestResult testResult2 = new TestResult();
-        testResult2.setStatus(Status.FAILED);
-        testResult2.setThrowable(new IOException("Exception"));
+        TestResult testResult2 = TestResult.failed(new IOException("Exception"));
         testResult2.setStart(System.currentTimeMillis());
         testResult2.setEnd(testResult2.getStart() + 2000);
         testMethodReport2.setStatus(testResult2.getStatus());
