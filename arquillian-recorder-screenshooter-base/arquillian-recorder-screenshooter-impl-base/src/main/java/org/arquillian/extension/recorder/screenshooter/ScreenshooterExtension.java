@@ -19,7 +19,6 @@ package org.arquillian.extension.recorder.screenshooter;
 import org.arquillian.extension.recorder.screenshooter.impl.InTestScreenshotResourceReportObserver;
 import org.arquillian.extension.recorder.screenshooter.impl.ScreenshooterExtensionInitializer;
 import org.arquillian.extension.recorder.screenshooter.impl.ScreenshooterProvider;
-import org.arquillian.extension.recorder.screenshooter.impl.ScreenshotTaker;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 
@@ -32,7 +31,6 @@ public class ScreenshooterExtension implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder builder) {
         builder.observer(ScreenshooterExtensionInitializer.class);
-        builder.observer(ScreenshotTaker.class);
         builder.service(ResourceProvider.class, ScreenshooterProvider.class);
         builder.observer(InTestScreenshotResourceReportObserver.class);
     }
