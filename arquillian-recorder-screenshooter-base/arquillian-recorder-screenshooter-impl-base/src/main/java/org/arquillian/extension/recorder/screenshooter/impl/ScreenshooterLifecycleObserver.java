@@ -57,9 +57,6 @@ public class ScreenshooterLifecycleObserver {
     private Event<AfterScreenshotTaken> afterScreenshotTaken;
 
     @Inject
-    private Instance<TestResult> testResult;
-
-    @Inject
     private Instance<Screenshooter> screenshooter;
 
     public void beforeTest(@Observes Before event) {
@@ -81,8 +78,7 @@ public class ScreenshooterLifecycleObserver {
         }
     }
 
-    public void afterTest(@Observes After event) {
-        TestResult result = testResult.get();
+    public void afterTest(@Observes After event, TestResult result) {
         if (strategy.get().isTakingAction(event, result)) {
             ScreenshotMetaData metaData = getMetaData(event);
             metaData.setTestResult(result);

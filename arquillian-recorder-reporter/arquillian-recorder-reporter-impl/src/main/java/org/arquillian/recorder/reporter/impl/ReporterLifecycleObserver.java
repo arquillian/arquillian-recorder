@@ -56,7 +56,6 @@ import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
-import org.junit.Test;
 
 /**
  * Observes events from Arquillian and delegates them to {@link Reporter} implementation.<br>
@@ -139,7 +138,7 @@ public class ReporterLifecycleObserver {
         TestClassReport testClassReport = new TestClassReport();
         testClassReport.setTestClassName(event.getTestClass().getName());
         testClassReport.setRunAsClient(event.getTestClass().isAnnotationPresent(RunAsClient.class));
-        testClassReport.setReportMessage(parseTestClassReportMessage(event.getTestClass().getJavaClass()));
+        testClassReport.setReportMessage(ReportMessageParser.parseTestClassReportMessage(event.getTestClass().getJavaClass()));
 
         reporter.get().getLastTestSuiteReport().getTestClassReports().add(testClassReport);
         reporter.get().setTestClassReport(testClassReport);
@@ -167,16 +166,10 @@ public class ReporterLifecycleObserver {
 
         testMethodReport.setStatus(result.getStatus());
         testMethodReport.setDuration(result.getEnd() - result.getStart());
-        testMethodReport.setReportMessage(parseTestReportMessage(event.getTestMethod()));
+        testMethodReport.setReportMessage(ReportMessageParser.parseTestReportMessage(event.getTestMethod()));
 
-        if (result.getStatus() == Status.FAILED) {
-            if (result.getThrowable() != null) {
-                if (!isThrowingExpectedException(event.getTestMethod(), result.getThrowable().getClass())) {
-                    testMethodReport.setException(getStackTrace(result.getThrowable()));
-                } else {
-                    testMethodReport.setStatus(Status.PASSED);
-                }
-            }
+        if (result.getStatus() == Status.FAILED && result.getThrowable() != null) {
+            testMethodReport.setException(getStackTrace(result.getThrowable()));
         }
 
         inTestResourceReportEvent.fire(new InTestResourceReport());
@@ -253,35 +246,27 @@ public class ReporterLifecycleObserver {
         return sb.toString();
     }
 
-    private boolean isThrowingExpectedException(Method testMethod, Class<?> throwable) {
-        Test JUNITtestAnnotation = testMethod.getAnnotation(Test.class);
+    private static final class ReportMessageParser {
 
-        if (JUNITtestAnnotation != null) {
-            return JUNITtestAnnotation.expected() == throwable;
-        } else {
-            throw new IllegalStateException("Test method is not annotated with @Test annotation");
+        public static String parseTestReportMessage(Method testMethod) {
+            return getReportMessage(testMethod.getAnnotations());
         }
 
-    }
+        public static String parseTestClassReportMessage(Class<?> testClass) {
+            return getReportMessage(testClass.getAnnotations());
+        }
 
-    private String parseTestReportMessage(Method testMethod) {
-        return getReportMessage(testMethod.getAnnotations());
-    }
-
-    private String parseTestClassReportMessage(Class<?> testClass) {
-        return getReportMessage(testClass.getAnnotations());
-    }
-
-    private String getReportMessage(Annotation[] annotations) {
-        if (annotations != null) {
-            for (Annotation annotation : annotations) {
-                if (annotation.annotationType().isAssignableFrom(ReportMessage.class)) {
-                    return ((ReportMessage) annotation).value();
+        private static String getReportMessage(Annotation[] annotations) {
+            if (annotations != null) {
+                for (Annotation annotation : annotations) {
+                    if (annotation.annotationType().isAssignableFrom(ReportMessage.class)) {
+                        return ((ReportMessage) annotation).value();
+                    }
                 }
             }
-        }
 
-        return null;
+            return null;
+        }
     }
 
 }
