@@ -9,7 +9,8 @@
     License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
     OF ANY KIND, either express or implied. See the License for the specific
     language governing permissions and limitations under the License. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <!-- Model Version -->
     <modelVersion>4.0.0</modelVersion>
@@ -27,8 +28,11 @@
     <artifactId>arquillian-recorder</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0.Alpha4-SNAPSHOT</version>
+
     <name>Arquillian Recorder Aggregator</name>
-    <description>Arquillian Recorder Aggregator</description>
+    <description>Record and report your tests - take screenshots, record videos and make neat reports.</description>
+    <url>https://github.com/arquillian/arquillian-recorder</url>
+    <inceptionYear>2014</inceptionYear>
 
     <!-- Developers -->
     <developers>
@@ -48,7 +52,7 @@
         <module>arquillian-recorder-reporter</module>
         <module>arquillian-recorder-screenshooter-base</module>
         <module>arquillian-recorder-video-base</module>
-        <!-- module>arquillian-desktop-video-recorder</module -->
+        <module>arquillian-desktop-video-recorder</module>
     </modules>
 
     <!-- SCM -->
@@ -57,7 +61,19 @@
         <developerConnection>scm:git:ssh://github.com/arquillian/arquillian-recorder.git</developerConnection>
         <url>git://github.com/arquillian/arquillian-unified-recorder.git</url>
         <tag>HEAD</tag>
-    </scm>    
+    </scm>
+
+    <!-- Issues -->
+    <issueManagement>
+        <system>jira</system>
+        <url>https://issues.jboss.org/browse/ARQ/component/12319240/</url>
+    </issueManagement>
+
+    <!-- CI -->
+    <ciManagement>
+        <system>travis-ci</system>
+        <url>https://travis-ci.org/arquillian/arquillian-recorder</url>
+    </ciManagement>
 
     <!-- Properties -->
     <properties>
@@ -108,7 +124,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>2.7</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -120,12 +135,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.3</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
                 <reportSets>
                     <reportSet>
                         <id>aggregate</id>
@@ -137,4 +150,5 @@
             </plugin>
         </plugins>
     </reporting>
+
 </project>

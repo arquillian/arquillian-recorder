@@ -12,11 +12,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
+    <!-- Model -->
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Artifact configuration -->
     <groupId>org.arquillian.extension</groupId>
     <artifactId>arquillian-desktop-video-recorder</artifactId>
-    <version>1.0.0.Alpha3-SNAPSHOT</version>
+    <version>1.0.0.Alpha4-SNAPSHOT</version>
     <name>Arquillian Desktop Video Recorder</name>
     <description>Arquillian Desktop Video Recorder</description>
 
@@ -41,9 +43,13 @@
 
     <!-- Properties -->
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+        <!-- Xuggler -->
         <xuggler.version>5.4</xuggler.version>
 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Other -->
+        <version.maven.deploy.plugin>2.8.1</version.maven.deploy.plugin>
     </properties>
     
     <!-- Dependencies -->
@@ -59,5 +65,19 @@
             <version>${xuggler.version}</version>
         </dependency>
     </dependencies>
+
+    <!-- Build -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${version.maven.deploy.plugin}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

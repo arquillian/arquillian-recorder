@@ -2,6 +2,8 @@
 
 Desktop video recorder is an extension to Arquillian platform which provides the possibility to record tests as videos. Whole desktop is recorded. In order to use it, please place this artifact configuration into Maven dependencies.
 
+This project will never be released to Maven Central since it uses Xuggler project (GPL) which is not compatible with Apache 2.0 licence. You have to build this extension on your own by `mvn clean install` in order to use it in your testing project.
+
 == Making it part of your extension
 
 [source,xml]

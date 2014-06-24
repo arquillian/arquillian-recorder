@@ -1,0 +1,11 @@
+language: java
+
+jdk:
+  - oraclejdk7
+  - openjdk6
+
+branches:
+  only:
+    - master
+
+script: "mvn verify"
