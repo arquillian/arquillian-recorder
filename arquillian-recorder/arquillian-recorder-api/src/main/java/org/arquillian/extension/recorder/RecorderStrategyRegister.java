@@ -29,11 +29,11 @@ public class RecorderStrategyRegister {
     private final Set<RecorderStrategy<?>> recorderStrategies = new TreeSet<RecorderStrategy<?>>(new RecorderStrategyComparator());
 
     public void add(RecorderStrategy<?> recorderStrategy) {
-        recorderStrategies.add(recorderStrategy);
+        this.recorderStrategies.add(recorderStrategy);
     }
 
     public void addAll(Set<RecorderStrategy<?>> recorderStrategies) {
-        recorderStrategies.addAll(recorderStrategies);
+        this.recorderStrategies.addAll(recorderStrategies);
     }
 
     public void clear() {

@@ -16,9 +16,8 @@
  */
 package org.arquillian.recorder.reporter.impl;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.arquillian.extension.recorder.screenshooter.Screenshot;
 import org.arquillian.extension.recorder.video.Video;
 import org.jboss.arquillian.core.spi.Validate;
@@ -29,13 +28,13 @@ import org.jboss.arquillian.core.spi.Validate;
  */
 public class TakenResourceRegister {
 
-    private final Set<Screenshot> takenScreenshots = new HashSet<Screenshot>();
+    private final List<Screenshot> takenScreenshots = new ArrayList<Screenshot>();
 
-    private final Set<Screenshot> reportedScreenshots = new HashSet<Screenshot>();
+    private final List<Screenshot> reportedScreenshots = new ArrayList<Screenshot>();
 
-    private final Set<Video> takenVideos = new HashSet<Video>();
+    private final List<Video> takenVideos = new ArrayList<Video>();
 
-    private final Set<Video> reportedVideos = new HashSet<Video>();
+    private final List<Video> reportedVideos = new ArrayList<Video>();
 
     public boolean addTaken(Screenshot screenshot) {
         Validate.notNull(screenshot, "Screenshot can not be a null object!");
@@ -57,19 +56,19 @@ public class TakenResourceRegister {
         return reportedVideos.add(video);
     }
 
-    public Set<Screenshot> getTakenScreenshots() {
+    public List<Screenshot> getTakenScreenshots() {
         return takenScreenshots;
     }
 
-    public Set<Screenshot> getReportedScreenshots() {
+    public List<Screenshot> getReportedScreenshots() {
         return reportedScreenshots;
     }
 
-    public Set<Video> getTakenVideos() {
+    public List<Video> getTakenVideos() {
         return takenVideos;
     }
 
-    public Set<Video> getReportedVideos() {
+    public List<Video> getReportedVideos() {
         return reportedVideos;
     }
 

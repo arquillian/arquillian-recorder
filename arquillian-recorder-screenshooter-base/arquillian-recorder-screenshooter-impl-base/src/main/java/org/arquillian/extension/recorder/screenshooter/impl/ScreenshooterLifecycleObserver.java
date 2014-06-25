@@ -138,7 +138,6 @@ public class ScreenshooterLifecycleObserver {
                 } else {
                     taking = recorderStrategy.isTakingAction(event, testResult);
                 }
-
             }
 
             return taking;
