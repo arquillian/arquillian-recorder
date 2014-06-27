@@ -75,6 +75,9 @@ Please put this extension definition into +arquillian.xml+ in order to bootstrap
 |+title+
 |custom title for your report
 |_Arquillian test run report_
+|+asciidocStandardCompliant+
+|If false, export will be an AsciiDoc document to be rendered by Asciidoctor, if true, generated AsciiDoc document will be compliant with standard format.
+|false
 |===
 
 === How does it work?

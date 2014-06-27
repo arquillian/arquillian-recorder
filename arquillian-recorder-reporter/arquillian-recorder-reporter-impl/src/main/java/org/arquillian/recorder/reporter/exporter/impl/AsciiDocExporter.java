@@ -200,7 +200,12 @@ public class AsciiDocExporter implements Exporter {
      */
     protected void writeDocumentHeader() throws IOException {
         writer.append("= ").append(this.configuration.getTitle()).append(NEW_LINE);
-        writer.append(":icons: font").append(NEW_LINE).append(NEW_LINE);
+
+        if(isAsciidoctorOutput()) {
+            writer.append(":icons: font").append(NEW_LINE);
+        }
+
+        writer.append(NEW_LINE);
     }
 
     /**
@@ -582,12 +587,27 @@ public class AsciiDocExporter implements Exporter {
     private String getIcon(TestMethodReport testMethodReport) {
 
         switch (testMethodReport.getStatus()) {
-            case PASSED:
-                return getIcon(SUCCESS_STEP, SUCCESS_COLOR);
-            case FAILED:
-                return getIcon(FAIL_STEP, FAILED_COLOR);
-            case SKIPPED:
-                return getIcon(NOT_PERFORMED_STEP, WARNING_COLOR);
+            case PASSED: {
+                if(isAsciidoctorOutput()) {
+                    return getIcon(SUCCESS_STEP, SUCCESS_COLOR);
+                } else {
+                    return testMethodReport.getStatus().name();
+                }
+            }
+            case FAILED: {
+                if(isAsciidoctorOutput()) {
+                    return getIcon(FAIL_STEP, FAILED_COLOR);
+                } else {
+                    return testMethodReport.getStatus().name();
+                }
+            }
+            case SKIPPED: {
+                if(isAsciidoctorOutput()) {
+                    return getIcon(NOT_PERFORMED_STEP, WARNING_COLOR);
+                } else {
+                    return testMethodReport.getStatus().name();
+                }
+            }
             default:
                 return "";
         }
@@ -713,4 +733,11 @@ public class AsciiDocExporter implements Exporter {
         }
     }
 
+    /**
+     * Method that checks if user has configured if output should be compliant with AsciiDoc format or can use Asciidoctor features.
+     * @return true if output can be generated using Asciidoctor features. False otherwise.
+     */
+    private boolean isAsciidoctorOutput() {
+        return !this.configuration.isAsciiDocCompliant();
+    }
 }
