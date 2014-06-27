@@ -37,6 +37,8 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
 
     public static final String DEFAULT_MAX_IMAGE_WIDTH = "500";
 
+    public static final String DEFAULT_ASCIIDOC_STANDARD_COMPLIANT = "false";
+    
     // in percents
 
     public static final String DEFAULT_IMAGE_WIDTH = "100";
@@ -64,7 +66,17 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
     private String imageHeight = DEFAULT_IMAGE_HEIGHT;
 
     private String title = DEFAULT_TITLE;
+    
+    private String asciidocStandardCompliant = DEFAULT_ASCIIDOC_STANDARD_COMPLIANT;
 
+    /**
+     * 
+     * @return true if we want generated asciidoc document be compliant with standard format. False otherwise and output will be an AsciiDoc document to be rendered by Asciidoctor. 
+     */
+    public boolean isAsciiDocCompliant() {
+        return Boolean.parseBoolean(getProperty("asciidocStandardCompliant", asciidocStandardCompliant).toLowerCase());
+    }
+    
     /**
      *
      * @return type of report we want to get, it defaults to "xml"
