@@ -200,11 +200,11 @@ public class AsciiDocExporter implements Exporter {
      */
     protected void writeDocumentHeader() throws IOException {
         writer.append("= ").append(this.configuration.getTitle()).append(NEW_LINE);
-        
+
         if(isAsciidoctorOutput()) {
             writer.append(":icons: font").append(NEW_LINE);
         }
-        
+
         writer.append(NEW_LINE);
     }
 
@@ -732,8 +732,7 @@ public class AsciiDocExporter implements Exporter {
             }
         }
     }
-    
-    
+
     /**
      * Method that checks if user has configured if output should be compliant with AsciiDoc format or can use Asciidoctor features.
      * @return true if output can be generated using Asciidoctor features. False otherwise.
