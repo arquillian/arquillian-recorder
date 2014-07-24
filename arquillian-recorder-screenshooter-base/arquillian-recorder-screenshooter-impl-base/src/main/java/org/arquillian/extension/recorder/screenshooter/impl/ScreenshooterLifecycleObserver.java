@@ -25,6 +25,7 @@ import org.arquillian.extension.recorder.screenshooter.Screenshooter;
 import org.arquillian.extension.recorder.screenshooter.ScreenshooterConfiguration;
 import org.arquillian.extension.recorder.screenshooter.ScreenshotMetaData;
 import org.arquillian.extension.recorder.screenshooter.ScreenshotType;
+import org.arquillian.extension.recorder.screenshooter.api.Screenshot;
 import org.arquillian.extension.recorder.screenshooter.event.AfterScreenshotTaken;
 import org.arquillian.extension.recorder.screenshooter.event.BeforeScreenshotTaken;
 import org.arquillian.extension.recorder.screenshooter.event.TakeScreenshot;
@@ -75,7 +76,7 @@ public class ScreenshooterLifecycleObserver {
 
             beforeScreenshotTaken.fire(new BeforeScreenshotTaken(metaData));
 
-            takeScreenshot.fire(new TakeScreenshot(screenshotName, metaData, When.BEFORE));
+            takeScreenshot.fire(new TakeScreenshot(screenshotName, metaData, When.BEFORE, event.getTestMethod().getAnnotation(Screenshot.class)));
 
             afterScreenshotTaken.fire(new AfterScreenshotTaken(metaData));
         }
@@ -97,7 +98,7 @@ public class ScreenshooterLifecycleObserver {
 
             beforeScreenshotTaken.fire(new BeforeScreenshotTaken(metaData));
 
-            takeScreenshot.fire(new TakeScreenshot(screenshotName, metaData, when));
+            takeScreenshot.fire(new TakeScreenshot(screenshotName, metaData, when, null));
 
             afterScreenshotTaken.fire(new AfterScreenshotTaken(metaData));
         }

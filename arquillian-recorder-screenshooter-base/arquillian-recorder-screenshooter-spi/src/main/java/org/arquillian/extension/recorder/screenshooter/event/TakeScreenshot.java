@@ -38,13 +38,16 @@ public class TakeScreenshot {
 
     private String fileName;
 
-    public TakeScreenshot(String fileName, ScreenshotMetaData metaData, When when) {
+    private org.arquillian.extension.recorder.screenshooter.api.Screenshot annotation;
+
+    public TakeScreenshot(String fileName, ScreenshotMetaData metaData, When when, org.arquillian.extension.recorder.screenshooter.api.Screenshot annotation) {
         Validate.notNull(fileName, "File name is a null object!");
         Validate.notNull(metaData, "Meta data is a null object!");
         Validate.notNull(when, "When is a null object!");
         this.metaData = metaData;
         this.when = when;
         this.fileName = fileName;
+        this.annotation = annotation;
     }
 
     public Screenshot getScreenshot() {
@@ -74,6 +77,10 @@ public class TakeScreenshot {
 
     public String getFileName() {
         return fileName;
+    }
+
+    public org.arquillian.extension.recorder.screenshooter.api.Screenshot getAnnotation() {
+        return annotation;
     }
 
     public void setFileName(String fileName) {
