@@ -297,6 +297,15 @@
                                 </img>
                               </a>                  
                             </xsl:when>
+                            <xsl:when test="@phase = 'ON_EVERY_ACTION'">
+                              <h6>On every action</h6>
+                              <a href="{@link}">
+                                <img src="{@link}">
+                                  <xsl:attribute name="width"><xsl:value-of select="@width * /report/reportConfiguration/imageWidth div 100"/></xsl:attribute>
+                                  <xsl:attribute name="height"><xsl:value-of select="@height * /report/reportConfiguration/imageHeight div 100"/></xsl:attribute>
+                                </img>
+                              </a>
+                            </xsl:when>
                           </xsl:choose>
                         </div>
                       </xsl:otherwise>
