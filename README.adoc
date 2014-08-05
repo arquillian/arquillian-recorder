@@ -1,6 +1,6 @@
 = Arquillian Recorder image:https://travis-ci.org/arquillian/arquillian-recorder.png[Build status, link="https://travis-ci.org/arquillian/arquillian-recorder"]
 
-Arquillian Recorder project brings realtime reports of your Arquillian tests. You can report your own report informations by firing SPI events from your extension and you can implement your own screenshooters and video recorders of your tests by base screenshooter and video recorder implementations on which you build your target implementation very easily.
+Arquillian Recorder project brings realtime reports of your Arquillian tests. You can report your own report informations by firing SPI events from your extension and you can implement your own screenshooters and video recorders of your tests by base screenshooter and video recorder implementations on top of which you build your target implementation very easily.
 
 Reporter subproject is gathering all information from Arquillian test as it proceeds in your test run and it generates reports even after every test method if you want to. You can export some report to various formats like xml, json or html (with custom template) and you can easily integrate your own export format according to your preferencies.
 
@@ -102,6 +102,51 @@ public class TestCase
     }
 }
 ----
+
+=== Method-level screenshots
+
+While taking screenshots, besides screenshooter configuration in +arquillian.xml+, you can specify your preferencies regarding of screenshot taking directly on methods by +Screenshot+ annotation put on particular test method. Doing so will override your configuration in +arquillian.xml+. Lets see an example:
+
+Configuration in +arquillian.xml+:
+
+----
+<extension qualifier="screenshooter">
+    <property name="takeBeforeTest">false</property>
+    <property name="takeAfterTest">false</property>
+    <property name="takeWhenTestFailed">false</property>
+</extension>
+----
+
+Possible test case with supressed configuration by +Screenshot+ annotation:
+
+----
+@RuWith(Arquillian.class)
+@RunAsClient
+public class TestCase
+{
+    @Test
+    @Screenshot(takeBeforeTest = true, takeAfterTest = true)
+    public void test01()
+    {
+        // screenshots will be taken before and after test
+    }
+
+    @Test
+    @Screenshot // takeWhenTestFailed is by default true
+    public void test02()
+    {
+        // suppose this test fails so screenshot will be taken
+    }
+
+    @Test
+    public void test03()
+    {
+        // configuration taken from arquillian.xml
+    }
+}
+----
+
+You can take your screenshots even on every interaction with injected WebDriver. E.g. when you do +driver.get()+, screenshot will be taken. This is feature of https://github.com/arquillian/arquillian-graphene/tree/2.1.0.Alpha1/extension/screenshooter[screenshooter implementation for Arquillian Graphene] which builds on top of this core extension screenshooter API.
 
 === How to add custom language support?
 
