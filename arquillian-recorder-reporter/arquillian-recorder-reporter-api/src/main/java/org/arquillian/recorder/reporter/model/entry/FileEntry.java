@@ -33,13 +33,14 @@ import org.arquillian.recorder.reporter.PropertyEntry;
  * Can hold:
  * <ul>
  * <li>size</li>
+ * <li>message</li>
  * </ul>
  *
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */
 @XmlRootElement(name = "file")
-@XmlType(propOrder = { "path", "size", "type" })
+@XmlType(propOrder = { "path", "size", "type", "message" })
 public class FileEntry extends PropertyEntry {
 
     private String path;
@@ -47,6 +48,8 @@ public class FileEntry extends PropertyEntry {
     private String size;
 
     private String type;
+
+    private String message;
 
     public String getPath() {
         return path;
@@ -75,4 +78,12 @@ public class FileEntry extends PropertyEntry {
         this.type = type;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    @XmlAttribute
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

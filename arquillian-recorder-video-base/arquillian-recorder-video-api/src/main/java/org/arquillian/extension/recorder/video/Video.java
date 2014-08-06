@@ -30,6 +30,8 @@ public abstract class Video extends Resource<VideoMetaData, VideoType> {
 
     private int width;
 
+    private String message;
+
     public int getWidth() {
         return width;
     }
@@ -44,6 +46,14 @@ public abstract class Video extends Resource<VideoMetaData, VideoType> {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
 }

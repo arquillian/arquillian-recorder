@@ -30,6 +30,8 @@ public abstract class Screenshot extends Resource<ScreenshotMetaData, Screenshot
 
     private int height;
 
+    private String message;
+
     public int getWidth() {
         return width;
     }
@@ -44,6 +46,14 @@ public abstract class Screenshot extends Resource<ScreenshotMetaData, Screenshot
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
 }

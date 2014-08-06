@@ -47,7 +47,7 @@ public class AsciiDocReporterTestCase {
 
     @Test
     public void shouldExportReportOnAsciiDocCompliantFormatIfConfigured() throws Exception {
-        
+
         ReporterConfiguration configuration = new ReporterConfiguration();
         Map<String, String> configMap = new HashMap<String, String>();
         configMap.put("report", "asciidoc");
@@ -170,7 +170,7 @@ public class AsciiDocReporterTestCase {
         assertThat(content, not(containsString(":icons: font")));
         assertThat(content, not(containsString("icon:")));
     }
-    
+
     @Test
     public void shouldExportReportInAsciiDocFormat() throws Exception {
 

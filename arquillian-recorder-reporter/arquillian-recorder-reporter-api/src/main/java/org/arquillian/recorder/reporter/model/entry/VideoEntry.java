@@ -30,6 +30,7 @@ import org.arquillian.extension.recorder.When;
  * <li>phase as {@link When}</li>
  * <li>width</li>
  * <li>height</li>
+ * <li>link</li>
  * </ul>
  *
  * @see FileEntry

@@ -48,11 +48,13 @@ public class DesktopVideoRecorder implements Recorder {
 
     private TakenResourceRegister takenResourceRegister;
 
+    private String message;
+
     /**
-     * 
+     *
      * @param takenResourceRegister
      * @throws IllegalArgumentException if {@code takenResourceRegister} is a null object
-     * 
+     *
      */
     public DesktopVideoRecorder(TakenResourceRegister takenResourceRegister) {
         Validate.notNull(takenResourceRegister, "Resource register can not be a null object!");
@@ -129,6 +131,8 @@ public class DesktopVideoRecorder implements Recorder {
     public Video stopRecording() {
         if (recorder != null && recorder.isRecording()) {
             Video video = recorder.stopRecording();
+            video.setMessage(message);
+
             takenResourceRegister.addTaken(video);
             return video;
         }
@@ -136,22 +140,24 @@ public class DesktopVideoRecorder implements Recorder {
     }
 
     @Override
-    public void setVideoTargetDir(String videoTargetDir) {
+    public Recorder setVideoTargetDir(String videoTargetDir) {
         Validate.notNullOrEmpty(videoTargetDir, "Video target directory can not be a null object nor an empty string!");
-        setVideoTargetDir(new File(videoTargetDir));
+        return setVideoTargetDir(new File(videoTargetDir));
     }
 
     @Override
-    public void setVideoTargetDir(File videoTargetDir) {
+    public Recorder setVideoTargetDir(File videoTargetDir) {
         Validate.notNull(videoTargetDir, "File is a null object!");
         RecorderFileUtils.createDirectory(videoTargetDir);
         this.videoTargetDir = videoTargetDir;
+        return this;
     }
 
     @Override
-    public void setVideoType(VideoType videoType) {
+    public Recorder setVideoType(VideoType videoType) {
         Validate.notNull(videoType, "Video type is a null object!");
         this.videoType = videoType;
+        return this;
     }
 
     @Override
@@ -160,12 +166,12 @@ public class DesktopVideoRecorder implements Recorder {
     }
 
     @Override
-    public void setFrameRate(int framerate) {
+    public Recorder setFrameRate(int framerate) {
         if (recorder != null) {
             if (framerate > MIN_FRAMERATE && framerate < MAX_FRAMERATE) {
                 recorder.setFrameRate(framerate);
             }
-            return;
+            return this;
         }
         throw new IllegalStateException("It seems you have not called init() method of this video recorder yet.");
     }
@@ -176,6 +182,12 @@ public class DesktopVideoRecorder implements Recorder {
             return recorder.getFrameRate();
         }
         throw new IllegalStateException("It seems you have not called init() method of this video recorder yet.");
+    }
+
+    @Override
+    public Recorder setMessage(String message) {
+        this.message = message;
+        return this;
     }
 
 }

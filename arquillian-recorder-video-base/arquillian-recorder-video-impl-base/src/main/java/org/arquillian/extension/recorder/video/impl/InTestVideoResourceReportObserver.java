@@ -18,10 +18,10 @@ package org.arquillian.extension.recorder.video.impl;
 
 import org.arquillian.extension.recorder.When;
 import org.arquillian.extension.recorder.video.Video;
+import org.arquillian.recorder.reporter.PropertyEntry;
 import org.arquillian.recorder.reporter.event.InTestResourceReport;
 import org.arquillian.recorder.reporter.event.PropertyReportEvent;
 import org.arquillian.recorder.reporter.impl.TakenResourceRegister;
-import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -46,15 +46,13 @@ public class InTestVideoResourceReportObserver {
         for (Video video : register.getTakenVideos()) {
             if (!register.getReportedVideos().contains(video)) {
 
-                VideoEntry entry = new VideoEntry();
-                entry.setPath(video.getResource().getAbsolutePath());
-                entry.setType(video.getResourceType().toString());
-                entry.setSize(Long.toString(video.getResource().length()));
-                entry.setHeight(video.getHeight());
-                entry.setWidth(video.getWidth());
-                entry.setPhase(When.IN_TEST);
+                PropertyEntry propertyEntry = new VideoReportEntryBuilder()
+                    .withWhen(When.IN_TEST)
+                    .withMetadata(video.getResourceMetaData())
+                    .withVideo(video)
+                    .build();
 
-                reportEvent.fire(new PropertyReportEvent(entry));
+                reportEvent.fire(new PropertyReportEvent(propertyEntry));
             }
         }
 

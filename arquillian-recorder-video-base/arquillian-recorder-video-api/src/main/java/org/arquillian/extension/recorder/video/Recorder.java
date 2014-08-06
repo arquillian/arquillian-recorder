@@ -79,20 +79,23 @@ public interface Recorder {
     /**
      *
      * @param videoTargetDir name of directory you want to save all videos to
+     * @return this recorder
      */
-    void setVideoTargetDir(String videoTargetDir);
+    Recorder setVideoTargetDir(String videoTargetDir);
 
     /**
      *
      * @param videoTargetDir directory you want to save all videos to
+     * @return this recorder
      */
-    void setVideoTargetDir(File videoTargetDir);
+    Recorder setVideoTargetDir(File videoTargetDir);
 
     /**
      *
      * @param videoType type of video you want all videos to be
+     * @return this recorder
      */
-    void setVideoType(VideoType videoType);
+    Recorder setVideoType(VideoType videoType);
 
     /**
      *
@@ -111,13 +114,24 @@ public interface Recorder {
     /**
      *
      * @param framerate of recorder videos
+     * @return this recorder
      */
-    void setFrameRate(int framerate);
+    Recorder setFrameRate(int framerate);
 
     /**
      *
      * @return actual framerate
      */
     int getFrameRate();
+
+    /**
+     * You have access to this message in resulting report so you can document what some video actually means. If message is a
+     * null object, it should not be added to the resulting report. If this method is called before all recorded videos, all
+     * videos will share the same message.
+     *
+     * @param message message to add for to be recorded video
+     * @return this recorder
+     */
+    Recorder setMessage(String message);
 
 }

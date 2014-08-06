@@ -249,7 +249,7 @@
                   <div class="video">
                     <xsl:choose>
                       <xsl:when test="@phase = 'IN_TEST'">
-                        <h6>In-test video</h6>
+                        <h6><xsl:choose><xsl:when test="@message"><xsl:value-of select="@message"></xsl:value-of></xsl:when><xsl:otherwise>In-test video</xsl:otherwise></xsl:choose></h6>
                       </xsl:when>
                       <xsl:otherwise>
                       </xsl:otherwise>
@@ -319,7 +319,7 @@
                     <xsl:if test="@phase = 'IN_TEST'">
                       <div class="screenshotParent">
                         <div class="screenshotLeft">
-                          <h6>In-test screenshot</h6>
+                          <h6><xsl:choose><xsl:when test="@message"><xsl:value-of select="@message"></xsl:value-of></xsl:when><xsl:otherwise>In-test screenshot</xsl:otherwise></xsl:choose></h6>
                           <xsl:choose>
                             <xsl:when test="@width &gt; /report/reportConfiguration/maxImageWidth">
                               <p><a href="{@link}"><xsl:value-of select="@link"/></a></p>

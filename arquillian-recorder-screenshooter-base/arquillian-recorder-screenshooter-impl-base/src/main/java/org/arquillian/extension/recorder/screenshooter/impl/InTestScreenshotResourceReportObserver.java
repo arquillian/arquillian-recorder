@@ -18,10 +18,10 @@ package org.arquillian.extension.recorder.screenshooter.impl;
 
 import org.arquillian.extension.recorder.When;
 import org.arquillian.extension.recorder.screenshooter.Screenshot;
+import org.arquillian.recorder.reporter.PropertyEntry;
 import org.arquillian.recorder.reporter.event.InTestResourceReport;
 import org.arquillian.recorder.reporter.event.PropertyReportEvent;
 import org.arquillian.recorder.reporter.impl.TakenResourceRegister;
-import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -46,13 +46,11 @@ public class InTestScreenshotResourceReportObserver {
         for (Screenshot screenshot : register.getTakenScreenshots()) {
             if (!register.getReportedScreenshots().contains(screenshot)) {
 
-                ScreenshotEntry propertyEntry = new ScreenshotEntry();
-                propertyEntry.setPath(screenshot.getResource().getAbsolutePath());
-                propertyEntry.setType(screenshot.getResourceType().toString());
-                propertyEntry.setSize(Long.toString(screenshot.getResource().length()));
-                propertyEntry.setWidth(screenshot.getWidth());
-                propertyEntry.setHeight(screenshot.getHeight());
-                propertyEntry.setPhase(When.IN_TEST);
+                PropertyEntry propertyEntry = new ScreenshotReportEntryBuilder()
+                    .withWhen(When.IN_TEST)
+                    .withMetadata(screenshot.getResourceMetaData())
+                    .withScreenshot(screenshot)
+                    .build();
 
                 reportEvent.fire(new PropertyReportEvent(propertyEntry));
             }

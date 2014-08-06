@@ -89,8 +89,9 @@ public interface Screenshooter {
      * @param screenshotTargetDir directory to save screenshots to
      * @throws IllegalArgumentException if {@code screenshotTargetDir} is null, empty or does not represents existing and
      *         writable directory
+     * @return this screenshooter
      */
-    void setScreenshotTargetDir(String screenshotTargetDir);
+    Screenshooter setScreenshotTargetDir(String screenshotTargetDir);
 
     /**
      * Sets a directory where all taken screenshots will be saved from now on.
@@ -98,20 +99,32 @@ public interface Screenshooter {
      * @param screenshotTargetDir directory to save screenshots to
      * @throws IllegalArgumentException if {@code screenshotTargetDir} is null, empty or does not represents existing and
      *         writable directory
+     * @return this screenshooter
      */
-    void setScreenshotTargetDir(File screenshotTargetDir);
+    Screenshooter setScreenshotTargetDir(File screenshotTargetDir);
 
     /**
      * Sets the format of images to take. After setting this, all subsequent images will be of this format when not explicitly
      * specified otherwise.
      *
      * @param type type of screenshots to take from now on
+     * @return this screenshooter
      */
-    void setScreenshotType(ScreenshotType type);
+    Screenshooter setScreenshotType(ScreenshotType type);
 
     /**
      *
      * @return type of screenshot this screenshooter makes after taking it
      */
     ScreenshotType getScreenshotType();
+
+    /**
+     * You have access to this message in resulting report so you can document what some screenshot actually means. If message
+     * is a null object, it should not be added to the resulting report. If this method is called before all taken screenshots,
+     * all screenshots will share the same message.
+     *
+     * @param message message to add for to be taken screenshot
+     * @return this screenshooter
+     */
+    Screenshooter setMessage(String message);
 }

@@ -50,7 +50,10 @@ public class ScreenshotReportEntryBuilder {
     }
 
     public ScreenshotEntry build() {
-        screenshot.setResourceMetaData(metadata);
+
+        if (metadata != null) {
+            screenshot.setResourceMetaData(metadata);
+        }
 
         ScreenshotEntry propertyEntry = new ScreenshotEntry();
         propertyEntry.setPath(screenshot.getResource().getAbsolutePath());
@@ -59,6 +62,7 @@ public class ScreenshotReportEntryBuilder {
         propertyEntry.setSize(Long.toString(screenshot.getResource().length()));
         propertyEntry.setWidth(screenshot.getWidth());
         propertyEntry.setHeight(screenshot.getHeight());
+        propertyEntry.setMessage(screenshot.getMessage());
 
         return propertyEntry;
     }
