@@ -156,6 +156,8 @@ You just have to provide translated xsl template in your preffered language, for
 
 It is impossible to know in advance what some particular Arquillian extension will need to report. For that matter, you can report you own properties into report tree by firing ordinary Arquillian event. Let's see an example:
 
+Please note that this is meant to be used from your own Arquillian extension and it is not supposed to be used directly it test class itself. Eventing and injecting as shown below is not JavaEE eventing. It is Arquillian's own eventing and injecting model you have to embed into your own Arquillian extension in order to report something. In case you want other resource to report besides what is ready for you https://github.com/arquillian/arquillian-recorder/tree/master/arquillian-recorder-reporter/arquillian-recorder-reporter-api/src/main/java/org/arquillian/recorder/reporter/model/entry[like here], send a PR or contact owner of this repository in order to implement that.
+
 [source, java]
 ----
 @Inject private Event<PropertyReportEvent> propertyReportEvent;
