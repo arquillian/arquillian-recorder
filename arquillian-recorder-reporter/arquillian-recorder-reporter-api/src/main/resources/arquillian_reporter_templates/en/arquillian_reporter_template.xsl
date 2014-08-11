@@ -53,7 +53,43 @@
       .failed { color: #FF0000; }
       .skipped { color: #FF9900; }
       .whitespaces { margin: 0 0 0 2em; white-space: pre; }
+      .exception_stacktrace { overflow: hidden; height: 16%; }
+      .exception_stacktrace::first-line { font-weight:bold; font-size: 110%; }
+      #hoverpopup { visibility:hidden; position:absolute; top:0; left:0; color: white; background-color: black;}
     </style>
+    <script type="text/javascript"><![CDATA[
+            function overflow(x) {
+                if(x.style.overflow === "auto") {
+                    x.style.overflow = "hidden";
+                } else {
+                    x.style.overflow = "auto";
+                }
+            }
+            function showPopup(hoveritem)
+            {
+                var hp = document.getElementById("hoverpopup");
+                var bottomLeft = getElementBottomLeft(hoveritem);
+                hp.style.top = bottomLeft.bottom;
+                hp.style.left = bottomLeft.left;
+                hp.style.visibility = "visible";
+            }
+            function hidePopup()
+            {
+                var hp = document.getElementById("hoverpopup");
+                hp.style.visibility = "hidden";
+            }
+            function getElementBottomLeft(ele) {
+                var bottom = 0;
+                var left = 0;
+                while(ele.tagName != "BODY") {
+                    bottom += ele.offsetTop + ele.offsetHeight;
+                    left += ele.offsetLeft;
+                    ele = ele.offsetParent;
+                }
+                return { bottom: bottom, left: left };
+            }
+            ]]>
+    </script>
   </head>
   <body>
     <div id="main">
@@ -240,7 +276,10 @@
                   </table>
                   <xsl:if test="exception">
                   <div class="whitespaces">
-                    <xsl:value-of select="exception"/>
+                    <div class="exception_stacktrace dropt" onclick="overflow(this);" style="cursor:default;" onmouseover="showPopup(this);" onmouseout="hidePopup();">
+                        <xsl:value-of select="exception"/>
+                        <span style="width:500px;">Click in order to make stacktrace scrollable!</span>
+                    </div>
                   </div>
                   </xsl:if>
                 </div>
@@ -347,6 +386,9 @@
       </div>
     </xsl:for-each>
         <font size="2">Arquillian name and logo are registered trademarks of Red Hat Inc.</font>
+        <div id="hoverpopup">
+            Click in order to make stacktrace un/scrollable!
+        </div>
   </body>
 </html>
 </xsl:template>
