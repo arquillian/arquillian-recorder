@@ -22,12 +22,12 @@
     <title>Arquillian test run report</title>
     <style type="text/css">
       body { margin: 1em; padding: 0; }
-      h1 { font-size: 300%; margin: 0; padding: 0; display:inline; }
+      h1 { font-size: 300%; margin: 0; padding: 0; display: inline-block; }
       h1 > img { float:left; margin: 0 5px 0 0; }
       h2 { font-size: 275%; margin: 0; padding: 0; }
       h3 { font-size: 250%; margin: 0; padding: 0; }
       h4 { font-size: 200%; margin: 0; padding: 0; }
-      h5 { font-size: 150%; margin: 0; padding: 0; display:inline; }
+      h5 { font-size: 150%; margin: 0; padding: 0; display: inline-block; }
       h5 > img { float:left; margin: 0 5px 0 0; }
       h6 { font-size: 125%; margin: 0; padding: 0; }
       .clear { clear: both; }
