@@ -62,7 +62,7 @@ public class TableEntry extends PropertyEntry {
 
         for (TableRowEntry row : rows) {
             int countTemp = row.getCells().size();
-            if (countTemp > 0) {
+            if (countTemp > count) {
                 count = countTemp;
             }
         }
