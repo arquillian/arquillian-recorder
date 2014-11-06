@@ -49,7 +49,11 @@
 
         <!-- Other -->
         <version.maven.deploy.plugin>2.8.1</version.maven.deploy.plugin>
-    </properties>
+        <version.maven.compiler.plugin>2.3.2</version.maven.compiler.plugin>
+
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.6</maven.compiler.source>
+    </properties>    
     
     <!-- Dependencies -->
     <dependencies>
@@ -68,6 +72,15 @@
     <!-- Build -->
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.maven.compiler.plugin}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
