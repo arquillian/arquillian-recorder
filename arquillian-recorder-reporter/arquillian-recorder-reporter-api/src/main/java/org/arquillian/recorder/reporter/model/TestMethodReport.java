@@ -30,6 +30,7 @@ import org.arquillian.recorder.reporter.ReportEntry;
 import org.arquillian.recorder.reporter.model.entry.FileEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
+import org.arquillian.recorder.reporter.model.entry.TableEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 import org.jboss.arquillian.test.spi.TestResult.Status;
 
@@ -79,7 +80,8 @@ public class TestMethodReport implements ReportEntry {
         @XmlElement(name = "property", type = KeyValueEntry.class),
         @XmlElement(name = "file", type = FileEntry.class),
         @XmlElement(name = "video", type = VideoEntry.class),
-        @XmlElement(name = "screenshot", type = ScreenshotEntry.class)
+        @XmlElement(name = "screenshot", type = ScreenshotEntry.class),
+        @XmlElement(name = "table", type = TableEntry.class)
     })
     private final List<PropertyEntry> propertyEntries = new ArrayList<PropertyEntry>();
 

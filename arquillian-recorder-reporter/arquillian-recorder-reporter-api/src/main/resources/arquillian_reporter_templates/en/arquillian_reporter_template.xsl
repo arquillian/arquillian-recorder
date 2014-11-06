@@ -273,7 +273,26 @@
                         <tr><td colspan="2"><xsl:value-of select="@path"/></td></tr>
                       </xsl:for-each>
                     </tbody>
-                  </table>
+                  </table>                      
+                      <xsl:for-each select="table">
+                        <table>
+                            <xsl:if test="@header">
+                            <tr>
+                                <th>
+                                    <xsl:attribute name="colspan"><xsl:value-of select='@numberOfCells'/></xsl:attribute>
+                                    <xsl:value-of select="@header"/>
+                                </th>
+                            </tr>
+                            </xsl:if>
+                            <xsl:for-each select="row">
+                                <tr>
+                                    <xsl:for-each select="cell">
+                                        <td><xsl:value-of select="."/></td>
+                                    </xsl:for-each>
+                                </tr>
+                            </xsl:for-each>
+                        </table>
+                      </xsl:for-each>
                   <xsl:if test="exception">
                   <div class="whitespaces">
                     <div class="exception_stacktrace dropt" onclick="overflow(this);" style="cursor:default;" onmouseover="showPopup(this);" onmouseout="hidePopup();">

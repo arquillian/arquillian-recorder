@@ -16,6 +16,9 @@
  */
 package org.arquillian.recorder.reporter.impl.test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +27,7 @@ import org.arquillian.recorder.reporter.Exporter;
 import org.arquillian.recorder.reporter.JAXBContextFactory;
 import org.arquillian.recorder.reporter.Reporter;
 import org.arquillian.recorder.reporter.ReporterConfiguration;
+import org.arquillian.recorder.reporter.exporter.impl.HTMLExporter;
 import org.arquillian.recorder.reporter.exporter.impl.XMLExporter;
 import org.arquillian.recorder.reporter.impl.ReporterImpl;
 import org.arquillian.recorder.reporter.model.ContainerReport;
@@ -35,6 +39,8 @@ import org.arquillian.recorder.reporter.model.TestSuiteReport;
 import org.arquillian.recorder.reporter.model.entry.FileEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
+import org.arquillian.recorder.reporter.model.entry.TableEntry;
+import org.arquillian.recorder.reporter.model.entry.TableRowEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.junit.Test;
@@ -65,8 +71,9 @@ public class ReporterTestCase {
     public void testReporter() throws Exception {
         ReporterConfiguration configuration = new ReporterConfiguration();
         Map<String, String> configMap = new HashMap<String, String>();
-        configMap.put("report", "xml");
+        configMap.put("report", "html");
         configMap.put("file", "report");
+        configMap.put("rootDir", "target");
         configuration.setConfiguration(configMap);
         configuration.validate();
 
@@ -125,7 +132,7 @@ public class ReporterTestCase {
         VideoEntry videoEntry = new VideoEntry();
         videoEntry.setPath("some/someVideo.mp4");
         videoEntry.setSize("54M");
-        reporter.getReporterCursor().getCursor().getPropertyEntries().add(videoEntry);
+        //reporter.getReporterCursor().getCursor().getPropertyEntries().add(videoEntry);
 
         TestMethodReport testMethodReport = new TestMethodReport();
         testMethodReport.setName("someTestMethod");
@@ -134,7 +141,22 @@ public class ReporterTestCase {
         testResult.setEnd(testResult.getStart() + 1000);
         testMethodReport.setStatus(testResult.getStatus());
         testMethodReport.setDuration(testResult.getEnd() - testResult.getStart());
-
+        
+        // table
+        TableEntry tableEntry = new TableEntry();
+        tableEntry.setHeader("This is my header");
+        
+        TableRowEntry tableRow = new TableRowEntry();
+        tableRow.setCells(Arrays.asList("cell", "cell2", "cell3"));
+        
+        TableRowEntry tableRow2 = new TableRowEntry();
+        tableRow2.setCells(Arrays.asList("cell4", "cell5", "cell6"));
+        
+        tableEntry.getRows().add(tableRow);
+        tableEntry.getRows().add(tableRow2);
+        
+        testMethodReport.getPropertyEntries().add(tableEntry);
+        
         reporter.getLastTestClassReport().getTestMethodReports().add(testMethodReport);
         reporter.setTestMethodReport(testMethodReport);
 
@@ -159,10 +181,11 @@ public class ReporterTestCase {
         sce2.setPath("niceScreenshotBefore.jpg");
         sce2.setPhase(When.BEFORE);
 
-        reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce);
-        reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce2);
+        //reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce);
+        //reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce2);
 
-        Exporter exporter = new XMLExporter(JAXBContextFactory.initContext(Report.class));
+        //Exporter exporter = new XMLExporter(JAXBContextFactory.initContext(Report.class));
+        Exporter exporter = new HTMLExporter(JAXBContextFactory.initContext(Report.class));
         exporter.setConfiguration(configuration);
 
         exporter.export(reporter.getReport());
