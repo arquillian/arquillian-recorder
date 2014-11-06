@@ -105,7 +105,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
      * XSL template for transforming XML to HTML when using HTML report type, defaults to "template.xsl". When this file is not
      * found, default system XSL template is used.
      *
-     * @return
+     * @return xsl template file
      */
     public File getTemplate() {
         return new File(getProperty("template", template));
@@ -118,7 +118,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
     /**
      * Language to use for resulting report. Defaults to "en" as English.
      *
-     * @return
+     * @return language
      */
     public String getLanguage() {
         return getProperty("language", language).toLowerCase();

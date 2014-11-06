@@ -50,7 +50,7 @@ public interface RecorderStrategy<T extends Configuration<T>> {
     /**
      * The lower the precedence is, the sooner this strategy is treated
      *
-     * @return
+     * @return precedence of some strategy
      */
     int precedence();
 }

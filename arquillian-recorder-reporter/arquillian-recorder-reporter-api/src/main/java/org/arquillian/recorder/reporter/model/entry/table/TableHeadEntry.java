@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2014, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -14,24 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.extension.recorder;
+package org.arquillian.recorder.reporter.model.entry.table;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.arquillian.recorder.reporter.Reportable;
 
 /**
- *
- * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
+ * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */
-public abstract class AbstractFileNameBuilder {
+@XmlRootElement(name = "thead")
+public class TableHeadEntry implements Reportable {
 
-    /**
-     * @return built file name
-     */
-    public abstract String build();
+    private final TableRowEntry row = new TableRowEntry();
 
-    /**
-     * Clears a builder.
-     *
-     * @return this
-     */
-    public abstract AbstractFileNameBuilder clear();
+    @XmlElement
+    public TableRowEntry getRow() {
+        return row;
+    }
 }

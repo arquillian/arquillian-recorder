@@ -30,8 +30,10 @@ import javax.xml.bind.annotation.XmlType;
 import org.arquillian.recorder.reporter.PropertyEntry;
 import org.arquillian.recorder.reporter.ReportEntry;
 import org.arquillian.recorder.reporter.model.entry.FileEntry;
+import org.arquillian.recorder.reporter.model.entry.GroupEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
+import org.arquillian.recorder.reporter.model.entry.table.TableEntry;
 
 /**
  * Reports test class in some {@link TestSuiteReport}
@@ -48,6 +50,8 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
  * <li>multiple {@link KeyValueEntry}</li>
  * <li>multiple {@link FileEntry}</li>
  * <li>multiple {@link VideoEntry}</li>
+ * <li>multiple {@link TableEntry}</li>
+ * <li>multiple {@link GroupEntry}</li>
  * </ul>
  *
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
@@ -78,7 +82,9 @@ public class TestClassReport implements ReportEntry {
     @XmlElements({
         @XmlElement(name = "property", type = KeyValueEntry.class),
         @XmlElement(name = "file", type = FileEntry.class),
-        @XmlElement(name = "video", type = VideoEntry.class)
+        @XmlElement(name = "video", type = VideoEntry.class),
+        @XmlElement(name = "table", type = TableEntry.class),
+        @XmlElement(name = "group", type = GroupEntry.class)
     })
     private final List<PropertyEntry> propertyEntries = new ArrayList<PropertyEntry>();
 
