@@ -109,6 +109,25 @@
         </xsl:for-each>
         </tbody>
       </table>
+      <xsl:for-each select="table">
+        <table>
+          <xsl:if test="@header">
+          <tr>
+            <th>
+              <xsl:attribute name="colspan"><xsl:value-of select='@numberOfCells'/></xsl:attribute>
+              <xsl:value-of select="@header"/>
+            </th>
+          </tr>
+          </xsl:if>
+          <xsl:for-each select="row">
+            <tr>
+              <xsl:for-each select="cell">
+                <td><xsl:value-of select="."/></td>
+              </xsl:for-each>
+            </tr>
+          </xsl:for-each>
+        </table>
+      </xsl:for-each>      
     </div>
     <xsl:if test="/report/extension">
     <div class="extensions">
@@ -160,6 +179,25 @@
               </xsl:for-each>
             </tbody>
           </table>
+          <xsl:for-each select="table">
+            <table>
+              <xsl:if test="@header">
+                <tr>
+                  <th>
+                    <xsl:attribute name="colspan"><xsl:value-of select='@numberOfCells'/></xsl:attribute>
+                    <xsl:value-of select="@header"/>
+                  </th>
+                </tr>
+                </xsl:if>
+                <xsl:for-each select="row">
+                  <tr>
+                    <xsl:for-each select="cell">
+                      <td><xsl:value-of select="."/></td>
+                    </xsl:for-each>
+                  </tr>
+                </xsl:for-each>
+              </table>
+            </xsl:for-each>          
         </div>
 
         <xsl:for-each select="video">
@@ -232,6 +270,25 @@
                   </xsl:for-each>
                 </tbody>
               </table>
+              <xsl:for-each select="table">
+                <table>
+                  <xsl:if test="@header">
+                    <tr>
+                      <th>
+                        <xsl:attribute name="colspan"><xsl:value-of select='@numberOfCells'/></xsl:attribute>
+                        <xsl:value-of select="@header"/>
+                      </th>
+                    </tr>
+                  </xsl:if>
+                  <xsl:for-each select="row">
+                    <tr>
+                      <xsl:for-each select="cell">
+                        <td><xsl:value-of select="."/></td>
+                      </xsl:for-each>
+                    </tr>
+                  </xsl:for-each>
+                </table>
+              </xsl:for-each>
             </div>
 
             <xsl:for-each select="video">

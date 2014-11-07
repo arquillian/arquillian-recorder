@@ -16,9 +16,7 @@
  */
 package org.arquillian.recorder.reporter.impl.test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +57,7 @@ public class ReporterTestCase {
         ReporterConfiguration configuration = new ReporterConfiguration();
 
         Map<String, String> configMap = new HashMap<String, String>();
-        configMap.put("report", "xml");
+        configMap.put("report", "html");
         configMap.put("file", "report");
         configuration.setConfiguration(configMap);
 
@@ -85,6 +83,7 @@ public class ReporterTestCase {
         kve3.setValue("value3");
 
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(kve3);
+        reporter.getReporterCursor().getCursor().getPropertyEntries().add(generateTable());
 
         TestSuiteReport testSuiteReport = new TestSuiteReport();
         reporter.getReport().getTestSuiteReports().add(testSuiteReport);
@@ -106,6 +105,9 @@ public class ReporterTestCase {
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(kve2);
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(fe);
 
+        // suite table
+        reporter.getLastTestSuiteReport().getPropertyEntries().add(generateTable());
+        
         // containers
         ContainerReport containerReport = new ContainerReport();
         containerReport.setQualifier("wildfly");
@@ -128,6 +130,8 @@ public class ReporterTestCase {
         testClassReport.setTestClassName(FakeTestClass.class.getName());
         reporter.getLastTestSuiteReport().getTestClassReports().add(testClassReport);
         reporter.setTestClassReport(testClassReport);
+        // test class table
+        reporter.getLastTestClassReport().getPropertyEntries().add(generateTable());
 
         VideoEntry videoEntry = new VideoEntry();
         videoEntry.setPath("some/someVideo.mp4");
@@ -142,20 +146,9 @@ public class ReporterTestCase {
         testMethodReport.setStatus(testResult.getStatus());
         testMethodReport.setDuration(testResult.getEnd() - testResult.getStart());
         
-        // table
-        TableEntry tableEntry = new TableEntry();
-        tableEntry.setHeader("This is my header");
+        // method table
         
-        TableRowEntry tableRow = new TableRowEntry();
-        tableRow.setCells(Arrays.asList("cell", "cell2", "cell3"));
-        
-        TableRowEntry tableRow2 = new TableRowEntry();
-        tableRow2.setCells(Arrays.asList("cell4", "cell5", "cell6"));
-        
-        tableEntry.getRows().add(tableRow);
-        tableEntry.getRows().add(tableRow2);
-        
-        testMethodReport.getPropertyEntries().add(tableEntry);
+        testMethodReport.getPropertyEntries().add(generateTable());
         
         reporter.getLastTestClassReport().getTestMethodReports().add(testMethodReport);
         reporter.setTestMethodReport(testMethodReport);
@@ -189,5 +182,21 @@ public class ReporterTestCase {
         exporter.setConfiguration(configuration);
 
         exporter.export(reporter.getReport());
+    }
+    
+    private TableEntry generateTable() {
+        TableEntry tableEntry = new TableEntry();
+        tableEntry.setHeader("This is my header");
+        
+        TableRowEntry tableRow = new TableRowEntry();
+        tableRow.setCells(Arrays.asList("cell", "cell2", "cell3"));
+        
+        TableRowEntry tableRow2 = new TableRowEntry();
+        tableRow2.setCells(Arrays.asList("cell4", "cell5", "cell6"));
+        
+        tableEntry.getRows().add(tableRow);
+        tableEntry.getRows().add(tableRow2);
+        
+        return tableEntry;
     }
 }

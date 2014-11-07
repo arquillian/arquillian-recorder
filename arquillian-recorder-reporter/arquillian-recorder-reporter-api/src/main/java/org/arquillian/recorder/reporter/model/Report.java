@@ -28,6 +28,7 @@ import org.arquillian.recorder.reporter.PropertyEntry;
 import org.arquillian.recorder.reporter.ReportEntry;
 import org.arquillian.recorder.reporter.model.entry.FileEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
+import org.arquillian.recorder.reporter.model.entry.TableEntry;
 
 /**
  * Root of the reporting structure. <br>
@@ -42,6 +43,7 @@ import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
  * <li>list of {@link ExtensionReport}</li>
  * <li>list of {@link KeyValueEntry}</li>
  * <li>list of {@link FileEntry}</li>
+ * <li>list of {@link TableEntry}</li>
  * </ul>
  *
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
@@ -62,7 +64,8 @@ public class Report implements ReportEntry {
 
     @XmlElements({
         @XmlElement(name = "property", type = KeyValueEntry.class),
-        @XmlElement(name = "file", type = FileEntry.class)
+        @XmlElement(name = "file", type = FileEntry.class),
+        @XmlElement(name = "table", type = TableEntry.class)
     })
     private final List<PropertyEntry> propertyEntries = new ArrayList<PropertyEntry>();
 

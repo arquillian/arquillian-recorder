@@ -31,6 +31,7 @@ import org.arquillian.recorder.reporter.PropertyEntry;
 import org.arquillian.recorder.reporter.ReportEntry;
 import org.arquillian.recorder.reporter.model.entry.FileEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
+import org.arquillian.recorder.reporter.model.entry.TableEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 
 /**
@@ -45,6 +46,7 @@ import org.arquillian.recorder.reporter.model.entry.VideoEntry;
  * <li>list of {@link KeyValueEntry}</li>
  * <li>list of {@link FileEntry}</li>
  * <li>list of {@link VideoEntry}</li>
+ * <li>list of {@lin TableEntry}</li>
  * </ul>
  *
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
@@ -75,7 +77,8 @@ public class TestSuiteReport implements ReportEntry {
     @XmlElements({
         @XmlElement(name = "property", type = KeyValueEntry.class),
         @XmlElement(name = "file", type = FileEntry.class),
-        @XmlElement(name = "video", type = VideoEntry.class)
+        @XmlElement(name = "video", type = VideoEntry.class),
+        @XmlElement(name = "table", type = TableEntry.class)
     })
     private final List<PropertyEntry> propertyEntries = new ArrayList<PropertyEntry>();
 

@@ -53,6 +53,7 @@ import org.jboss.arquillian.test.spi.TestResult.Status;
  * <li>list of {@link FileEntry}</li>
  * <li>list of {@link VideoEntry}</li>
  * <li>list of {@link ScreenshotEntry}</li>
+ * <li>list of {@link TableEntry}</li>
  * </ul>
  *
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
