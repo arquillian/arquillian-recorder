@@ -23,6 +23,7 @@ import java.util.Map;
 import org.arquillian.extension.recorder.When;
 import org.arquillian.recorder.reporter.Exporter;
 import org.arquillian.recorder.reporter.JAXBContextFactory;
+import org.arquillian.recorder.reporter.Reportable;
 import org.arquillian.recorder.reporter.Reporter;
 import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.arquillian.recorder.reporter.exporter.impl.HTMLExporter;
@@ -37,6 +38,7 @@ import org.arquillian.recorder.reporter.model.TestSuiteReport;
 import org.arquillian.recorder.reporter.model.entry.FileEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
+import org.arquillian.recorder.reporter.model.entry.TableCellEntry;
 import org.arquillian.recorder.reporter.model.entry.TableEntry;
 import org.arquillian.recorder.reporter.model.entry.TableRowEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
@@ -54,29 +56,16 @@ public class ReporterTestCase {
 
     @Test
     public void configurationTest() {
-        ReporterConfiguration configuration = new ReporterConfiguration();
-
-        Map<String, String> configMap = new HashMap<String, String>();
-        configMap.put("report", "html");
-        configMap.put("file", "report");
-        configuration.setConfiguration(configMap);
-
-        configuration.validate();
-        System.out.println(configuration.toString());
+        getHtmlConfig();
+        getXmlConfig();
     }
 
     @Test
     public void testReporter() throws Exception {
-        ReporterConfiguration configuration = new ReporterConfiguration();
-        Map<String, String> configMap = new HashMap<String, String>();
-        configMap.put("report", "html");
-        configMap.put("file", "report");
-        configMap.put("rootDir", "target");
-        configuration.setConfiguration(configMap);
-        configuration.validate();
+        ReporterConfiguration htmlConfiguration = getHtmlConfig();
+        ReporterConfiguration xmlConfiguration = getXmlConfig();
 
         Reporter reporter = new ReporterImpl();
-        reporter.setConfiguration(configuration);
 
         KeyValueEntry kve3 = new KeyValueEntry();
         kve3.setKey("key3");
@@ -177,26 +166,67 @@ public class ReporterTestCase {
         //reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce);
         //reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce2);
 
-        //Exporter exporter = new XMLExporter(JAXBContextFactory.initContext(Report.class));
-        Exporter exporter = new HTMLExporter(JAXBContextFactory.initContext(Report.class));
-        exporter.setConfiguration(configuration);
+        Exporter exporter1 = new XMLExporter(JAXBContextFactory.initContext(Report.class));
+        Exporter exporter2 = new HTMLExporter(JAXBContextFactory.initContext(Report.class));
+        exporter1.setConfiguration(xmlConfiguration);
+        exporter2.setConfiguration(htmlConfiguration);
 
-        exporter.export(reporter.getReport());
+        exporter1.export(reporter.getReport());
+        exporter2.export(reporter.getReport());
     }
     
     private TableEntry generateTable() {
         TableEntry tableEntry = new TableEntry();
         tableEntry.setHeader("This is my header");
         
-        TableRowEntry tableRow = new TableRowEntry();
-        tableRow.setCells(Arrays.asList("cell", "cell2", "cell3"));
-        
-        TableRowEntry tableRow2 = new TableRowEntry();
-        tableRow2.setCells(Arrays.asList("cell4", "cell5", "cell6"));
-        
-        tableEntry.getRows().add(tableRow);
-        tableEntry.getRows().add(tableRow2);
+        tableEntry.getRows().add(generateTableRow());
+        tableEntry.getRows().add(generateTableRow());
         
         return tableEntry;
+    }
+    
+    private TableRowEntry generateTableRow() {
+        TableRowEntry row = new TableRowEntry();
+        
+        TableCellEntry tableCell1 = new TableCellEntry();
+        TableCellEntry tableCell2 = new TableCellEntry();
+        
+        tableCell1.setContent("cell1");
+        tableCell1.setColspan(2);
+        tableCell2.setContent("cell2");
+        
+        row.setCells(Arrays.asList(tableCell1, tableCell2));
+        
+        return row;
+    }
+    
+    private ReporterConfiguration getHtmlConfig () {
+        
+        ReporterConfiguration configuration = new ReporterConfiguration();
+        
+        Map<String, String> configMap = new HashMap<String, String>();
+        configMap.put("report", "html");
+        configMap.put("file", "html_report");
+        configuration.setConfiguration(configMap);
+
+        configuration.validate();
+        System.out.println(configuration.toString());
+        
+        return configuration;
+    }
+    
+    private ReporterConfiguration getXmlConfig () {
+        
+        ReporterConfiguration configuration = new ReporterConfiguration();
+        
+        Map<String, String> configMap = new HashMap<String, String>();
+        configMap.put("report", "xml");
+        configMap.put("file", "xml_report");
+        configuration.setConfiguration(configMap);
+
+        configuration.validate();
+        System.out.println(configuration.toString());
+        
+        return configuration;
     }
 }

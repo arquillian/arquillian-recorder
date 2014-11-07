@@ -16,12 +16,9 @@
  */
 package org.arquillian.recorder.reporter.model.entry;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 import org.arquillian.recorder.reporter.Reportable;
 
@@ -30,28 +27,44 @@ import org.arquillian.recorder.reporter.Reportable;
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */
-@XmlRootElement(name = "tableRow")
-public class TableRowEntry implements Reportable {
+@XmlRootElement(name = "tableCell")
+@XmlType(propOrder = { "colspan", "rowspan", "content" })
+public class TableCellEntry implements Reportable {
 
-    private List<TableCellEntry> cells = new ArrayList<TableCellEntry>();
+    private int colspan = 1;
 
-    @XmlElement(name = "cell", required = true)
-    public List<TableCellEntry> getCells() {
-        return cells;
+    private int rowspan = 1;
+
+    private String content = "";
+
+    @XmlAttribute(name = "colspan")
+    public int getColspan() {
+        return colspan;
     }
 
-    public void setCells(List<TableCellEntry> cells) {
-        this.cells = cells;
+    public void setColspan(int colspan) {
+        if (colspan >= 1) {
+            this.colspan = colspan;
+        }
     }
 
-    @XmlTransient
-    public int getTotalColspan() {
-        int n = 0;
-
-        for (TableCellEntry cell : cells) {
-            n += cell.getColspan();
-         }
-
-        return n;
+    @XmlAttribute(name = "rowspan")
+    public int getRowspan() {
+        return rowspan;
     }
+
+    public void setRowspan(int rowspan) {
+        if (rowspan >= 1) {
+            this.rowspan = rowspan;
+        }
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
 }

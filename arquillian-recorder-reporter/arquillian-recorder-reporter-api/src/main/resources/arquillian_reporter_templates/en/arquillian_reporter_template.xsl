@@ -122,7 +122,11 @@
           <xsl:for-each select="row">
             <tr>
               <xsl:for-each select="cell">
-                <td><xsl:value-of select="."/></td>
+                <td>
+                  <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
+                  <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
+                  <xsl:value-of select="."/> 
+                </td>
               </xsl:for-each>
             </tr>
           </xsl:for-each>
@@ -192,7 +196,11 @@
                 <xsl:for-each select="row">
                   <tr>
                     <xsl:for-each select="cell">
-                      <td><xsl:value-of select="."/></td>
+                      <td>
+                        <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
+                        <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
+                        <xsl:value-of select="."/>                      
+                      </td>
                     </xsl:for-each>
                   </tr>
                 </xsl:for-each>
@@ -283,7 +291,11 @@
                   <xsl:for-each select="row">
                     <tr>
                       <xsl:for-each select="cell">
-                        <td><xsl:value-of select="."/></td>
+                        <td>
+                          <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
+                          <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
+                          <xsl:value-of select="."/>
+                        </td>
                       </xsl:for-each>
                     </tr>
                   </xsl:for-each>
@@ -344,7 +356,11 @@
                             <xsl:for-each select="row">
                                 <tr>
                                     <xsl:for-each select="cell">
-                                        <td><xsl:value-of select="."/></td>
+                                        <td>
+                                          <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
+                                          <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
+                                          <xsl:value-of select="."/>
+                                        </td>
                                     </xsl:for-each>
                                 </tr>
                             </xsl:for-each>
