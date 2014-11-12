@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.recorder.reporter.model.entry;
+package org.arquillian.recorder.reporter.model.entry.table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 import org.arquillian.recorder.reporter.Reportable;
 
 /**
@@ -30,7 +29,7 @@ import org.arquillian.recorder.reporter.Reportable;
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */
-@XmlRootElement(name = "tableRow")
+@XmlRootElement(name = "row")
 public class TableRowEntry implements Reportable {
 
     private List<TableCellEntry> cells = new ArrayList<TableCellEntry>();
@@ -42,6 +41,23 @@ public class TableRowEntry implements Reportable {
 
     public void setCells(List<TableCellEntry> cells) {
         this.cells = cells;
+    }
+
+    @XmlTransient
+    public void addCells(TableCellEntry cell, TableCellEntry... cells) {
+        addCell(cell);
+        if (cells != null) {
+            for (TableCellEntry c : cells) {
+                addCell(c);
+            }
+        }
+    }
+
+    @XmlTransient
+    public void addCell(TableCellEntry cell) {
+        if (cell != null) {
+            cells.add(cell);
+        }
     }
 
     @XmlTransient

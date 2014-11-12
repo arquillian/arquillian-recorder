@@ -28,10 +28,11 @@ import javax.xml.bind.annotation.XmlType;
 import org.arquillian.recorder.reporter.PropertyEntry;
 import org.arquillian.recorder.reporter.ReportEntry;
 import org.arquillian.recorder.reporter.model.entry.FileEntry;
+import org.arquillian.recorder.reporter.model.entry.GroupEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
-import org.arquillian.recorder.reporter.model.entry.TableEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
+import org.arquillian.recorder.reporter.model.entry.table.TableEntry;
 import org.jboss.arquillian.test.spi.TestResult.Status;
 
 /**
@@ -54,6 +55,7 @@ import org.jboss.arquillian.test.spi.TestResult.Status;
  * <li>list of {@link VideoEntry}</li>
  * <li>list of {@link ScreenshotEntry}</li>
  * <li>list of {@link TableEntry}</li>
+ * <li>list of {@link GroupEntry}</li>
  * </ul>
  *
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
@@ -82,7 +84,8 @@ public class TestMethodReport implements ReportEntry {
         @XmlElement(name = "file", type = FileEntry.class),
         @XmlElement(name = "video", type = VideoEntry.class),
         @XmlElement(name = "screenshot", type = ScreenshotEntry.class),
-        @XmlElement(name = "table", type = TableEntry.class)
+        @XmlElement(name = "table", type = TableEntry.class),
+        @XmlElement(name = "group", type = GroupEntry.class)
     })
     private final List<PropertyEntry> propertyEntries = new ArrayList<PropertyEntry>();
 

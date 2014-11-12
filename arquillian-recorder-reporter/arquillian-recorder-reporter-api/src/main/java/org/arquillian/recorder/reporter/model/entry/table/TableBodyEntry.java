@@ -14,57 +14,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.recorder.reporter.model.entry;
+package org.arquillian.recorder.reporter.model.entry.table;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.arquillian.recorder.reporter.Reportable;
 
 /**
- *
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */
-@XmlRootElement(name = "tableCell")
-@XmlType(propOrder = { "colspan", "rowspan", "content" })
-public class TableCellEntry implements Reportable {
+@XmlRootElement(name = "tbody")
+public class TableBodyEntry implements Reportable {
 
-    private int colspan = 1;
+    private final List<TableRowEntry> rows = new ArrayList<TableRowEntry>();
 
-    private int rowspan = 1;
-
-    private String content = "";
-
-    @XmlAttribute(name = "colspan")
-    public int getColspan() {
-        return colspan;
+    @XmlElement(name = "row", required = true)
+    public List<TableRowEntry> getRows() {
+        return rows;
     }
 
-    public void setColspan(int colspan) {
-        if (colspan >= 1) {
-            this.colspan = colspan;
+    @XmlTransient
+    public void addRow(TableRowEntry row) {
+        if (row != null) {
+            rows.add(row);
         }
     }
 
-    @XmlAttribute(name = "rowspan")
-    public int getRowspan() {
-        return rowspan;
-    }
-
-    public void setRowspan(int rowspan) {
-        if (rowspan >= 1) {
-            this.rowspan = rowspan;
+    @XmlTransient
+    public void addRows(TableRowEntry row, TableRowEntry... rows) {
+        addRow(row);
+        if (rows != null) {
+            for (TableRowEntry r : rows) {
+                addRow(r);
+            }
         }
     }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
 }

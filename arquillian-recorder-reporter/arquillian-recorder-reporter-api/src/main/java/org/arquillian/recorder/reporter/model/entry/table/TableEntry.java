@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.recorder.reporter.model.entry;
+package org.arquillian.recorder.reporter.model.entry.table;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,49 +23,34 @@ import javax.xml.bind.annotation.XmlType;
 import org.arquillian.recorder.reporter.PropertyEntry;
 
 /**
- * Represents arbitrary key-value property element.<br>
- * <br>
- * Must hold:
- * <ul>
- * <li>key</li>
- * <li>value</li>
- * </ul>
+ * Entry which models table as a property, with header, rows and cells.
  *
- * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
+ * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */
-@XmlRootElement(name = "property")
-@XmlType(propOrder = { "key", "value" })
-public class KeyValueEntry extends PropertyEntry {
+@XmlRootElement(name = "table")
+@XmlType(propOrder = { "tableHead", "tableBody", "tableFoot" })
+public class TableEntry extends PropertyEntry {
 
-    @XmlElement(required = true)
-    private String key;
+    private final TableHeadEntry tableHead = new TableHeadEntry();
 
-    @XmlElement(required = true)
-    private String value;
+    private final TableBodyEntry tableBody = new TableBodyEntry();
 
-    public KeyValueEntry() {
+    private final TableFootEntry tableFoot = new TableFootEntry();
+
+    @XmlElement(name = "tbody", required = true)
+    public TableBodyEntry getTableBody() {
+        return tableBody;
     }
 
-    public KeyValueEntry(String key, String value) {
-        this.key = key;
-        this.value = value;
+    @XmlElement(name = "thead")
+    public TableHeadEntry getTableHead() {
+        return tableHead;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+    @XmlElement(name = "tfoot")
+    public TableFootEntry getTableFoot() {
+        return tableFoot;
     }
 
 }

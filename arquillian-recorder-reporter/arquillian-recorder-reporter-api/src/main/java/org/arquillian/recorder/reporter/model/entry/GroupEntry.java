@@ -21,53 +21,55 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 import org.arquillian.recorder.reporter.PropertyEntry;
+import org.arquillian.recorder.reporter.model.entry.table.TableEntry;
 
 /**
- * Entry which models table as a property, with header, rows and cells.
+ * Represents group entry which can hold:<br>
+ * <br>
+ * <ul>
+ * <li>{@link KeyValueEntry}</li>
+ * <li>{@link TableEntry}</li>
+ * <li>{@link GroupEntry}</li>
+ * </ul>
+ *
+ * By providing the possibility to put {@link GroupEntry} into properties, we are introducing recursive reporting.
  *
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */
-@XmlRootElement(name = "table")
-@XmlType(propOrder = { "header", "numberOfCells", "rows" })
-public class TableEntry extends PropertyEntry {
+@XmlRootElement(name = "groupEntry")
+public class GroupEntry extends PropertyEntry {
 
-    private String header;
+    private String name;
 
-    private String numberOfCells;
+    @XmlElements({
+        @XmlElement(name = "property", type = KeyValueEntry.class),
+        @XmlElement(name = "table", type = TableEntry.class),
+        @XmlElement(name = "group", type = GroupEntry.class)
+    })
+    private final List<PropertyEntry> propertyEntries = new ArrayList<PropertyEntry>();
 
-    private final List<TableRowEntry> rows = new ArrayList<TableRowEntry>();
-
-    @XmlElement(name = "row", required = true)
-    public List<TableRowEntry> getRows() {
-        return rows;
+    public GroupEntry() {
     }
 
-    public String getHeader() {
-        return header;
-    }
-
-    @XmlAttribute
-    public void setHeader(String header) {
-        this.header = header;
+    public GroupEntry(String name) {
+        setName(name);
     }
 
     @XmlAttribute
-    public int getNumberOfCells() {
-        int count = 0;
-
-        for (TableRowEntry row : rows) {
-            int countTemp = row.getTotalColspan();
-            if (countTemp > count) {
-                count = countTemp;
-            }
-        }
-
-        return count;
+    public String getName() {
+        return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public List<PropertyEntry> getPropertyEntries() {
+        return propertyEntries;
+    }
 }

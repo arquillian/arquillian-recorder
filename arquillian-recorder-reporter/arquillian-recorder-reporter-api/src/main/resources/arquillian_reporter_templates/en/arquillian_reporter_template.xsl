@@ -111,27 +111,38 @@
       </table>
       <xsl:for-each select="table">
         <table>
-          <xsl:if test="@header">
-          <tr>
-            <th>
-              <xsl:attribute name="colspan"><xsl:value-of select='@numberOfCells'/></xsl:attribute>
-              <xsl:value-of select="@header"/>
-            </th>
-          </tr>
-          </xsl:if>
-          <xsl:for-each select="row">
-            <tr>
-              <xsl:for-each select="cell">
-                <td>
-                  <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
-                  <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
-                  <xsl:value-of select="."/> 
-                </td>
-              </xsl:for-each>
-            </tr>
-          </xsl:for-each>
+          <!-- THEAD -->
+          <thead>
+            <xsl:for-each select="thead/row">
+              <tr>
+                <xsl:for-each select="cell"><th><xsl:value-of select="."/></th></xsl:for-each>
+              </tr>    
+            </xsl:for-each>
+          </thead>
+          <!-- TBODY -->
+          <tbody>
+            <xsl:for-each select="tbody/row">
+              <tr>
+                <xsl:for-each select="cell">
+                  <td>
+                    <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
+                    <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
+                    <xsl:value-of select="."/>
+                  </td>
+                </xsl:for-each>
+              </tr>
+            </xsl:for-each>
+          </tbody>
+          <!-- TFOOT -->
+          <tfoot>
+            <xsl:for-each select="tfoot/row">
+              <tr>
+                <xsl:for-each select="cell"><td><xsl:value-of select="."/></td></xsl:for-each>
+              </tr>        
+            </xsl:for-each>
+          </tfoot>                            
         </table>
-      </xsl:for-each>      
+      </xsl:for-each>        
     </div>
     <xsl:if test="/report/extension">
     <div class="extensions">
@@ -185,27 +196,38 @@
           </table>
           <xsl:for-each select="table">
             <table>
-              <xsl:if test="@header">
-                <tr>
-                  <th>
-                    <xsl:attribute name="colspan"><xsl:value-of select='@numberOfCells'/></xsl:attribute>
-                    <xsl:value-of select="@header"/>
-                  </th>
-                </tr>
-                </xsl:if>
-                <xsl:for-each select="row">
+              <!-- THEAD -->
+              <thead>
+                <xsl:for-each select="thead/row">
+                  <tr>
+                    <xsl:for-each select="cell"><th><xsl:value-of select="."/></th></xsl:for-each>
+                  </tr>    
+                </xsl:for-each>
+              </thead>
+              <!-- TBODY -->
+              <tbody>
+                <xsl:for-each select="tbody/row">
                   <tr>
                     <xsl:for-each select="cell">
                       <td>
                         <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
                         <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
-                        <xsl:value-of select="."/>                      
+                        <xsl:value-of select="."/>
                       </td>
                     </xsl:for-each>
                   </tr>
                 </xsl:for-each>
-              </table>
-            </xsl:for-each>          
+              </tbody>
+              <!-- TFOOT -->
+              <tfoot>
+                <xsl:for-each select="tfoot/row">
+                  <tr>
+                    <xsl:for-each select="cell"><td><xsl:value-of select="."/></td></xsl:for-each>
+                  </tr>        
+                </xsl:for-each>
+              </tfoot>                            
+            </table>
+          </xsl:for-each>         
         </div>
 
         <xsl:for-each select="video">
@@ -280,25 +302,36 @@
               </table>
               <xsl:for-each select="table">
                 <table>
-                  <xsl:if test="@header">
-                    <tr>
-                      <th>
-                        <xsl:attribute name="colspan"><xsl:value-of select='@numberOfCells'/></xsl:attribute>
-                        <xsl:value-of select="@header"/>
-                      </th>
-                    </tr>
-                  </xsl:if>
-                  <xsl:for-each select="row">
-                    <tr>
-                      <xsl:for-each select="cell">
-                        <td>
-                          <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
-                          <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
-                          <xsl:value-of select="."/>
-                        </td>
-                      </xsl:for-each>
-                    </tr>
-                  </xsl:for-each>
+                  <!-- THEAD -->
+                  <thead>
+                    <xsl:for-each select="thead/row">
+                      <tr>
+                        <xsl:for-each select="cell"><th><xsl:value-of select="."/></th></xsl:for-each>
+                      </tr>    
+                    </xsl:for-each>
+                  </thead>
+                  <!-- TBODY -->
+                  <tbody>
+                    <xsl:for-each select="tbody/row">
+                      <tr>
+                        <xsl:for-each select="cell">
+                          <td>
+                            <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
+                            <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
+                            <xsl:value-of select="."/>
+                          </td>
+                        </xsl:for-each>
+                      </tr>
+                    </xsl:for-each>
+                  </tbody>
+                  <!-- TFOOT -->
+                  <tfoot>
+                    <xsl:for-each select="tfoot/row">
+                      <tr>
+                        <xsl:for-each select="cell"><td><xsl:value-of select="."/></td></xsl:for-each>
+                      </tr>        
+                    </xsl:for-each>
+                  </tfoot>                            
                 </table>
               </xsl:for-each>
             </div>
@@ -342,28 +375,39 @@
                         <tr><td colspan="2"><xsl:value-of select="@path"/></td></tr>
                       </xsl:for-each>
                     </tbody>
-                  </table>                      
+                  </table>                 
                       <xsl:for-each select="table">
                         <table>
-                            <xsl:if test="@header">
-                            <tr>
-                                <th>
-                                    <xsl:attribute name="colspan"><xsl:value-of select='@numberOfCells'/></xsl:attribute>
-                                    <xsl:value-of select="@header"/>
-                                </th>
-                            </tr>
-                            </xsl:if>
-                            <xsl:for-each select="row">
+                            <!-- THEAD -->
+                            <thead>
+                              <xsl:for-each select="thead/row">
                                 <tr>
-                                    <xsl:for-each select="cell">
-                                        <td>
-                                          <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
-                                          <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
-                                          <xsl:value-of select="."/>
-                                        </td>
-                                    </xsl:for-each>
+                                  <xsl:for-each select="cell"><th><xsl:value-of select="."/></th></xsl:for-each>
+                                </tr>    
+                              </xsl:for-each>
+                            </thead>
+                            <!-- TBODY -->
+                            <tbody>
+                              <xsl:for-each select="tbody/row">
+                                <tr>
+                                  <xsl:for-each select="cell">
+                                    <td>
+                                      <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
+                                      <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
+                                      <xsl:value-of select="."/>
+                                    </td>
+                                  </xsl:for-each>
                                 </tr>
-                            </xsl:for-each>
+                              </xsl:for-each>
+                            </tbody>
+                            <!-- TFOOT -->
+                            <tfoot>
+                              <xsl:for-each select="tfoot/row">
+                                <tr>
+                                  <xsl:for-each select="cell"><td><xsl:value-of select="."/></td></xsl:for-each>
+                                </tr>        
+                              </xsl:for-each>
+                            </tfoot>                            
                         </table>
                       </xsl:for-each>
                   <xsl:if test="exception">

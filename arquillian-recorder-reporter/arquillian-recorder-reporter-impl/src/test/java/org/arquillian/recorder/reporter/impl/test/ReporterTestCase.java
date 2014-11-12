@@ -16,14 +16,12 @@
  */
 package org.arquillian.recorder.reporter.impl.test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.arquillian.extension.recorder.When;
 import org.arquillian.recorder.reporter.Exporter;
 import org.arquillian.recorder.reporter.JAXBContextFactory;
-import org.arquillian.recorder.reporter.Reportable;
 import org.arquillian.recorder.reporter.Reporter;
 import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.arquillian.recorder.reporter.exporter.impl.HTMLExporter;
@@ -38,10 +36,10 @@ import org.arquillian.recorder.reporter.model.TestSuiteReport;
 import org.arquillian.recorder.reporter.model.entry.FileEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
-import org.arquillian.recorder.reporter.model.entry.TableCellEntry;
-import org.arquillian.recorder.reporter.model.entry.TableEntry;
-import org.arquillian.recorder.reporter.model.entry.TableRowEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
+import org.arquillian.recorder.reporter.model.entry.table.TableCellEntry;
+import org.arquillian.recorder.reporter.model.entry.table.TableEntry;
+import org.arquillian.recorder.reporter.model.entry.table.TableRowEntry;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +47,7 @@ import org.junit.runners.JUnit4;
 
 /**
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
- *
+ * 
  */
 @RunWith(JUnit4.class)
 public class ReporterTestCase {
@@ -96,7 +94,7 @@ public class ReporterTestCase {
 
         // suite table
         reporter.getLastTestSuiteReport().getPropertyEntries().add(generateTable());
-        
+
         // containers
         ContainerReport containerReport = new ContainerReport();
         containerReport.setQualifier("wildfly");
@@ -125,7 +123,7 @@ public class ReporterTestCase {
         VideoEntry videoEntry = new VideoEntry();
         videoEntry.setPath("some/someVideo.mp4");
         videoEntry.setSize("54M");
-        //reporter.getReporterCursor().getCursor().getPropertyEntries().add(videoEntry);
+        // reporter.getReporterCursor().getCursor().getPropertyEntries().add(videoEntry);
 
         TestMethodReport testMethodReport = new TestMethodReport();
         testMethodReport.setName("someTestMethod");
@@ -134,11 +132,11 @@ public class ReporterTestCase {
         testResult.setEnd(testResult.getStart() + 1000);
         testMethodReport.setStatus(testResult.getStatus());
         testMethodReport.setDuration(testResult.getEnd() - testResult.getStart());
-        
+
         // method table
-        
+
         testMethodReport.getPropertyEntries().add(generateTable());
-        
+
         reporter.getLastTestClassReport().getTestMethodReports().add(testMethodReport);
         reporter.setTestMethodReport(testMethodReport);
 
@@ -163,8 +161,8 @@ public class ReporterTestCase {
         sce2.setPath("niceScreenshotBefore.jpg");
         sce2.setPhase(When.BEFORE);
 
-        //reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce);
-        //reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce2);
+        // reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce);
+        // reporter.getReporterCursor().getCursor().getPropertyEntries().add(sce2);
 
         Exporter exporter1 = new XMLExporter(JAXBContextFactory.initContext(Report.class));
         Exporter exporter2 = new HTMLExporter(JAXBContextFactory.initContext(Report.class));
@@ -174,36 +172,31 @@ public class ReporterTestCase {
         exporter1.export(reporter.getReport());
         exporter2.export(reporter.getReport());
     }
-    
+
     private TableEntry generateTable() {
         TableEntry tableEntry = new TableEntry();
-        tableEntry.setHeader("This is my header");
-        
-        tableEntry.getRows().add(generateTableRow());
-        tableEntry.getRows().add(generateTableRow());
-        
+
+        tableEntry.getTableHead().getRow().addCells(new TableCellEntry("header1"), new TableCellEntry("header2"));
+
+        tableEntry.getTableBody().addRows(generateTableRow(), generateTableRow());
+
+        tableEntry.getTableFoot().getRow().addCells(new TableCellEntry("foot1"), new TableCellEntry("foot2"));
+
         return tableEntry;
     }
-    
+
     private TableRowEntry generateTableRow() {
         TableRowEntry row = new TableRowEntry();
-        
-        TableCellEntry tableCell1 = new TableCellEntry();
-        TableCellEntry tableCell2 = new TableCellEntry();
-        
-        tableCell1.setContent("cell1");
-        tableCell1.setColspan(2);
-        tableCell2.setContent("cell2");
-        
-        row.setCells(Arrays.asList(tableCell1, tableCell2));
-        
+
+        row.addCells(new TableCellEntry("cell1"), new TableCellEntry("cell2"));
+
         return row;
     }
-    
-    private ReporterConfiguration getHtmlConfig () {
-        
+
+    private ReporterConfiguration getHtmlConfig() {
+
         ReporterConfiguration configuration = new ReporterConfiguration();
-        
+
         Map<String, String> configMap = new HashMap<String, String>();
         configMap.put("report", "html");
         configMap.put("file", "html_report");
@@ -211,14 +204,14 @@ public class ReporterTestCase {
 
         configuration.validate();
         System.out.println(configuration.toString());
-        
+
         return configuration;
     }
-    
-    private ReporterConfiguration getXmlConfig () {
-        
+
+    private ReporterConfiguration getXmlConfig() {
+
         ReporterConfiguration configuration = new ReporterConfiguration();
-        
+
         Map<String, String> configMap = new HashMap<String, String>();
         configMap.put("report", "xml");
         configMap.put("file", "xml_report");
@@ -226,7 +219,7 @@ public class ReporterTestCase {
 
         configuration.validate();
         System.out.println(configuration.toString());
-        
+
         return configuration;
     }
 }
