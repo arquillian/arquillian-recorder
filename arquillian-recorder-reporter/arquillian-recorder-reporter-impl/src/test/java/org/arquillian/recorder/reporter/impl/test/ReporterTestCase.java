@@ -29,11 +29,13 @@ import org.arquillian.recorder.reporter.exporter.impl.XMLExporter;
 import org.arquillian.recorder.reporter.impl.ReporterImpl;
 import org.arquillian.recorder.reporter.model.ContainerReport;
 import org.arquillian.recorder.reporter.model.DeploymentReport;
+import org.arquillian.recorder.reporter.model.ExtensionReport;
 import org.arquillian.recorder.reporter.model.Report;
 import org.arquillian.recorder.reporter.model.TestClassReport;
 import org.arquillian.recorder.reporter.model.TestMethodReport;
 import org.arquillian.recorder.reporter.model.TestSuiteReport;
 import org.arquillian.recorder.reporter.model.entry.FileEntry;
+import org.arquillian.recorder.reporter.model.entry.GroupEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
@@ -92,6 +94,15 @@ public class ReporterTestCase {
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(kve2);
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(fe);
 
+        // extensions
+        ExtensionReport extensionReport = new ExtensionReport();
+        extensionReport.setQualifier("myExtension1");
+        Map<String, String> extensionConfiguration = new HashMap<String, String>();
+        extensionConfiguration.put("extensionKey1", "extensionKey1");
+        extensionConfiguration.put("extensionKey2", "extensionKey2");
+        extensionReport.setConfiguration(extensionConfiguration);
+        reporter.getReport().getExtensionReports().add(extensionReport);
+        
         // suite table
         reporter.getLastTestSuiteReport().getPropertyEntries().add(generateTable());
 
@@ -136,6 +147,7 @@ public class ReporterTestCase {
         // method table
 
         testMethodReport.getPropertyEntries().add(generateTable());
+        testMethodReport.getPropertyEntries().add(generateGroup());
 
         reporter.getLastTestClassReport().getTestMethodReports().add(testMethodReport);
         reporter.setTestMethodReport(testMethodReport);
@@ -221,5 +233,20 @@ public class ReporterTestCase {
         System.out.println(configuration.toString());
 
         return configuration;
+    }
+    
+    private GroupEntry generateGroup() {
+        GroupEntry group1 = new GroupEntry("group1");
+        GroupEntry group2 = new GroupEntry("group2");
+
+        group1.getPropertyEntries().add(new KeyValueEntry("key1", "value1"));
+        group1.getPropertyEntries().add(new KeyValueEntry("key2", "value2"));
+        group1.getPropertyEntries().add(generateTable());
+
+        group2.getPropertyEntries().add(new KeyValueEntry("key3", "value3"));
+
+        group1.getPropertyEntries().add(group2);
+        
+        return group1;
     }
 }

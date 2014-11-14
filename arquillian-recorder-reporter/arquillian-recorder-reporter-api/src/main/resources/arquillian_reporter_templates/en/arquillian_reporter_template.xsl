@@ -15,6 +15,109 @@
 
 <xsl:preserve-space elements="exception" />
 
+<xsl:template match="table">
+    <table>
+        <thead>
+            <xsl:for-each select="thead/row">
+                <tr>
+                    <xsl:for-each select="cell"><th><xsl:value-of select="."/></th></xsl:for-each>
+                </tr>    
+            </xsl:for-each>
+        </thead>
+        <tbody>
+            <xsl:for-each select="tbody/row">
+            <tr>
+                <xsl:for-each select="cell">
+                <td>
+                    <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
+                    <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
+                    <xsl:value-of select="."/>
+                </td>
+                </xsl:for-each>
+            </tr>
+            </xsl:for-each>
+        </tbody>
+        <tfoot>
+            <xsl:for-each select="tfoot/row">
+            <tr>
+                <xsl:for-each select="cell"><td><xsl:value-of select="."/></td></xsl:for-each>
+            </tr>        
+            </xsl:for-each>
+        </tfoot>                            
+    </table>
+</xsl:template>
+
+<xsl:template match="group">
+    <div class="properties">
+        <h5><xsl:value-of select="@name"/></h5>
+        
+        <xsl:if test="property">
+            <table>
+                <tbody>
+                    <xsl:for-each select="property">
+                        <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>        
+                    </xsl:for-each>
+                </tbody>
+            </table>
+        </xsl:if>
+         
+        <xsl:apply-templates select="table"/>
+        <xsl:apply-templates select="group"/>
+    </div>
+</xsl:template>
+
+<xsl:template match="extension">
+    <div class="extension">
+        <h5>Extension <xsl:value-of select="@qualifier"/></h5>
+        <xsl:if test="configuration">
+        <div class="properties">
+            <table>
+                <tbody>
+                <xsl:for-each select="configuration/entry">
+                    <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
+                </xsl:for-each>
+                </tbody>
+            </table>
+        </div>
+        </xsl:if>
+    </div>
+</xsl:template>
+
+<xsl:template match="deployment">
+    <div class="deployment">
+        <table>
+            <tbody>
+                <tr><td>name</td><td><xsl:value-of select="@name"/></td></tr>
+                <tr><td>archive</td><td><xsl:value-of select="archive"/></td></tr>
+                <tr><td>order</td><td><xsl:value-of select="order"/></td></tr>
+                <xsl:if test="protocol != '_DEFAULT_'"><tr><td>protocol</td><td><xsl:value-of select="protocol"/></td></tr></xsl:if>
+            </tbody>
+        </table>
+    </div> 
+</xsl:template>
+
+<xsl:template match="exception">
+    <div class="whitespaces">
+        <div class="exception_stacktrace dropt" onclick="overflow(this);" style="cursor:default;" onmouseover="showPopup(this);" onmouseout="hidePopup();">
+            <xsl:value-of select="exception"/>
+            <span style="width:500px;">Click in order to make stacktrace scrollable!</span>
+        </div>
+    </div>
+</xsl:template>
+
+<xsl:template match="video">
+    <div class="video">
+        <xsl:choose>
+            <xsl:when test="@phase = 'IN_TEST'">
+                <h6><xsl:choose><xsl:when test="@message"><xsl:value-of select="@message"></xsl:value-of></xsl:when><xsl:otherwise>In-test video</xsl:otherwise></xsl:choose></h6>
+            </xsl:when>
+            <xsl:otherwise>
+            </xsl:otherwise>
+        </xsl:choose>                                    
+        <video controls=""><source src="{@link}" type="video/{@type}"/>Your browser does not support video tag.</video>
+    </div>
+</xsl:template>
+
 <xsl:template name="all" match="/">
 <html>
   <head>
@@ -93,77 +196,31 @@
   </head>
   <body>
     <div id="main">
-      <h1><img alt="" src="data:image/gif;base64,R0lGODlhQABAAPf/ANTbc9PblLO+fPr78O7x0szS1ERcZk5kXFVqc/7+/SxHTjRBRUNYVvH17dTcmPj68LC6u/b45YiZdfj66/T34EBZYvH10UJaZNzjq11zZ+vx5W55V/j69tbiyjxNUzhSWuTr23qLktTZ21VsXZOictzm0ejv4brDxz5WYPv8+jxVXktibWp9hPf674OTmsfNyunuqXiKc73FyY+dpC5JUP3++vz9+/H02DROVvf66nOEi9zh45qoeuruyjJMVOXqwO3yzOzxt8PMgZqkovP23J2rdlRqbf39/ebp6s7XiuTpvPP23XyObjBKUmF1fdTZ0TZQWKq3fOHmtW2BbqSrqtDW2FlsbFNqZOLoubnEf/r89peenPr7+DtUXdfeoFlvZJyorePovtjd3vf59PP275WjpuDp1vb481xxeO7z6drhpa+7e6Kus/r78/T19vP09Wt/ZmR4a9/lsPn78vb46/T38PT44fL13ZilqoiSXJSiqJ+oZKSwtfT34/H13ens7UFOS7/HbnKFb8fO0tHZkEZeXk5gV664vYmZb6Sxd3OGZmV5f6WzeJKheIiXm8zVhElga0phbP///0hgavf56EhfakZeaPn77vj67Pz990lha/z99vX440dfafr88vX44vv88/n77/b55vv89DdFSfv89fb55zlHTDpJT/X45Pn67ff56Udeaf7+/v39+f///v39+DpTW/P33vz9+Pr88f7//kVdZ/7++/f55/3++fj67f3+/ff68Pf66fn67/n77drf4F5oUPz99TVPV/X48vj67ml9cKm0uPf67DFLU+LnuOLot/n67vr88/z9+fr89Pr89fD060piat/md2h8b0BZWz5XWsLJqcXMuYCKiePpjU5lbHWIb7K8v9DewUlUSujtxvHy8L3DwGx/h+Dk3E5kadrgkW16ffb44UpiaExjYPj67zdRUmp3eURbY7fAwzxHRFNhZbi/gN/k26GueqiytrS8avb46PP14YqZn2BucYyWlfX48fX56EZeZf///yH5BAEAAP8ALAAAAABAAEAAAAj/AP8JHEiwoEGCIvi4CBFphcMVCEK46CbioMWLGDMKHOQCgSZNkUKKfPgQwYxBGlOqFOiGj5NJkGJC+ghSZEOSDp3IWMnz4AkEnSpVmkRU5syaNnGucIKyJ88/Olh1mip0aFGj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" />
-      <xsl:value-of select="/report/reportConfiguration/title"/>
-            </h1>
+      <h1>
+          <img alt="" src="data:image/gif;base64,R0lGODlhQABAAPf/ANTbc9PblLO+fPr78O7x0szS1ERcZk5kXFVqc/7+/SxHTjRBRUNYVvH17dTcmPj68LC6u/b45YiZdfj66/T34EBZYvH10UJaZNzjq11zZ+vx5W55V/j69tbiyjxNUzhSWuTr23qLktTZ21VsXZOictzm0ejv4brDxz5WYPv8+jxVXktibWp9hPf674OTmsfNyunuqXiKc73FyY+dpC5JUP3++vz9+/H02DROVvf66nOEi9zh45qoeuruyjJMVOXqwO3yzOzxt8PMgZqkovP23J2rdlRqbf39/ebp6s7XiuTpvPP23XyObjBKUmF1fdTZ0TZQWKq3fOHmtW2BbqSrqtDW2FlsbFNqZOLoubnEf/r89peenPr7+DtUXdfeoFlvZJyorePovtjd3vf59PP275WjpuDp1vb481xxeO7z6drhpa+7e6Kus/r78/T19vP09Wt/ZmR4a9/lsPn78vb46/T38PT44fL13ZilqoiSXJSiqJ+oZKSwtfT34/H13ens7UFOS7/HbnKFb8fO0tHZkEZeXk5gV664vYmZb6Sxd3OGZmV5f6WzeJKheIiXm8zVhElga0phbP///0hgavf56EhfakZeaPn77vj67Pz990lha/z99vX440dfafr88vX44vv88/n77/b55vv89DdFSfv89fb55zlHTDpJT/X45Pn67ff56Udeaf7+/v39+f///v39+DpTW/P33vz9+Pr88f7//kVdZ/7++/f55/3++fj67f3+/ff68Pf66fn67/n77drf4F5oUPz99TVPV/X48vj67ml9cKm0uPf67DFLU+LnuOLot/n67vr88/z9+fr89Pr89fD060piat/md2h8b0BZWz5XWsLJqcXMuYCKiePpjU5lbHWIb7K8v9DewUlUSujtxvHy8L3DwGx/h+Dk3E5kadrgkW16ffb44UpiaExjYPj67zdRUmp3eURbY7fAwzxHRFNhZbi/gN/k26GueqiytrS8avb46PP14YqZn2BucYyWlfX48fX56EZeZf///yH5BAEAAP8ALAAAAABAAEAAAAj/AP8JHEiwoEGCIvi4CBFphcMVCEK46CbioMWLGDMKHOQCgSZNkUKKfPgQwYxBGlOqFOiGj5NJkGJC+ghSZEOSDp3IWMnz4AkEnSpVmkRU5syaNnGucIKyJ88/Olh1mip0aFGj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" />
+          <xsl:value-of select="/report/reportConfiguration/title"/>
+      </h1>
     </div>
     <div class="properties">
-      <table>
-        <tbody>
-        <!-- properties hooked to report -->
-        <xsl:for-each select="/report/property">
-          <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
-        </xsl:for-each>
-        <xsl:for-each select="/report/file">
-          <tr><td colspan="2"><xsl:value-of select="@path"/></td></tr>
-        </xsl:for-each>
-        </tbody>
-      </table>
-      <xsl:for-each select="table">
         <table>
-          <!-- THEAD -->
-          <thead>
-            <xsl:for-each select="thead/row">
-              <tr>
-                <xsl:for-each select="cell"><th><xsl:value-of select="."/></th></xsl:for-each>
-              </tr>    
-            </xsl:for-each>
-          </thead>
-          <!-- TBODY -->
-          <tbody>
-            <xsl:for-each select="tbody/row">
-              <tr>
-                <xsl:for-each select="cell">
-                  <td>
-                    <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
-                    <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
-                    <xsl:value-of select="."/>
-                  </td>
-                </xsl:for-each>
-              </tr>
-            </xsl:for-each>
-          </tbody>
-          <!-- TFOOT -->
-          <tfoot>
-            <xsl:for-each select="tfoot/row">
-              <tr>
-                <xsl:for-each select="cell"><td><xsl:value-of select="."/></td></xsl:for-each>
-              </tr>        
-            </xsl:for-each>
-          </tfoot>                            
-        </table>
-      </xsl:for-each>        
-    </div>
-    <xsl:if test="/report/extension">
-    <div class="extensions">
-      <xsl:for-each select="/report/extension">
-      <div class="extension">
-      <h5>Extension <xsl:value-of select="@qualifier"/></h5>
-      <xsl:if test="configuration">
-        <div class="properties">
-          <table>
             <tbody>
-            <xsl:for-each select="configuration/entry">
-              <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
-            </xsl:for-each>
+                <xsl:for-each select="/report/property">
+                    <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
+                </xsl:for-each>
+                <xsl:for-each select="/report/file">
+                    <tr><td colspan="2"><xsl:value-of select="@path"/></td></tr>
+                </xsl:for-each>
             </tbody>
-          </table>
-        </div>
-      </xsl:if>
-      </div>
-      </xsl:for-each>
+        </table>
+
+        <xsl:apply-templates select="/report/table"/>
+        <xsl:apply-templates select="/report/group"/>
     </div>
-    </xsl:if>
+
+    <div class="extensions">
+        <xsl:apply-templates select="/report/extension"/>
+    </div>
+
     <xsl:for-each select="/report/suite">
       <div class="suite">
         <h2>Suite</h2>
@@ -194,50 +251,11 @@
               </xsl:for-each>
             </tbody>
           </table>
-          <xsl:for-each select="table">
-            <table>
-              <!-- THEAD -->
-              <thead>
-                <xsl:for-each select="thead/row">
-                  <tr>
-                    <xsl:for-each select="cell"><th><xsl:value-of select="."/></th></xsl:for-each>
-                  </tr>    
-                </xsl:for-each>
-              </thead>
-              <!-- TBODY -->
-              <tbody>
-                <xsl:for-each select="tbody/row">
-                  <tr>
-                    <xsl:for-each select="cell">
-                      <td>
-                        <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
-                        <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
-                        <xsl:value-of select="."/>
-                      </td>
-                    </xsl:for-each>
-                  </tr>
-                </xsl:for-each>
-              </tbody>
-              <!-- TFOOT -->
-              <tfoot>
-                <xsl:for-each select="tfoot/row">
-                  <tr>
-                    <xsl:for-each select="cell"><td><xsl:value-of select="."/></td></xsl:for-each>
-                  </tr>        
-                </xsl:for-each>
-              </tfoot>                            
-            </table>
-          </xsl:for-each>         
+          <xsl:apply-templates select="table"/>
+          <xsl:apply-templates select="group"/>  
         </div>
 
-        <xsl:for-each select="video">
-        <div class="video">
-          <video controls="">
-            <source src="{@link}" type="video/{@type}"/>
-            Your browser does not support video tag.
-          </video>
-        </div>
-        </xsl:for-each>
+        <xsl:apply-templates select="video"/>
 
         <div class="containers">
           <h3>Containers</h3>
@@ -257,18 +275,7 @@
             </div>
             <div class="deployments">
               <h5>Deployments</h5>
-              <xsl:for-each select="deployment">
-                <div class="deployment">
-                  <table>
-                    <tbody>
-                      <tr><td>name</td><td><xsl:value-of select="@name"/></td></tr>
-                      <tr><td>archive</td><td><xsl:value-of select="archive"/></td></tr>
-                      <tr><td>order</td><td><xsl:value-of select="order"/></td></tr>
-                      <xsl:if test="protocol != '_DEFAULT_'"><tr><td>protocol</td><td><xsl:value-of select="protocol"/></td></tr></xsl:if>
-                    </tbody>
-                  </table>
-                </div>
-              </xsl:for-each>  
+              <xsl:apply-templates select="deployment"/> 
             </div>
           </div>
           </xsl:for-each>
@@ -300,50 +307,11 @@
                   </xsl:for-each>
                 </tbody>
               </table>
-              <xsl:for-each select="table">
-                <table>
-                  <!-- THEAD -->
-                  <thead>
-                    <xsl:for-each select="thead/row">
-                      <tr>
-                        <xsl:for-each select="cell"><th><xsl:value-of select="."/></th></xsl:for-each>
-                      </tr>    
-                    </xsl:for-each>
-                  </thead>
-                  <!-- TBODY -->
-                  <tbody>
-                    <xsl:for-each select="tbody/row">
-                      <tr>
-                        <xsl:for-each select="cell">
-                          <td>
-                            <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
-                            <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
-                            <xsl:value-of select="."/>
-                          </td>
-                        </xsl:for-each>
-                      </tr>
-                    </xsl:for-each>
-                  </tbody>
-                  <!-- TFOOT -->
-                  <tfoot>
-                    <xsl:for-each select="tfoot/row">
-                      <tr>
-                        <xsl:for-each select="cell"><td><xsl:value-of select="."/></td></xsl:for-each>
-                      </tr>        
-                    </xsl:for-each>
-                  </tfoot>                            
-                </table>
-              </xsl:for-each>
+              <xsl:apply-templates select="table"/>
+              <xsl:apply-templates select="group"/>
             </div>
 
-            <xsl:for-each select="video">
-            <div class="video">
-              <video controls="">
-                <source src="{@link}" type="video/{@type}"/>
-                Your browser does not support video tag.
-              </video>
-            </div>
-            </xsl:for-each>
+            <xsl:apply-templates select="video"/>
 
             <xsl:for-each select="method">
               <div class="testMethod">
@@ -375,63 +343,13 @@
                         <tr><td colspan="2"><xsl:value-of select="@path"/></td></tr>
                       </xsl:for-each>
                     </tbody>
-                  </table>                 
-                      <xsl:for-each select="table">
-                        <table>
-                            <!-- THEAD -->
-                            <thead>
-                              <xsl:for-each select="thead/row">
-                                <tr>
-                                  <xsl:for-each select="cell"><th><xsl:value-of select="."/></th></xsl:for-each>
-                                </tr>    
-                              </xsl:for-each>
-                            </thead>
-                            <!-- TBODY -->
-                            <tbody>
-                              <xsl:for-each select="tbody/row">
-                                <tr>
-                                  <xsl:for-each select="cell">
-                                    <td>
-                                      <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
-                                      <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
-                                      <xsl:value-of select="."/>
-                                    </td>
-                                  </xsl:for-each>
-                                </tr>
-                              </xsl:for-each>
-                            </tbody>
-                            <!-- TFOOT -->
-                            <tfoot>
-                              <xsl:for-each select="tfoot/row">
-                                <tr>
-                                  <xsl:for-each select="cell"><td><xsl:value-of select="."/></td></xsl:for-each>
-                                </tr>        
-                              </xsl:for-each>
-                            </tfoot>                            
-                        </table>
-                      </xsl:for-each>
-                  <xsl:if test="exception">
-                  <div class="whitespaces">
-                    <div class="exception_stacktrace dropt" onclick="overflow(this);" style="cursor:default;" onmouseover="showPopup(this);" onmouseout="hidePopup();">
-                        <xsl:value-of select="exception"/>
-                        <span style="width:500px;">Click in order to make stacktrace scrollable!</span>
-                    </div>
-                  </div>
-                  </xsl:if>
+                  </table>
+                  <xsl:apply-templates select="video"/>                 
+                  <xsl:apply-templates select="table"/>
+                  <xsl:apply-templates select="group"/>
                 </div>
 
-                <xsl:for-each select="video">
-                  <div class="video">
-                    <xsl:choose>
-                      <xsl:when test="@phase = 'IN_TEST'">
-                        <h6><xsl:choose><xsl:when test="@message"><xsl:value-of select="@message"></xsl:value-of></xsl:when><xsl:otherwise>In-test video</xsl:otherwise></xsl:choose></h6>
-                      </xsl:when>
-                      <xsl:otherwise>
-                      </xsl:otherwise>
-                    </xsl:choose>                                    
-                    <video controls="">
-                      <source src="{@link}" type="video/{@type}"/>Your browser does not support video tag.</video></div>
-                </xsl:for-each>
+                <xsl:apply-templates select="exception"/>
 
                 <xsl:if test="screenshot">
                 <div class="screenshotParent">

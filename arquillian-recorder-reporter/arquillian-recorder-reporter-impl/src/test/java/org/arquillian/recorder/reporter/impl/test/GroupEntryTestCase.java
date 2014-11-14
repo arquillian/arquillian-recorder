@@ -23,6 +23,7 @@ import org.arquillian.recorder.reporter.Exporter;
 import org.arquillian.recorder.reporter.JAXBContextFactory;
 import org.arquillian.recorder.reporter.Reporter;
 import org.arquillian.recorder.reporter.ReporterConfiguration;
+import org.arquillian.recorder.reporter.exporter.impl.HTMLExporter;
 import org.arquillian.recorder.reporter.exporter.impl.XMLExporter;
 import org.arquillian.recorder.reporter.impl.ReporterImpl;
 import org.arquillian.recorder.reporter.model.Report;
@@ -44,7 +45,7 @@ public class GroupEntryTestCase {
 
     @Test
     public void testGroups() throws Exception {
-        // ReporterConfiguration htmlConfiguration = getHtmlConfig();
+        ReporterConfiguration htmlConfiguration = getHtmlConfig();
         ReporterConfiguration xmlConfiguration = getXmlConfig();
 
         Reporter reporter = new ReporterImpl();
@@ -61,14 +62,16 @@ public class GroupEntryTestCase {
         group1.getPropertyEntries().add(group2);
 
         reporter.getReport().getPropertyEntries().add(group1);
+        reporter.getReport().getPropertyEntries().add(new KeyValueEntry("topKey1", "topValue1"));
+        reporter.getReport().getPropertyEntries().add(new KeyValueEntry("topKey2", "topValue2"));
 
         Exporter exporter1 = new XMLExporter(JAXBContextFactory.initContext(Report.class));
-        // Exporter exporter2 = new HTMLExporter(JAXBContextFactory.initContext(Report.class));
+        Exporter exporter2 = new HTMLExporter(JAXBContextFactory.initContext(Report.class));
         exporter1.setConfiguration(xmlConfiguration);
-        // exporter2.setConfiguration(htmlConfiguration);
+        exporter2.setConfiguration(htmlConfiguration);
 
         exporter1.export(reporter.getReport());
-        // exporter2.export(reporter.getReport());
+        exporter2.export(reporter.getReport());
     }
 
     private TableEntry generateTable() {
@@ -97,7 +100,7 @@ public class GroupEntryTestCase {
 
         Map<String, String> configMap = new HashMap<String, String>();
         configMap.put("report", "html");
-        configMap.put("file", "html_report");
+        configMap.put("file", "group_report");
         configuration.setConfiguration(configMap);
 
         configuration.validate();
