@@ -131,7 +131,11 @@ public class DesktopVideoRecorder implements Recorder {
     public Video stopRecording() {
         if (recorder != null && recorder.isRecording()) {
             Video video = recorder.stopRecording();
-            video.setMessage(message);
+
+            if (message != null && !message.isEmpty()) {
+                video.setMessage(message);
+                message = null;
+            }
 
             takenResourceRegister.addTaken(video);
             return video;
