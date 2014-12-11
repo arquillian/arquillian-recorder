@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -49,6 +50,9 @@ import org.arquillian.recorder.reporter.model.entry.FileEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
+import org.arquillian.recorder.reporter.model.entry.table.TableCellEntry;
+import org.arquillian.recorder.reporter.model.entry.table.TableEntry;
+import org.arquillian.recorder.reporter.model.entry.table.TableRowEntry;
 
 /**
  * Exports reports to AsciiDoc file.
@@ -201,7 +205,7 @@ public class AsciiDocExporter implements Exporter {
     protected void writeDocumentHeader() throws IOException {
         writer.append("= ").append(this.configuration.getTitle()).append(NEW_LINE);
 
-        if(isAsciidoctorOutput()) {
+        if (isAsciidoctorOutput()) {
             writer.append(":icons: font").append(NEW_LINE);
         }
 
@@ -257,6 +261,46 @@ public class AsciiDocExporter implements Exporter {
             writer.append("|===").append(NEW_LINE).append(NEW_LINE);
         }
 
+        writeTables(propertyEntries);
+    }
+
+    private void writeTables(List<PropertyEntry> propertyEntries) throws IOException {
+        List<TableEntry> tableEntries = filterTableEntries(propertyEntries);
+
+        for (TableEntry tableEntry : tableEntries) {
+
+            writer.append("[cols=\"" + tableEntry.getNumberOfColumns() + "*\"]").append(NEW_LINE);
+
+            String tableName = tableEntry.getTableName();
+
+            if (tableName != null && !tableName.isEmpty()) {
+                writer.append("." + tableName).append(NEW_LINE);
+            }
+
+            writer.append("|===").append(NEW_LINE).append(NEW_LINE);
+
+            for (TableRowEntry row : tableEntry.getTableBody().getRows()) {
+                for (TableCellEntry cell : row.getCells()) {
+                    writer.append("|").append(cell.getContent()).append(NEW_LINE);
+                }
+                writer.append(NEW_LINE);
+            }
+
+            writer.append("|===").append(NEW_LINE).append(NEW_LINE);
+
+        }
+    }
+
+    private List<TableEntry> filterTableEntries(List<PropertyEntry> propertyEntries) {
+        List<TableEntry> tableEntries = new ArrayList<TableEntry>();
+
+        for (PropertyEntry propertyEntry : propertyEntries) {
+            if (propertyEntry.getClass().isAssignableFrom(TableEntry.class)) {
+                tableEntries.add((TableEntry) propertyEntry);
+            }
+        }
+
+        return tableEntries;
     }
 
     private void writePropertiesRows(List<PropertyEntry> propertyEntries) throws IOException {
@@ -550,10 +594,10 @@ public class AsciiDocExporter implements Exporter {
 
         for (TestMethodReport testMethodReport : testMethodReports) {
 
+            writeTables(testMethodReport.getPropertyEntries());
             writeTestMethodHeader(testClassReport.getTestClassName(), testMethodReport);
             writeTestMethodProperties(testMethodReport);
             writeMedia(testMethodReport.getPropertyEntries());
-
         }
 
     }
@@ -588,21 +632,21 @@ public class AsciiDocExporter implements Exporter {
 
         switch (testMethodReport.getStatus()) {
             case PASSED: {
-                if(isAsciidoctorOutput()) {
+                if (isAsciidoctorOutput()) {
                     return getIcon(SUCCESS_STEP, SUCCESS_COLOR);
                 } else {
                     return testMethodReport.getStatus().name();
                 }
             }
             case FAILED: {
-                if(isAsciidoctorOutput()) {
+                if (isAsciidoctorOutput()) {
                     return getIcon(FAIL_STEP, FAILED_COLOR);
                 } else {
                     return testMethodReport.getStatus().name();
                 }
             }
             case SKIPPED: {
-                if(isAsciidoctorOutput()) {
+                if (isAsciidoctorOutput()) {
                     return getIcon(NOT_PERFORMED_STEP, WARNING_COLOR);
                 } else {
                     return testMethodReport.getStatus().name();
@@ -734,7 +778,9 @@ public class AsciiDocExporter implements Exporter {
     }
 
     /**
-     * Method that checks if user has configured if output should be compliant with AsciiDoc format or can use Asciidoctor features.
+     * Method that checks if user has configured if output should be compliant with AsciiDoc format or can use Asciidoctor
+     * features.
+     *
      * @return true if output can be generated using Asciidoctor features. False otherwise.
      */
     private boolean isAsciidoctorOutput() {

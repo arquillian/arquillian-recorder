@@ -40,6 +40,9 @@ import org.arquillian.recorder.reporter.model.entry.FileEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
+import org.arquillian.recorder.reporter.model.entry.table.TableCellEntry;
+import org.arquillian.recorder.reporter.model.entry.table.TableEntry;
+import org.arquillian.recorder.reporter.model.entry.table.TableRowEntry;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.junit.Test;
 
@@ -64,6 +67,7 @@ public class AsciiDocReporterTestCase {
         kve3.setValue("value3");
 
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(kve3);
+        reporter.getReporterCursor().getCursor().getPropertyEntries().add(generateTable());
 
         TestSuiteReport testSuiteReport = new TestSuiteReport();
         reporter.getReport().getTestSuiteReports().add(testSuiteReport);
@@ -84,6 +88,7 @@ public class AsciiDocReporterTestCase {
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(kve);
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(kve2);
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(fe);
+        reporter.getReporterCursor().getCursor().getPropertyEntries().add(generateTable());
 
         // containers
         ContainerReport containerReport = new ContainerReport();
@@ -112,6 +117,7 @@ public class AsciiDocReporterTestCase {
         videoEntry.setPath(configuration.getRootDir().getAbsolutePath() + "/some/someVideo.mp4");
         videoEntry.setSize("54M");
         reporter.getReporterCursor().getCursor().getPropertyEntries().add(videoEntry);
+        reporter.getReporterCursor().getCursor().getPropertyEntries().add(generateTable());
 
         TestMethodReport testMethodReport = new TestMethodReport();
         testMethodReport.setName("someTestMethod");
@@ -152,6 +158,7 @@ public class AsciiDocReporterTestCase {
 
         reporter.getLastTestMethodReport().getPropertyEntries().add(sce);
         reporter.getLastTestMethodReport().getPropertyEntries().add(sce2);
+        reporter.getLastTestMethodReport().getPropertyEntries().add(generateTable());
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -292,6 +299,26 @@ public class AsciiDocReporterTestCase {
         assertThat(content, containsString("Extensions"));
         assertThat(content, containsString("Test Result"));
         assertThat(content, containsString("some exception"));
+    }
+
+    private TableEntry generateTable() {
+        TableEntry tableEntry = new TableEntry();
+
+        tableEntry.getTableHead().getRow().addCells(new TableCellEntry("header1"));
+
+        tableEntry.getTableBody().addRows(generateTableRow(), generateTableRow());
+
+        tableEntry.setTableName("some table name");
+
+        return tableEntry;
+    }
+
+    private TableRowEntry generateTableRow() {
+        TableRowEntry row = new TableRowEntry();
+
+        row.addCells(new TableCellEntry("cell1"), new TableCellEntry("cell2"));
+
+        return row;
     }
 
 }

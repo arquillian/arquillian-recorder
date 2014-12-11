@@ -16,6 +16,7 @@
  */
 package org.arquillian.recorder.reporter.model.entry.table;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -29,7 +30,7 @@ import org.arquillian.recorder.reporter.PropertyEntry;
  *
  */
 @XmlRootElement(name = "table")
-@XmlType(propOrder = { "tableHead", "tableBody", "tableFoot" })
+@XmlType(propOrder = { "tableName", "tableHead", "tableBody", "tableFoot" })
 public class TableEntry extends PropertyEntry {
 
     private final TableHeadEntry tableHead = new TableHeadEntry();
@@ -37,6 +38,8 @@ public class TableEntry extends PropertyEntry {
     private final TableBodyEntry tableBody = new TableBodyEntry();
 
     private final TableFootEntry tableFoot = new TableFootEntry();
+
+    private String tableName;
 
     @XmlElement(name = "tbody", required = true)
     public TableBodyEntry getTableBody() {
@@ -51,6 +54,33 @@ public class TableEntry extends PropertyEntry {
     @XmlElement(name = "tfoot")
     public TableFootEntry getTableFoot() {
         return tableFoot;
+    }
+
+    @XmlAttribute(name = "tableName")
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public int getNumberOfColumns() {
+
+        int n = 0;
+
+        for (TableRowEntry row : tableBody.getRows()) {
+            int i = row.getTotalColspan();
+            if (i > n) {
+                n = i;
+            }
+        }
+
+        return n;
+    }
+
+    public int getNumberOfRows() {
+        return tableBody.getRows().size();
     }
 
 }

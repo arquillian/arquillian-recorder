@@ -49,7 +49,7 @@ import org.junit.runners.JUnit4;
 
 /**
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
- * 
+ *
  */
 @RunWith(JUnit4.class)
 public class ReporterTestCase {
@@ -102,7 +102,7 @@ public class ReporterTestCase {
         extensionConfiguration.put("extensionKey2", "extensionKey2");
         extensionReport.setConfiguration(extensionConfiguration);
         reporter.getReport().getExtensionReports().add(extensionReport);
-        
+
         // suite table
         reporter.getLastTestSuiteReport().getPropertyEntries().add(generateTable());
 
@@ -234,7 +234,7 @@ public class ReporterTestCase {
 
         return configuration;
     }
-    
+
     private GroupEntry generateGroup() {
         GroupEntry group1 = new GroupEntry("group1");
         GroupEntry group2 = new GroupEntry("group2");
@@ -246,7 +246,7 @@ public class ReporterTestCase {
         group2.getPropertyEntries().add(new KeyValueEntry("key3", "value3"));
 
         group1.getPropertyEntries().add(group2);
-        
+
         return group1;
     }
 }

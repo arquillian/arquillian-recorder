@@ -38,7 +38,7 @@ import org.junit.runners.JUnit4;
 
 /**
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
- * 
+ *
  */
 @RunWith(JUnit4.class)
 public class GroupEntryTestCase {
@@ -55,7 +55,11 @@ public class GroupEntryTestCase {
 
         group1.getPropertyEntries().add(new KeyValueEntry("key1", "value1"));
         group1.getPropertyEntries().add(new KeyValueEntry("key2", "value2"));
-        group1.getPropertyEntries().add(generateTable());
+
+        TableEntry table = generateTable();
+        table.setTableName("some table name");
+
+        group1.getPropertyEntries().add(table);
 
         group2.getPropertyEntries().add(new KeyValueEntry("key3", "value3"));
 
