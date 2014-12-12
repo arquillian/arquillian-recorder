@@ -99,7 +99,7 @@
 <xsl:template match="exception">
     <div class="whitespaces">
         <div class="exception_stacktrace dropt" onclick="overflow(this);" style="cursor:default;" onmouseover="showPopup(this);" onmouseout="hidePopup();">
-            <xsl:value-of select="exception"/>
+            <xsl:value-of select="."/>
             <span style="width:500px;">Click in order to make stacktrace scrollable!</span>
         </div>
     </div>
