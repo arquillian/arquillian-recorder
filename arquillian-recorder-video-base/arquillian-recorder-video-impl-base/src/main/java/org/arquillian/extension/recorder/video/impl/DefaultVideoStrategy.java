@@ -50,10 +50,11 @@ public class DefaultVideoStrategy implements VideoStrategy {
                     return false;
                 case FAILED:
                     return configuration.getTakeOnlyOnFail();
+                case PASSED:
+                    return configuration.getStartBeforeTest() || configuration.getTakeOnlyOnFail();
                 default:
-                    break;
+                    return false;
             }
-            return configuration.getStartBeforeTest() || configuration.getTakeOnlyOnFail();
         }
         return false;
     }

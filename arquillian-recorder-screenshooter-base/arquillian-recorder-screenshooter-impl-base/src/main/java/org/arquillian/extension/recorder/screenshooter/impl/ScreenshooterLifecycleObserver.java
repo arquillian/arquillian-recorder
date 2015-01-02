@@ -68,7 +68,7 @@ public class ScreenshooterLifecycleObserver {
             ScreenshotMetaData metaData = getMetaData(event);
             metaData.setResourceType(getScreenshotType());
 
-            DefaultFileNameBuilder nameBuilder = DefaultFileNameBuilder.getInstance();
+            DefaultFileNameBuilder nameBuilder = new DefaultFileNameBuilder();
             String screenshotName = nameBuilder
                 .withMetaData(metaData)
                 .withStage(When.BEFORE)
@@ -90,7 +90,7 @@ public class ScreenshooterLifecycleObserver {
 
             When when = result.getStatus() == TestResult.Status.FAILED ? When.FAILED : When.AFTER;
 
-            DefaultFileNameBuilder nameBuilder = DefaultFileNameBuilder.getInstance();
+            DefaultFileNameBuilder nameBuilder = new DefaultFileNameBuilder();
             String screenshotName = nameBuilder
                 .withMetaData(metaData)
                 .withStage(when)

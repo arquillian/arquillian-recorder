@@ -45,7 +45,9 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
 
     private String testTimeout = "1800"; // 30 minutes
 
-    private String frameRate = "20"; // fps
+    private String width = "0"; // pixels
+
+    private String height = "0"; // pixels.
 
     private ReporterConfiguration reporterConfiguration;
 
@@ -126,12 +128,21 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
     }
 
     /**
-     * By default set to 20 fps when not overriden in configuration.
+     * By default set to 0, you have to set this in configuration in order to use it.
      *
-     * @return framerate of which videos should be taken
+     * @return height of recorded video
      */
-    public int getFrameRate() {
-        return Integer.parseInt(getProperty("frameRate", frameRate));
+    public int getHeight() {
+        return Integer.parseInt(getProperty("height", height));
+    }
+
+    /**
+     * By default set to 0, you have to set this in configuration in order to use it.
+     *
+     * @return width of recorder video
+     */
+    public int getWidth() {
+        return Integer.parseInt(getProperty("width", width));
     }
 
     @Override
@@ -179,11 +190,19 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
         }
 
         try {
-            if (Integer.parseInt(getProperty("frameRate", this.frameRate)) <= 0) {
-                throw new VideoConfigurationException("It seems you have set framerate to be lower or equal to 0.");
+            if (Integer.parseInt(getProperty("width", this.width)) < 0) {
+                throw new VideoConfigurationException("It seems you have set width of video to be lower then 0.");
             }
         } catch (NumberFormatException ex) {
-            throw new VideoConfigurationException("Provided framerate is not recognized to be an integer number.");
+            throw new VideoConfigurationException("Provided width of video is not recognized to be an integer number.");
+        }
+
+        try {
+            if (Integer.parseInt(getProperty("height", this.height)) < 0) {
+                throw new VideoConfigurationException("It seems you have set height of video to be lower then 0.");
+            }
+        } catch (NumberFormatException ex) {
+            throw new VideoConfigurationException("Provided height of video is not recognized to be an integer number.");
         }
     }
 
@@ -198,7 +217,8 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
         sb.append(String.format("%-40s %s\n", "rootDir", getRootDir()));
         sb.append(String.format("%-40s %s\n", "videoName", getVideoName()));
         sb.append(String.format("%-40s %s\n", "videoType", getVideoType()));
-        sb.append(String.format("%-40s %s\n", "frameRate", getFrameRate()));
+        sb.append(String.format("%-40s %s\n", "width", getWidth()));
+        sb.append(String.format("%-40s %s\n", "height", getHeight()));
         return sb.toString();
     }
 

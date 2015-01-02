@@ -27,13 +27,14 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.arquillian.extension.recorder.video.Video;
 import org.arquillian.extension.recorder.video.VideoConfiguration;
 import org.arquillian.extension.recorder.video.VideoType;
+import org.arquillian.extension.recorder.video.desktop.configuration.DesktopVideoConfiguration;
 import org.jboss.arquillian.core.spi.Validate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
@@ -45,7 +46,7 @@ import com.xuggle.xuggler.ICodec;
  */
 class VideoRecorder {
 
-    private static final Logger logger = LoggerFactory.getLogger(VideoRecorder.class);
+    private static final Logger logger = Logger.getLogger(VideoRecorder.class.getName());
 
     public static final int DEFAULT_FRAMERATE = 20;
 
@@ -67,7 +68,7 @@ class VideoRecorder {
 
     private VideoConfiguration configuration;
 
-    public VideoRecorder(VideoConfiguration configuration) {
+    public VideoRecorder(DesktopVideoConfiguration configuration) {
         Validate.notNull(configuration, "Video configuration is null!");
         this.configuration = configuration;
         this.frameRate = configuration.getFrameRate();
@@ -108,7 +109,7 @@ class VideoRecorder {
                     try {
                         Thread.sleep(500 / frameRate);
                     } catch (InterruptedException ex) {
-                        logger.error("Exception occured during video recording", ex);
+                        logger.log(Level.WARNING, "Exception occured during video recording", ex);
                     }
                     if (!running) {
                         writer.close();
@@ -183,7 +184,7 @@ class VideoRecorder {
             Rectangle captureSize = new Rectangle(screenBounds);
             return robot.createScreenCapture(captureSize);
         } catch (AWTException e) {
-            logger.error("Exception occured while taking screenshot for video record", e);
+            logger.log(Level.WARNING, "Exception occured while taking screenshot for video record", e);
             return null;
         }
     }

@@ -18,6 +18,7 @@ package org.arquillian.extension.recorder.video.desktop.impl;
 
 import org.arquillian.extension.recorder.video.Recorder;
 import org.arquillian.extension.recorder.video.VideoConfiguration;
+import org.arquillian.extension.recorder.video.desktop.configuration.DesktopVideoConfiguration;
 import org.arquillian.extension.recorder.video.event.VideoExtensionConfigured;
 import org.arquillian.recorder.reporter.impl.TakenResourceRegister;
 import org.jboss.arquillian.core.api.Instance;
@@ -36,6 +37,7 @@ import org.jboss.arquillian.core.api.annotation.Observes;
  * <li>{@link Recorder}</li>
  * <li>{@link TakenResourceRegister}</li>
  * </ul>
+ * 
  * @author <a href="mailto:pmensik@redhat.com">Petr Mensik</a>
  */
 public class DesktopVideoRecorderCreator {
@@ -58,7 +60,7 @@ public class DesktopVideoRecorderCreator {
         }
 
         Recorder recorder = new DesktopVideoRecorder(takenResourceRegister.get());
-        recorder.init(configuration.get());
+        recorder.init((DesktopVideoConfiguration) configuration.get());
 
         this.recorder.set(recorder);
     }
