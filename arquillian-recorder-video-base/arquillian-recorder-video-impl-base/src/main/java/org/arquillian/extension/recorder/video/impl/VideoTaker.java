@@ -94,22 +94,14 @@ public class VideoTaker {
             Status status = testResult.getStatus();
             appendStatus(video, status);
 
-            if (!status.equals(Status.FAILED) && configuration.get().getTakeOnlyOnFail()) {
-                File videoFile = video.getResource();
-
-                if (videoFile != null && videoFile.exists()) {
-                    if (!videoFile.delete()) {
-                        System.out.println("video was not deleted: " + video.getResource().getAbsolutePath());
-                    }
-                }
-
-                return;
+            if ((status.equals(Status.PASSED) && !configuration.get().getTakeOnlyOnFail())
+                || (status.equals(Status.FAILED) && configuration.get().getTakeOnlyOnFail())) {
+                takenResourceRegister.get().addReported(video);
+                propertyReportEvent.fire(new PropertyReportEvent(getVideoEntry(video)));
             }
+        } else {
+            takenResourceRegister.get().addTaken(video);
         }
-
-        takenResourceRegister.get().addTaken(video);
-        takenResourceRegister.get().addReported(video);
-        propertyReportEvent.fire(new PropertyReportEvent(getVideoEntry(video)));
     }
 
     private PropertyEntry getVideoEntry(Video video) {
