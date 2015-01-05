@@ -24,8 +24,10 @@ import org.arquillian.extension.recorder.video.event.AfterVideoStart;
 import org.arquillian.extension.recorder.video.event.AfterVideoStop;
 import org.arquillian.extension.recorder.video.event.BeforeVideoStart;
 import org.arquillian.extension.recorder.video.event.BeforeVideoStop;
+import org.arquillian.extension.recorder.video.event.StartRecordClassVideo;
 import org.arquillian.extension.recorder.video.event.StartRecordSuiteVideo;
 import org.arquillian.extension.recorder.video.event.StartRecordVideo;
+import org.arquillian.extension.recorder.video.event.StopRecordClassVideo;
 import org.arquillian.extension.recorder.video.event.StopRecordSuiteVideo;
 import org.arquillian.extension.recorder.video.event.StopRecordVideo;
 import org.jboss.arquillian.core.api.Event;
@@ -76,6 +78,12 @@ public class VideoLifecycleObserver {
     private Event<StopRecordVideo> stopRecordVideo;
 
     @Inject
+    private Event<StartRecordClassVideo> startRecordClassVideo;
+
+    @Inject
+    private Event<StopRecordClassVideo> stopRecordClassVideo;
+
+    @Inject
     private Event<StartRecordSuiteVideo> startRecordSuiteVideo;
 
     @Inject
@@ -101,7 +109,7 @@ public class VideoLifecycleObserver {
 
             beforeVideoStart.fire(new BeforeVideoStart(videoType, classMetaData));
 
-            startRecordVideo.fire(new StartRecordVideo(videoType, classMetaData));
+            startRecordClassVideo.fire(new StartRecordClassVideo(videoType, classMetaData));
 
             afterVideoStart.fire(new AfterVideoStart(videoType, classMetaData));
         }
@@ -141,7 +149,7 @@ public class VideoLifecycleObserver {
 
             beforeVideoStop.fire(new BeforeVideoStop(videoType, metaData));
 
-            stopRecordVideo.fire(new StopRecordVideo(videoType, metaData));
+            stopRecordClassVideo.fire(new StopRecordClassVideo(videoType, metaData));
 
             afterVideoStop.fire(new AfterVideoStop(videoType, metaData));
         }

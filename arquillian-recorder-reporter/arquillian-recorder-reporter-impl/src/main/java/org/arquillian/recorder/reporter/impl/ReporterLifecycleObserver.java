@@ -125,10 +125,19 @@ public class ReporterLifecycleObserver {
 
         deploymentReport.setTarget(description.getTarget().getName());
 
+        boolean reported = false;
+
         for (ContainerReport containerReport : reporter.get().getLastTestSuiteReport().getContainerReports()) {
             if (containerReport.getQualifier().equals(deploymentReport.getTarget())) {
                 containerReport.getDeploymentReports().add(deploymentReport);
+                reported = true;
                 break;
+            }
+        }
+
+        if (!reported) {
+            if (reporter.get().getLastTestSuiteReport().getContainerReports().size() == 1) {
+                reporter.get().getLastTestSuiteReport().getContainerReports().get(0).getDeploymentReports().add(deploymentReport);
             }
         }
 

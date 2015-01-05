@@ -23,8 +23,10 @@ import org.arquillian.extension.recorder.video.event.AfterVideoStart;
 import org.arquillian.extension.recorder.video.event.AfterVideoStop;
 import org.arquillian.extension.recorder.video.event.BeforeVideoStart;
 import org.arquillian.extension.recorder.video.event.BeforeVideoStop;
+import org.arquillian.extension.recorder.video.event.StartRecordClassVideo;
 import org.arquillian.extension.recorder.video.event.StartRecordSuiteVideo;
 import org.arquillian.extension.recorder.video.event.StartRecordVideo;
+import org.arquillian.extension.recorder.video.event.StopRecordClassVideo;
 import org.arquillian.extension.recorder.video.event.StopRecordSuiteVideo;
 import org.arquillian.extension.recorder.video.event.StopRecordVideo;
 import org.arquillian.extension.recorder.video.event.VideoExtensionConfigured;
@@ -58,7 +60,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
- *
+ * 
  */
 @RunWith(MockitoJUnitRunner.class)
 public class RecorderLifecycleObserverTestCase extends AbstractTestTestBase {
@@ -204,11 +206,11 @@ public class RecorderLifecycleObserverTestCase extends AbstractTestTestBase {
         fire(new AfterSuite());
 
         assertEventFired(BeforeVideoStart.class, 1);
-        assertEventFired(StartRecordVideo.class, 1);
+        assertEventFired(StartRecordClassVideo.class, 1);
         assertEventFired(AfterVideoStart.class, 1);
 
         assertEventFired(BeforeVideoStop.class, 1);
-        assertEventFired(StopRecordVideo.class, 1);
+        assertEventFired(StopRecordClassVideo.class, 1);
         assertEventFired(AfterVideoStop.class, 1);
     }
 
