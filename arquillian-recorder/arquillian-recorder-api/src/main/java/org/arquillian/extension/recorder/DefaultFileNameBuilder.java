@@ -26,26 +26,13 @@ import java.util.UUID;
  */
 public class DefaultFileNameBuilder extends AbstractFileNameBuilder {
 
-    private ResourceMetaData metaData = null;
+    protected ResourceMetaData metaData = null;
 
-    private When when = null;
+    protected When when = null;
 
-    private ResourceIdentifier<ResourceType> resourceIdentifier;
+    protected ResourceIdentifier<ResourceType> resourceIdentifier;
 
-    private static DefaultFileNameBuilder singletonInstance;
-
-    public static DefaultFileNameBuilder getInstance() {
-        if (null == singletonInstance) {
-            synchronized (DefaultFileNameBuilder.class) {
-                if (null == singletonInstance) {
-                    singletonInstance = new DefaultFileNameBuilder();
-                }
-            }
-        }
-        return singletonInstance;
-    }
-
-    private DefaultFileNameBuilder() {
+    public DefaultFileNameBuilder() {
         setDefaultFileIdentifier();
     }
 

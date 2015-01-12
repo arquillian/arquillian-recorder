@@ -31,13 +31,32 @@ public class DesktopVideoConfiguration extends VideoConfiguration {
 
     private static Logger logger = Logger.getLogger(DesktopVideoConfiguration.class.getSimpleName());
 
+    private String frameRate = "20"; // fps
+
     public DesktopVideoConfiguration(ReporterConfiguration reporterConfiguration) {
         super(reporterConfiguration);
+    }
+
+    /**
+     * By default set to 20 fps when not overridden in configuration.
+     *
+     * @return framerate of which videos should be taken
+     */
+    public int getFrameRate() {
+        return Integer.parseInt(getProperty("frameRate", frameRate));
     }
 
     @Override
     public void validate() throws VideoConfigurationException {
         super.validate();
+
+        try {
+            if (Integer.parseInt(getProperty("frameRate", this.frameRate)) <= 0) {
+                throw new VideoConfigurationException("It seems you have set framerate to be lower or equal to 0.");
+            }
+        } catch (NumberFormatException ex) {
+            throw new VideoConfigurationException("Provided framerate is not recognized to be an integer number.");
+        }
 
         if ((getStartBeforeClass() || getStartBeforeSuite())
             && getStartBeforeTest()) {
@@ -69,5 +88,13 @@ public class DesktopVideoConfiguration extends VideoConfiguration {
                 + "with takeOnlyOnFail. All start* properties were set to false so every @Test will be recorded and "
                 + "preserved only in case it has failed");
         }
+    }
+
+    @Override
+    public String toString() {
+        super.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-40s %s\n", "frameRate", getFrameRate()));
+        return sb.toString();
     }
 }

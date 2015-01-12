@@ -31,7 +31,7 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class DefaultFileNameBuilderTest {
 
-    private DefaultFileNameBuilder fileNameBuilder = DefaultFileNameBuilder.getInstance();
+    private DefaultFileNameBuilder fileNameBuilder = new DefaultFileNameBuilder();
 
     @Test
     public void emptyBuildTest() {

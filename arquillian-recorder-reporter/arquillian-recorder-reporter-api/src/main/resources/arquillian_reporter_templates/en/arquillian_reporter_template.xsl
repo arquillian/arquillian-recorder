@@ -9,7 +9,7 @@
     License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
     OF ANY KIND, either express or implied. See the License for the specific
     language governing permissions and limitations under the License. -->
-    
+
 <!-- Arquillian name and logo encoded in this template are registered trademarks of Red Hat Inc. -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -21,7 +21,7 @@
             <xsl:for-each select="thead/row">
                 <tr>
                     <xsl:for-each select="cell"><th><xsl:value-of select="."/></th></xsl:for-each>
-                </tr>    
+                </tr>
             </xsl:for-each>
         </thead>
         <tbody>
@@ -41,26 +41,26 @@
             <xsl:for-each select="tfoot/row">
             <tr>
                 <xsl:for-each select="cell"><td><xsl:value-of select="."/></td></xsl:for-each>
-            </tr>        
+            </tr>
             </xsl:for-each>
-        </tfoot>                            
+        </tfoot>
     </table>
 </xsl:template>
 
 <xsl:template match="group">
     <div class="properties">
         <h5><xsl:value-of select="@name"/></h5>
-        
+
         <xsl:if test="property">
             <table>
                 <tbody>
                     <xsl:for-each select="property">
-                        <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>        
+                        <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
                     </xsl:for-each>
                 </tbody>
             </table>
         </xsl:if>
-         
+
         <xsl:apply-templates select="table"/>
         <xsl:apply-templates select="group"/>
     </div>
@@ -93,7 +93,7 @@
                 <xsl:if test="protocol != '_DEFAULT_'"><tr><td>protocol</td><td><xsl:value-of select="protocol"/></td></tr></xsl:if>
             </tbody>
         </table>
-    </div> 
+    </div>
 </xsl:template>
 
 <xsl:template match="exception">
@@ -113,7 +113,7 @@
             </xsl:when>
             <xsl:otherwise>
             </xsl:otherwise>
-        </xsl:choose>                                    
+        </xsl:choose>
         <video controls=""><source src="{@link}" type="video/{@type}"/>Your browser does not support video tag.</video>
     </div>
 </xsl:template>
@@ -136,7 +136,7 @@
       .clear { clear: both; }
       .extensions { margin: 0 0 0 2em; }
       .extension { margin: 0 0 0 2em; }
-      .suite { margin: 0 0 0 2em; }
+      .suite,.configuration { margin: 0 0 0 2em; }
       .containers { margin: 0 0 0 2em; }
       .container { margin: 0 0 0 2em; }
       .deployments { margin: 0 0 0 2em; }
@@ -159,6 +159,11 @@
       .exception_stacktrace { overflow: hidden; height: 16%; }
       .exception_stacktrace::first-line { font-weight:bold; font-size: 110%; }
       #hoverpopup { visibility:hidden; position:absolute; top:0; left:0; color: white; background-color: black;}
+      .testClass.collapsed>.testMethod,.containers.collapsed>.container,.testMethod.collapsed>div,.configuration.collapsed>div { display: none; }
+      .collapsable:hover { cursor: pointer; }
+      .collapsable::before { content: "[-] "; }
+      .collapsable:hover::before { color: red; }
+      .collapsed .collapsable::before { content: "[+] "; }
     </style>
     <script type="text/javascript"><![CDATA[
             function overflow(x) {
@@ -191,6 +196,9 @@
                 }
                 return { bottom: bottom, left: left };
             }
+            function collapse(sectionHeader) {
+              sectionHeader.parentNode.classList.toggle('collapsed');
+            }
             ]]>
     </script>
   </head>
@@ -201,24 +209,28 @@
           <xsl:value-of select="/report/reportConfiguration/title"/>
       </h1>
     </div>
-    <div class="properties">
+
+    <div class="configuration collapsed">
+      <h4 onclick="collapse(this);" class="collapsable">Configuration</h4>
+      <div class="properties">
         <table>
-            <tbody>
-                <xsl:for-each select="/report/property">
-                    <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
-                </xsl:for-each>
-                <xsl:for-each select="/report/file">
-                    <tr><td colspan="2"><xsl:value-of select="@path"/></td></tr>
-                </xsl:for-each>
-            </tbody>
+          <tbody>
+            <xsl:for-each select="/report/property">
+              <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
+            </xsl:for-each>
+            <xsl:for-each select="/report/file">
+              <tr><td colspan="2"><xsl:value-of select="@path"/></td></tr>
+            </xsl:for-each>
+          </tbody>
         </table>
 
         <xsl:apply-templates select="/report/table"/>
         <xsl:apply-templates select="/report/group"/>
-    </div>
+      </div>
 
-    <div class="extensions">
+      <div class="extensions">
         <xsl:apply-templates select="/report/extension"/>
+      </div>
     </div>
 
     <xsl:for-each select="/report/suite">
@@ -252,15 +264,15 @@
             </tbody>
           </table>
           <xsl:apply-templates select="table"/>
-          <xsl:apply-templates select="group"/>  
+          <xsl:apply-templates select="group"/>
         </div>
 
         <xsl:apply-templates select="video"/>
 
-        <div class="containers">
-          <h3>Containers</h3>
+        <div class="containers collapsed">
+          <h3 onclick="collapse(this);" class="collapsable">Containers</h3>
           <xsl:for-each select="container">
-          <div class="container">
+          <div class="container" >
             <h4><xsl:value-of select="@qualifier"/></h4>
             <div class="properties">
               <h5>Configuration</h5>
@@ -275,7 +287,7 @@
             </div>
             <div class="deployments">
               <h5>Deployments</h5>
-              <xsl:apply-templates select="deployment"/> 
+              <xsl:apply-templates select="deployment"/>
             </div>
           </div>
           </xsl:for-each>
@@ -285,7 +297,7 @@
           <h3>Tests</h3>
           <xsl:for-each select="class">
           <div class="testClass">
-            <h4><xsl:value-of select="@name"/> - <xsl:value-of select='@duration div 1000'/>s <xsl:if test="@runAsClient = 'true'"> (runs as client)</xsl:if></h4>
+            <h4 onclick="collapse(this);" class="collapsable"><xsl:value-of select="@name"/> - <xsl:value-of select='@duration div 1000'/>s <xsl:if test="@runAsClient = 'true'"> (runs as client)</xsl:if></h4>
             <div class="properties">
               <table>
                 <tbody>
@@ -314,16 +326,16 @@
             <xsl:apply-templates select="video"/>
 
             <xsl:for-each select="method">
-              <div class="testMethod">
+              <div class="testMethod collapsed">
               <xsl:choose>
                 <xsl:when test="@result = 'PASSED'">
-                  <h5 class="passed">
+                  <h5 class="passed collapsable" onclick="collapse(this);">
                     <img alt="" src="data:image/png;base64,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" />
                     <xsl:value-of select="@name"/> (<xsl:value-of select='@duration div 1000'/>s)
                   </h5>
                 </xsl:when>
                 <xsl:when test="@result = 'FAILED'">
-                  <h5 class="failed">
+                  <h5 class="failed collapsable" onclick="collapse(this);">
                     <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAB5xJREFUeNqkV3tQVNcd/u7dXXZh2WVxERZFWPERQ0jBcdrSCepWzZSZ1AFj2jrpTCAJMX9kDKnJhLYzHSFN2sTJg+CkHfswJE2bSYgNamowdhSqDtiOERx51VGeghJgLy/ZRfbe/s65d5e7y2LM9MLZc+895/y+7/c85wr4Bte76wyF1BUJQC7Upl4C/++huxZqdcUdgffuVqZwN5P+fI+hmGZW0K1b+JrF2juJWlVJZ6Dy/yLwh3sMCUwjmuSJnCxESBGiC2YWKXm8M9D6jQn8fq0hR1DB3QsWLA4Yfi+ErOF5chESUQm8s4Zr3kODDr2GxjgLHN9dB1u2G+ZkR2h+YNqHqbYeSOc7MfuVFI0cJ1HatZBEVALVqw2nudl1mqbt8sC1PQ9GayzMMQ6YjFbqE+Gf9eL23DT1Ep83cuoihj5qwOywFGk1FqS5u7sC43osYyT4W6vFYhmK6nNFIEALsl8ugW11OpYkrEOifR1EQ8z8AkVhPwjIfnjHuyBuM3ErdVfXQfp35zwJhbuSBfLP7miBN1aJ3cFoZ+DfeuVxJGflIs3lgSiaIQSDgEAVHQH+RPe35yZx/eYZbpH//vZDjJFbBB0YzXI/cyXQG8QT9eD7M8XiADGlBtbWlu3A8px8ZCwvgMEQC1EwkBBqvDfSYu1eMKpj1EwmO1akbuVuyny2CKalDi5LZjIJQwae02OGEaCJRUFwOwVaav634UrK00DmwUIkgs9hxAwwEtkVqdsQY7PD/WQBgZKLqMkqkaJFCcwp8ATZrnz0+1iWspFrHg4YpYXGxVAzGixIdm6AM+/ekBUC5CJq7jdXiQlRCRCwg02MoRRLWX8/4mOXk3AxAiQSPAg6PwdQ3ztsq3i2JG9Zr7pAa3Sfu4DAr9LFzXPaBOtKF+zxbh2QDkBPSEcKQSJaD9ZoPM6SAsf9bj04j4UFaRhQ5iPVlpkKK2mvF8rCX+CjQkT+yGomCFqnhTr/odwzmeL5+5D80HgEARLTomgDrDMYzDpwUQMXdWmozVRYtZLVRRoJBsyNSw9xsS4+FNDGBSU87UMueLVfHg+ayTc5o4EIaD5Uhd7ms/xeJaS5gS9VLcTMemtCQtfJ4zhevgcf/vQhCNqfLN9WCSAsBqSolZBioIGV4LGrN+Dzj5IbVuDS539F/cuVcGVlY/0jjyHrB4VITHNzob7xMdS/9Dx6z5+BNNAfsl58ql1TV4Df78XslE/vYunXfXLrYnWggQXi9dYeIjDCq5s5xQw/Wbjv8mUcrXwR1QXfwczEBBf1wVM/wn8++RuG+/r5HB811iesSdecLcA3O4brTR0IBjhTcvFCBKVGy1Vc+PthMt8sPM+Wweyyk3CFhJPtpHEMtl8iVWV0NZ2FP6ACq+CMsB1bf/40dyBbPzndh/5znUFw1tcsSuB3Q0rvHFDDJrYfb8ao1Iq0NTvxzJG/YOuLu2Ah4QxE1szpI2mMGKwxVDfSsHHvFpQefp3W7ODjo9JlXP3iImY0F1Dr2T8gH7njZlSaImQo6vkOm/YU4eG9B2CkYhK8rre1IDNnE3dPx9kvsHStExabRQ0oQzJtWBYSqmDGfxNdnbWoffRVzNJ5QUvgorcHwwkYIgl8OY3xHKsgEYmCITpkOLPjkL4yj9d3I+2Gia4MvFv2BAbaWvHArhJYYpMoZRNgoOoqiibalJjpfegbPIFjL7wDqW+Eg5C8uuohpfJrDyTly4Qc6hxTAdTRIoc53oLt+8vwwPZybV+YX6JuyPSrsO1G5nEx5b2BxppX0H70JK+CS1a4sey+XHz5yftSefO1xDsSIPBiSrOa/NKysEnH9qlnCIvdjtLa+rBCpPDKI2NmXMKpt36Dy59/is1PlyP/qbBdF+8/sQPtJ454XhtUGhd1Qb5NyM0p3FW04ScluNbUgCEycyJp8NXVLjz4/D50N/8Ll64ch8E6C9k4galb/bwN9Dfhs4pfwJ29CbdGR0Ey0FZfh9ajH8FktnAZtqUuDLa1lOT4btacm8R4VAu8lpfp3VN/wRGb4OAasWuIgu5aUyNpn8A0QENjY9RTtI3yafeBQ/D291KdkMCsyICjWCGXrNC66JmQAbKFFz6e/7gZ1N5NDN9g53yWx0Xal1HwaCz5FLS01R/xMH8npmXw9d7+Hr5uw4+LuUW6z5/p0YMjSgAWflxWokRetySvQmNeFiN3+pCh8dMHd3qUk69X8DWRMiqynN2RayIt0MK0ZeZnbjj7xyp4B3qp5nN3VBH790iWk+7N0Qj846UXHjtz8M0ttFfUnPvT2/xdVkEhzwL2PCONVdxNGpZt27uvahsFXfD65xuVuHGlvXZn9aHTgcBtzFELKHOUdbJaTkUD1QEjNRPVCyMO/nDjc7trT61lSugziUgsyAJjFEXqOk4eq8j83mYHC762E3WjcUlJzQ8dOHi6b7gT49MjkKaG4aU2OeOlPUeALXYJEm3JSLQmI8GaBGfWvc1VD+Y6nekrnamkfazdgYuHP2iJBF/0y4iskME+Ks3x9pl9HaOnZEVOCshzMaS5WVYCSdwC8hxVPFktsSIdQkl7soJfFMURI3240P0kWWbyl2nG+3iGkfuiYf1PgAEA1+xrx9Ug078AAAAASUVORK5CYII=" />
                     <xsl:value-of select="@name"/> (<xsl:value-of select='@duration div 1000'/>s)
                   </h5>
@@ -344,7 +356,7 @@
                       </xsl:for-each>
                     </tbody>
                   </table>
-                  <xsl:apply-templates select="video"/>                 
+                  <xsl:apply-templates select="video"/>
                   <xsl:apply-templates select="table"/>
                   <xsl:apply-templates select="group"/>
                 </div>
@@ -388,7 +400,7 @@
                                   <xsl:attribute name="width"><xsl:value-of select="@width * /report/reportConfiguration/imageWidth div 100"/></xsl:attribute>
                                   <xsl:attribute name="height"><xsl:value-of select="@height * /report/reportConfiguration/imageHeight div 100"/></xsl:attribute>
                                 </img>
-                              </a>                  
+                              </a>
                             </xsl:when>
                             <xsl:when test="@phase = 'ON_EVERY_ACTION'">
                               <h6>On every action</h6>

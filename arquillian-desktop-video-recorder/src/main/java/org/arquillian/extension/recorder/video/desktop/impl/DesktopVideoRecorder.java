@@ -25,6 +25,7 @@ import org.arquillian.extension.recorder.video.Video;
 import org.arquillian.extension.recorder.video.VideoConfiguration;
 import org.arquillian.extension.recorder.video.VideoMetaData;
 import org.arquillian.extension.recorder.video.VideoType;
+import org.arquillian.extension.recorder.video.desktop.configuration.DesktopVideoConfiguration;
 import org.arquillian.recorder.reporter.impl.TakenResourceRegister;
 import org.jboss.arquillian.core.spi.Validate;
 
@@ -71,7 +72,7 @@ public class DesktopVideoRecorder implements Recorder {
                 setVideoTargetDir(root);
                 setVideoType(VideoType.valueOf(this.configuration.getVideoType()));
 
-                recorder = new VideoRecorder(this.configuration);
+                recorder = new VideoRecorder((DesktopVideoConfiguration) this.configuration);
             }
         }
     }
@@ -87,7 +88,7 @@ public class DesktopVideoRecorder implements Recorder {
         VideoMetaData metaData = new VideoMetaData();
         metaData.setResourceType(videoType);
         startRecording(
-            new File(DefaultFileNameBuilder.getInstance().withMetaData(metaData).build()),
+            new File(new DefaultFileNameBuilder().withMetaData(metaData).build()),
             videoType);
     }
 
@@ -140,7 +141,7 @@ public class DesktopVideoRecorder implements Recorder {
             takenResourceRegister.addTaken(video);
             return video;
         }
-        throw new IllegalStateException("It seems you have not called init() method of this video recorder yet.");
+        throw new IllegalStateException("It seems you are not recording yet.");
     }
 
     @Override

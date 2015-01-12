@@ -19,7 +19,6 @@ package org.arquillian.extension.recorder.video.impl;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.arquillian.extension.recorder.DefaultFileNameBuilder;
 import org.arquillian.extension.recorder.video.Recorder;
 import org.arquillian.extension.recorder.video.Video;
@@ -58,11 +57,20 @@ public class VideoTaker {
     @Inject
     private Instance<TakenResourceRegister> takenResourceRegister;
 
-    private DefaultFileNameBuilder nb = DefaultFileNameBuilder.getInstance();
+    private DefaultFileNameBuilder nb = new DefaultFileNameBuilder();
 
     public void onStartSuiteRecording(@Observes StartRecordSuiteVideo event) {
         File videoTarget = new File("suite", configuration.get().getVideoName());
         recorder.get().startRecording(videoTarget, event.getVideoType());
+    }
+
+    public void onStopSuiteRecording(@Observes StopRecordSuiteVideo event) {
+        Video video = recorder.get().stopRecording();
+        takenResourceRegister.get().addTaken(video);
+        video.setResourceMetaData(event.getVideoMetaData());
+
+        takenResourceRegister.get().addReported(video);
+        propertyReportEvent.fire(new PropertyReportEvent(getVideoEntry(video)));
     }
 
     public void onStartRecording(@Observes StartRecordVideo event) {
@@ -77,37 +85,23 @@ public class VideoTaker {
         recorder.get().startRecording(videoTarget, event.getVideoType());
     }
 
-    public void onStopSuiteRecording(@Observes StopRecordSuiteVideo event) {
-        Video video = recorder.get().stopRecording();
-        takenResourceRegister.get().addTaken(video);
-        video.setResourceMetaData(event.getVideoMetaData());
-
-        takenResourceRegister.get().addReported(video);
-        propertyReportEvent.fire(new PropertyReportEvent(getVideoEntry(video)));
-    }
-
     public void onStopRecording(@Observes StopRecordVideo event) throws IOException {
         Video video = recorder.get().stopRecording();
-        takenResourceRegister.get().addTaken(video);
 
         TestResult testResult = event.getVideoMetaData().getTestResult();
 
         if (testResult != null) {
             Status status = testResult.getStatus();
             appendStatus(video, status);
-            if (!status.equals(Status.FAILED) && configuration.get().getTakeOnlyOnFail()) {
-                if (!video.getResource().getAbsoluteFile().delete()) {
-                    System.out.println("video was not deleted: " + video.getResource().getAbsolutePath());
-                }
-                File directory = video.getResource().getParentFile();
-                if (directory != null && directory.listFiles().length == 0) {
-                    FileUtils.deleteDirectory(directory);
-                }
-            }
-        }
 
-        takenResourceRegister.get().addReported(video);
-        propertyReportEvent.fire(new PropertyReportEvent(getVideoEntry(video)));
+            if ((status.equals(Status.PASSED) && !configuration.get().getTakeOnlyOnFail())
+                || (status.equals(Status.FAILED) && configuration.get().getTakeOnlyOnFail())) {
+                takenResourceRegister.get().addReported(video);
+                propertyReportEvent.fire(new PropertyReportEvent(getVideoEntry(video)));
+            }
+        } else {
+            takenResourceRegister.get().addTaken(video);
+        }
     }
 
     private PropertyEntry getVideoEntry(Video video) {
