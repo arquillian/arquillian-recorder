@@ -21,7 +21,9 @@ import java.lang.reflect.Method;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.arquillian.recorder.reporter.ReportFrequency;
 import org.arquillian.recorder.reporter.ReportMessage;
@@ -53,9 +55,10 @@ import org.jboss.arquillian.test.spi.TestResult.Status;
 import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.AfterClass;
 import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
-import org.jboss.arquillian.test.spi.event.suite.Before;
+import org.jboss.arquillian.test.spi.event.suite.AfterTestLifecycleEvent;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
+import org.jboss.arquillian.test.spi.event.suite.BeforeTestLifecycleEvent;
 
 /**
  * Observes events from Arquillian and delegates them to {@link Reporter} implementation.<br>
@@ -69,6 +72,8 @@ import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
  *
  */
 public class ReporterLifecycleObserver {
+
+    private static final Map<Method, Integer> lifecycleCountRegister = new HashMap<Method, Integer>();
 
     @Inject
     private Instance<Reporter> reporter;
@@ -153,39 +158,56 @@ public class ReporterLifecycleObserver {
         reporter.get().setTestClassReport(testClassReport);
     }
 
-    public void observeBeforeTest(@Observes(precedence = Integer.MAX_VALUE) Before event) {
-        TestMethodReport testMethodReport = new TestMethodReport();
-        testMethodReport.setName(event.getTestMethod().getName());
+    public void observeBeforeTest(@Observes(precedence = Integer.MAX_VALUE) BeforeTestLifecycleEvent event) {
 
-        if (event.getTestMethod().isAnnotationPresent(OperateOnDeployment.class)) {
-            OperateOnDeployment ood = event.getTestMethod().getAnnotation(OperateOnDeployment.class);
-            testMethodReport.setOperateOnDeployment(ood.value());
-        } else {
-            testMethodReport.setOperateOnDeployment("_DEFAULT_");
+        Integer c = lifecycleCountRegister.get(event.getTestMethod());
+        int count = (c != null ? c.intValue() : 0);
+
+        if (count == 0) {
+            TestMethodReport testMethodReport = new TestMethodReport();
+            testMethodReport.setName(event.getTestMethod().getName());
+
+            if (event.getTestMethod().isAnnotationPresent(OperateOnDeployment.class)) {
+                OperateOnDeployment ood = event.getTestMethod().getAnnotation(OperateOnDeployment.class);
+                testMethodReport.setOperateOnDeployment(ood.value());
+            } else {
+                testMethodReport.setOperateOnDeployment("_DEFAULT_");
+            }
+
+            testMethodReport.setRunAsClient(event.getTestMethod().isAnnotationPresent(RunAsClient.class));
+
+            reporter.get().getLastTestClassReport().getTestMethodReports().add(testMethodReport);
+            reporter.get().setTestMethodReport(testMethodReport);
         }
 
-        testMethodReport.setRunAsClient(event.getTestMethod().isAnnotationPresent(RunAsClient.class));
-
-        reporter.get().getLastTestClassReport().getTestMethodReports().add(testMethodReport);
-        reporter.get().setTestMethodReport(testMethodReport);
+        lifecycleCountRegister.put(event.getTestMethod(), ++count);
     }
 
-    public void observeAfterTest(@Observes(precedence = Integer.MIN_VALUE) After event, TestResult result) {
-        TestMethodReport testMethodReport = reporter.get().getLastTestMethodReport();
+    public void observeAfterTest(@Observes(precedence = Integer.MIN_VALUE) AfterTestLifecycleEvent event, TestResult result) {
 
-        testMethodReport.setStatus(result.getStatus());
-        testMethodReport.setDuration(result.getEnd() - result.getStart());
-        testMethodReport.setReportMessage(ReportMessageParser.parseTestReportMessage(event.getTestMethod()));
+        int count = lifecycleCountRegister.get(event.getTestMethod());
 
-        if (result.getStatus() == Status.FAILED && result.getThrowable() != null) {
-            testMethodReport.setException(getStackTrace(result.getThrowable()));
+        lifecycleCountRegister.put(event.getTestMethod(), --count);
+
+        if (lifecycleCountRegister.get(event.getTestMethod()) == 0) {
+            TestMethodReport testMethodReport = reporter.get().getLastTestMethodReport();
+
+            testMethodReport.setStatus(result.getStatus());
+            testMethodReport.setDuration(result.getEnd() - result.getStart());
+            testMethodReport.setReportMessage(ReportMessageParser.parseTestReportMessage(event.getTestMethod()));
+
+            if (result.getStatus() == Status.FAILED && result.getThrowable() != null) {
+                testMethodReport.setException(getStackTrace(result.getThrowable()));
+            }
+
+            inTestResourceReportEvent.fire(new InTestResourceReport());
+
+            reporter.get().setReporterCursor(new ReporterCursor(reporter.get().getLastTestClassReport()));
+
+            report(event, descriptor.get());
+
+            lifecycleCountRegister.remove(event.getTestMethod());
         }
-
-        inTestResourceReportEvent.fire(new InTestResourceReport());
-
-        reporter.get().setReporterCursor(new ReporterCursor(reporter.get().getLastTestClassReport()));
-
-        report(event, descriptor.get());
     }
 
     public void observeAfterClass(@Observes(precedence = Integer.MIN_VALUE) AfterClass event) {
