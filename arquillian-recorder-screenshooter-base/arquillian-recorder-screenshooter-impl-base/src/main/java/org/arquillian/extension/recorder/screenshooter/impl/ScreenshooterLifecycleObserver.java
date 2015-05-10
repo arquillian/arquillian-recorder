@@ -127,14 +127,13 @@ public class ScreenshooterLifecycleObserver {
             return event.getTestMethod().getAnnotation(Blur.class).value();
         } else {
             Class<? extends TestClass> testClass = event.getTestClass().getClass();
-            Class<?> annotatedClass = ReflectionUtil.getClassWithAnnotation(testClass, Blur.class);
 
-            BlurLevel blurLevel = null;
-            if (annotatedClass != null) {
-                blurLevel = annotatedClass .getAnnotation(Blur.class).value();
-            }
+            Class<?> annotatedClass = ReflectionUtil.getClassWithAnnotation(
+                    testClass, Blur.class);
+            return annotatedClass == null ? null
+                    : annotatedClass
+                            .getAnnotation(Blur.class).value();
 
-            return blurLevel;
         }
     }
 
