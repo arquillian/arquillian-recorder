@@ -16,7 +16,10 @@
  */
 package org.arquillian.extension.recorder.screenshooter;
 
+import java.io.File;
+
 import org.arquillian.extension.recorder.ResourceMetaData;
+import org.arquillian.extension.recorder.screenshooter.api.BlurLevel;
 
 /**
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
@@ -27,6 +30,26 @@ public class ScreenshotMetaData extends ResourceMetaData {
     private int width;
 
     private int height;
+
+    private BlurLevel blurLevel;
+
+    private File resource;
+
+    public BlurLevel getBlurLevel() {
+        return blurLevel;
+    }
+
+    public void setBlurLevel(BlurLevel blurLevel) {
+        this.blurLevel = blurLevel;
+    }
+
+    public File getResource() {
+        return resource;
+    }
+
+    public void setFilename(File filename) {
+        this.resource = filename;
+    }
 
     public int getWidth() {
         return width;
