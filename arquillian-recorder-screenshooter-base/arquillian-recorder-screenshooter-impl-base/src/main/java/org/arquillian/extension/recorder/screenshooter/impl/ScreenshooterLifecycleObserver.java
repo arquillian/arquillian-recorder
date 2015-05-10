@@ -25,6 +25,8 @@ import org.arquillian.extension.recorder.screenshooter.Screenshooter;
 import org.arquillian.extension.recorder.screenshooter.ScreenshooterConfiguration;
 import org.arquillian.extension.recorder.screenshooter.ScreenshotMetaData;
 import org.arquillian.extension.recorder.screenshooter.ScreenshotType;
+import org.arquillian.extension.recorder.screenshooter.api.Blur;
+import org.arquillian.extension.recorder.screenshooter.api.BlurLevel;
 import org.arquillian.extension.recorder.screenshooter.api.Screenshot;
 import org.arquillian.extension.recorder.screenshooter.event.AfterScreenshotTaken;
 import org.arquillian.extension.recorder.screenshooter.event.BeforeScreenshotTaken;
@@ -33,9 +35,11 @@ import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.Before;
+import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.jboss.arquillian.test.spi.event.suite.TestLifecycleEvent;
 
 /**
@@ -76,7 +80,14 @@ public class ScreenshooterLifecycleObserver {
 
             beforeScreenshotTaken.fire(new BeforeScreenshotTaken(metaData));
 
-            takeScreenshot.fire(new TakeScreenshot(screenshotName, metaData, When.BEFORE, event.getTestMethod().getAnnotation(Screenshot.class)));
+            TakeScreenshot takeScreenshooter = new TakeScreenshot(screenshotName, metaData, When.BEFORE, event.getTestMethod().getAnnotation(Screenshot.class));
+            takeScreenshot.fire(takeScreenshooter);
+
+            metaData.setBlurLevel(resolveBlurLevel(event));
+            org.arquillian.extension.recorder.screenshooter.Screenshot screenshot = takeScreenshooter.getScreenshot();
+            if(screenshot != null) {
+                metaData.setFilename(screenshot.getResource());
+            }
 
             afterScreenshotTaken.fire(new AfterScreenshotTaken(metaData));
         }
@@ -98,9 +109,32 @@ public class ScreenshooterLifecycleObserver {
 
             beforeScreenshotTaken.fire(new BeforeScreenshotTaken(metaData));
 
-            takeScreenshot.fire(new TakeScreenshot(screenshotName, metaData, when, null));
+            TakeScreenshot takeScreenshooter = new TakeScreenshot(screenshotName, metaData, when, null);
+            takeScreenshot.fire(takeScreenshooter);
+
+            metaData.setBlurLevel(resolveBlurLevel(event));
+            org.arquillian.extension.recorder.screenshooter.Screenshot screenshot = takeScreenshooter.getScreenshot();
+            if(screenshot != null) {
+                metaData.setFilename(screenshot.getResource());
+            }
 
             afterScreenshotTaken.fire(new AfterScreenshotTaken(metaData));
+        }
+    }
+
+    private BlurLevel resolveBlurLevel(TestEvent event) {
+        if (event.getTestMethod().getAnnotation(Blur.class) != null) {
+            return event.getTestMethod().getAnnotation(Blur.class).value();
+        } else {
+            Class<? extends TestClass> testClass = event.getTestClass().getClass();
+            Class<?> annotatedClass = ReflectionUtil.getClassWithAnnotation(testClass, Blur.class);
+
+            BlurLevel blurLevel = null;
+            if (annotatedClass != null) {
+                blurLevel = annotatedClass .getAnnotation(Blur.class).value();
+            }
+
+            return blurLevel;
         }
     }
 

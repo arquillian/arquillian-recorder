@@ -23,42 +23,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Put this annotation on a test method or class in order to override global configuration in arquillian.xml locally just for that method
- * you have put this annotation on.
+ * Put this annotation on a test method or class in order to blur images related to that execution.
  *
- * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
+ * @author <a href="mailto:asotobu@gmail.com">Alex Soto</a>
  *
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Screenshot {
+@Target({ElementType.METHOD, ElementType.TYPE})
+public @interface Blur {
 
     /**
-     * false by default
-     *
-     * @return true if screenshot should be taken on every action of a browser, false otherwise
+     * Sets blur level.
+     * @return blur level.
      */
-    boolean takeOnEveryAction() default false;
-
-    /**
-     * false by default
-     *
-     * @return true if screenshot should be taken before this test method, false otherwise
-     */
-    boolean takeBeforeTest() default false;
-
-    /**
-     * false by default
-     *
-     * @return true if screenshot should be taken after this test method, false otherwise
-     */
-    boolean takeAfterTest() default false;
-
-    /**
-     * true by default
-     *
-     * @return true if screenshot should be taken if test method fails, false otherwise
-     */
-    boolean takeWhenTestFailed() default true;
+    BlurLevel value() default BlurLevel.LOW;
 }
