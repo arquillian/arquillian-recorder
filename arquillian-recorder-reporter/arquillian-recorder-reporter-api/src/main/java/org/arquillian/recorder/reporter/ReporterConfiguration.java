@@ -69,6 +69,12 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
 
     private String asciidocStandardCompliant = DEFAULT_ASCIIDOC_STANDARD_COMPLIANT;
 
+    private String asciiDocAttributesFile = "";
+
+    public String getAsciiDocAttributesFile() {
+        return getProperty("asciiDocAttributesFile", asciiDocAttributesFile);
+    }
+
     /**
      *
      * @return true if we want generated asciidoc document be compliant with standard format. False otherwise and output will be an AsciiDoc document to be rendered by Asciidoctor.
