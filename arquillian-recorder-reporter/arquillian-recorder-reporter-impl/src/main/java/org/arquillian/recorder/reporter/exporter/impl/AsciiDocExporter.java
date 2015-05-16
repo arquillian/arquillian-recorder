@@ -205,6 +205,9 @@ public class AsciiDocExporter implements Exporter {
     protected void writeDocumentHeader() throws IOException {
         writer.append("= ").append(this.configuration.getTitle()).append(NEW_LINE);
 
+        if(isAttributesFileSet()) {
+            writer.append("include::").append(this.configuration.getAsciiDocAttributesFile()).append("[]").append(NEW_LINE);
+        }
         if (isAsciidoctorOutput()) {
             writer.append(":icons: font").append(NEW_LINE);
         }
@@ -212,6 +215,9 @@ public class AsciiDocExporter implements Exporter {
         writer.append(NEW_LINE);
     }
 
+    private boolean isAttributesFileSet() {
+        return !"".equals(this.configuration.getAsciiDocAttributesFile());
+    }
     /**
      * Method that is called to write container properties to AsciiDoc document.
      *
