@@ -417,9 +417,9 @@ public class AsciiDocExporter implements Exporter {
         if (large) {
 
             writer.append(".").append(screenshotEntry.getPhase().name()).append(NEW_LINE);
-            writer.append(screenshotEntry.getLink()).append("[")
-                .append(this.resourceBundle.getString("asciidoc.reporter.screenshot")).append(" - ")
-                .append(screenshotEntry.getPath()).append("]").append(NEW_LINE).append(NEW_LINE);
+            writer.append(screenshotEntry.getLink()).append(" -> file://").append(screenshotEntry.getPath()).append("[")
+            .append(this.resourceBundle.getString("asciidoc.reporter.screenshot"))
+            .append("]").append(NEW_LINE).append(NEW_LINE);
 
         } else {
 
