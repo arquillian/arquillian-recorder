@@ -65,10 +65,11 @@ public class ReporterConfigurator extends RecorderConfigurator<ReporterConfigura
         for (ExtensionDef extension : descriptor.getExtensions()) {
             if (extension.getExtensionName().equals(EXTENSION_NAME)) {
                 configuration.setConfiguration(extension.getExtensionProperties());
-                configuration.validate();
                 break;
             }
         }
+
+        configuration.validate();
 
         this.configuration.set(configuration);
 
