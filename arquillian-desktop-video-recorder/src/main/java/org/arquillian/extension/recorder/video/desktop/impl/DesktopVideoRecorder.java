@@ -108,7 +108,7 @@ public class DesktopVideoRecorder implements Recorder {
     public void startRecording(String fileName, VideoType videoType) {
         Validate.notNullOrEmpty(fileName, "File name is a null object or an empty string!");
         Validate.notNull(videoType, "Type of video is a null object!");
-        startRecording(fileName, videoType);
+        startRecording(new File(fileName), videoType);
     }
 
     @Override

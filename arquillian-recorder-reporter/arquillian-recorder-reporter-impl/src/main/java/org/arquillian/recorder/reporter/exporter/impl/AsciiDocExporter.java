@@ -585,7 +585,7 @@ public class AsciiDocExporter implements Exporter {
      * this method calls next methods in order for each method (writeTestMethodHeader, writeTestMethodProperties and
      * writeMedia).
      *
-     * @param testClassReport test class report element for which test methods will be written 
+     * @param testClassReport test class report element for which test methods will be written
      */
     protected void writeTestMethods(TestClassReport testClassReport) throws IOException {
 

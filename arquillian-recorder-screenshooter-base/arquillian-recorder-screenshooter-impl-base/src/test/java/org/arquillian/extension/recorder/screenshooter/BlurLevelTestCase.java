@@ -64,7 +64,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class BlurLevelTestCase extends AbstractTestTestBase {
 
-    protected static File OUTPUT_FILE = null; 
+    protected static File OUTPUT_FILE = null;
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();

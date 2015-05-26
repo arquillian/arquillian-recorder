@@ -60,7 +60,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
- * 
+ *
  */
 @RunWith(MockitoJUnitRunner.class)
 public class RecorderLifecycleObserverTestCase extends AbstractTestTestBase {
