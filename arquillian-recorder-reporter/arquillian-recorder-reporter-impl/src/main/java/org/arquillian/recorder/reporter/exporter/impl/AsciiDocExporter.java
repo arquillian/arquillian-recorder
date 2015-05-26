@@ -152,7 +152,6 @@ public class AsciiDocExporter implements Exporter {
      * in order (writeTime, writeProperties, writeMedia, writeContainers, writeTestResults).
      *
      * @param testSuiteReports list;
-     * @throws IOException
      */
     protected void writeTestSuite(List<TestSuiteReport> testSuiteReports) throws IOException {
 
@@ -175,7 +174,6 @@ public class AsciiDocExporter implements Exporter {
      * @param start time.
      * @param stop end time.
      * @param duration in millis.
-     * @throws IOException
      */
     protected void writeTime(Date start, Date stop, long duration) throws IOException {
 
@@ -200,7 +198,6 @@ public class AsciiDocExporter implements Exporter {
      * First method called when report is being created. This method is used to set the document title and AsciiDoc document
      * attributes.
      *
-     * @throws IOException
      */
     protected void writeDocumentHeader() throws IOException {
         writer.append("= ").append(this.configuration.getTitle()).append(NEW_LINE);
@@ -221,8 +218,7 @@ public class AsciiDocExporter implements Exporter {
     /**
      * Method that is called to write container properties to AsciiDoc document.
      *
-     * @param properties
-     * @throws IOException
+     * @param properties container properties as a map
      */
     protected void writeContainerProperties(Map<String, String> properties) throws IOException {
 
@@ -249,8 +245,7 @@ public class AsciiDocExporter implements Exporter {
     /**
      * Method that is called to write properties to AsciiDoc document.
      *
-     * @param propertyEntries list.
-     * @throws IOException
+     * @param propertyEntries list of properties to write to the report
      */
     protected void writeProperties(List<PropertyEntry> propertyEntries) throws IOException {
 
@@ -392,8 +387,7 @@ public class AsciiDocExporter implements Exporter {
     /**
      * Method that is called to write video.
      *
-     * @param videoEntry
-     * @throws IOException
+     * @param videoEntry video entry to write
      */
     protected void writeVideo(VideoEntry videoEntry) throws IOException {
 
@@ -404,7 +398,7 @@ public class AsciiDocExporter implements Exporter {
     /**
      * Method that is called to write screenshot. This method is responsible to check the size of image.
      *
-     * @param screenshotEntry
+     * @param screenshotEntry screenshot entry to write
      * @throws IOException
      */
     protected void writeScreenshot(ScreenshotEntry screenshotEntry) throws IOException {
@@ -591,8 +585,7 @@ public class AsciiDocExporter implements Exporter {
      * this method calls next methods in order for each method (writeTestMethodHeader, writeTestMethodProperties and
      * writeMedia).
      *
-     * @param testClassReport element.
-     * @throws IOException
+     * @param testClassReport test class report element for which test methods will be written 
      */
     protected void writeTestMethods(TestClassReport testClassReport) throws IOException {
 
@@ -611,9 +604,8 @@ public class AsciiDocExporter implements Exporter {
     /**
      * Method that is called to write test method header (that is the title, result, stack trace, ...) to AsciiDoc document.
      *
-     * @param testClassName
-     * @param testMethodReport
-     * @throws IOException
+     * @param testClassName name of the class to write test method header for
+     * @param testMethodReport test method report to write
      */
     protected void writeTestMethodHeader(String testClassName, TestMethodReport testMethodReport) throws IOException {
 
@@ -671,8 +663,7 @@ public class AsciiDocExporter implements Exporter {
     /**
      * Method that is called to write test method properties to AsciiDoc document.
      *
-     * @param testMethodReport
-     * @throws IOException
+     * @param testMethodReport report of test method to write
      */
     protected void writeTestMethodProperties(TestMethodReport testMethodReport) throws IOException {
 

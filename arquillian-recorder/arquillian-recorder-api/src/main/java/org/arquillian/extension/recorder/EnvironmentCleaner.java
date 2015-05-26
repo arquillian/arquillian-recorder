@@ -25,7 +25,7 @@ public interface EnvironmentCleaner<CONFIG extends Configuration<CONFIG>> {
     /**
      * Performs abritrary cleaning operation before extension starts to fully work e.g. removes resources from the last run.
      *
-     * @param configuration
+     * @param configuration configuration to use while cleaning
      * @throws Exception when cleaning went wrong
      */
     void clean(CONFIG configuration) throws Exception;

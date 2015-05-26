@@ -80,7 +80,7 @@ public class ReporterExtensionInitializer {
      * {@link ExporterRegisterCreated} is fired in order to be able to register all exporters even from 3rd party extension. In
      * the end, report type from configuration is mapped to supported exporter and when found, it is produced.
      *
-     * @param event
+     * @param event event fired from configurator when reporter extension is fully configured
      */
     public void onExtensionConfigured(@Observes ReportingExtensionConfigured event) {
 

@@ -56,7 +56,7 @@ public class ReportConfiguration implements ReportEntry {
     /**
      * String has to be given as an integer number bigger than 0.
      *
-     * @param maxImageWidth
+     * @param maxImageWidth maximum image width for image to be displayed fully, otherwise it is displayed as a link
      */
     public void setMaxImageWidth(String maxImageWidth) {
         try {
@@ -108,7 +108,7 @@ public class ReportConfiguration implements ReportEntry {
     /**
      * Title has to be non-null and non-empty string.
      *
-     * @param title
+     * @param title title of the whole Arquillian report
      */
     public void setTitle(String title) {
         if (title == null || title.isEmpty()) {

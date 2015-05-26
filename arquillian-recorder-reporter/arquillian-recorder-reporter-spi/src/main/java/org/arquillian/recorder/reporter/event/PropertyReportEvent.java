@@ -31,7 +31,7 @@ public class PropertyReportEvent {
 
     /**
      *
-     * @param propertyEntry
+     * @param propertyEntry property entry to hook into reporting tree from your extension
      * @throws IllegalArgumentException if {@code propertyEntry} is a null object
      */
     public PropertyReportEvent(PropertyEntry propertyEntry) {

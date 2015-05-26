@@ -29,20 +29,20 @@ public interface RecorderStrategy<T extends Configuration<T>> {
 
     /**
      *
-     * @param configuration
+     * @param configuration configuration to set to this recorder strategy
      */
     void setConfiguration(T configuration);
 
     /**
-     * @param event
-     * @param result
+     * @param event Arquillian event to decide the action taking for
+     * @param result result accompanied with {@code event}
      * @return true if some action should should be taken, false otherwise
      */
     boolean isTakingAction(Event event, TestResult result);
 
     /**
      *
-     * @param event
+     * @param event Arquillian event to decide the action taking for
      * @return true if some action should should be taken, false otherwise
      */
     boolean isTakingAction(Event event);

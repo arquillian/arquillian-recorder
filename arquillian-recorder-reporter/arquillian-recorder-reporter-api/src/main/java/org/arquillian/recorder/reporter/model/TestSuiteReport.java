@@ -37,7 +37,7 @@ import org.arquillian.recorder.reporter.model.entry.table.TableEntry;
 
 /**
  * Reports test suite for some {@link Report} <br>
- * </br> Must hold:
+ * <br> Must hold:
  * <ul>
  * <li>at least one {@link ContainerReport}</li>
  * <li>at least one {@link TestClassReport}</li>

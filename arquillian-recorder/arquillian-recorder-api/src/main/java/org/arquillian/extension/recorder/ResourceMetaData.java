@@ -99,7 +99,7 @@ public abstract class ResourceMetaData {
     /**
      * Time stamp specifying when some particular {@code Resource} was created.
      *
-     * @param timeStamp
+     * @param timeStamp UNIX time stamp to set
      * @return {@code this}
      */
     public ResourceMetaData setTimeStamp(long timeStamp) {
@@ -147,7 +147,7 @@ public abstract class ResourceMetaData {
     /**
      * Sets optional description of the resource
      *
-     * @param optionalDescription
+     * @param optionalDescription description of this resource
      */
     public void setOptionalDescription(String optionalDescription) {
         Validate.notNull(optionalDescription, "OptionalDescription is null!");

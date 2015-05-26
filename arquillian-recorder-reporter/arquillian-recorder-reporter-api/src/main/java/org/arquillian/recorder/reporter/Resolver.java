@@ -26,14 +26,14 @@ public interface Resolver {
 
     /**
      *
-     * @param toResolve
+     * @param toResolve string to resolve to boolean
      * @return when you ask some question {@code toResolve}, it returns answer as boolean.
      */
     boolean resolveAsBoolean(String toResolve);
 
     /**
      *
-     * @param toResolve
+     * @param toResolve string to resolve into another string
      * @return when you ask some question {@code toResolve}, it returns answer as String.
      */
     String resolveAsString(String toResolve);

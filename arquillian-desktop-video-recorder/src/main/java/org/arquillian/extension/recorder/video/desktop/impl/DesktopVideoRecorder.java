@@ -53,7 +53,7 @@ public class DesktopVideoRecorder implements Recorder {
 
     /**
      *
-     * @param takenResourceRegister
+     * @param takenResourceRegister register where reported resources will be put
      * @throws IllegalArgumentException if {@code takenResourceRegister} is a null object
      *
      */

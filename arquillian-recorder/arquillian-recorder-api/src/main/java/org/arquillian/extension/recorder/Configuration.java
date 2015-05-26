@@ -78,7 +78,7 @@ public abstract class Configuration<T extends Configuration<T>> {
      * Sets some property.
      *
      * @param name acts as a key
-     * @param value
+     * @param value value assigned to the {@code name} key
      * @throws IllegalArgumentException if {@code name} is null or empty or {@code value} is null
      */
     public void setProperty(String name, String value) {
