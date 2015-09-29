@@ -35,9 +35,9 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.test.spi.TestResult;
-import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.AfterClass;
 import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
+import org.jboss.arquillian.test.spi.event.suite.AfterTestLifecycleEvent;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
@@ -128,7 +128,7 @@ public class VideoLifecycleObserver {
         }
     }
 
-    public void afterTest(@Observes After event) {
+    public void afterTest(@Observes AfterTestLifecycleEvent event) {
         if (strategy.get().isTakingAction(event, testResult.get())) {
             VideoMetaData metaData = getMetaData(event);
             metaData.setTestResult(testResult.get());

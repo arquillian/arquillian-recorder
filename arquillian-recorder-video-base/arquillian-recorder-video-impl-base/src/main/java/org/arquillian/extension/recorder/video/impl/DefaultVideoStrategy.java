@@ -24,6 +24,7 @@ import org.jboss.arquillian.test.spi.TestResult;
 import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.AfterClass;
 import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
+import org.jboss.arquillian.test.spi.event.suite.AfterTestLifecycleEvent;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
@@ -44,7 +45,7 @@ public class DefaultVideoStrategy implements VideoStrategy {
 
     @Override
     public boolean isTakingAction(Event event, TestResult result) {
-        if (event instanceof After) {
+        if (event instanceof AfterTestLifecycleEvent && !(event instanceof After)) {
             switch (result.getStatus()) {
                 case SKIPPED:
                     return false;

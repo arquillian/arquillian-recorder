@@ -24,6 +24,7 @@ import org.jboss.arquillian.core.spi.event.Event;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.jboss.arquillian.test.spi.TestResult.Status;
 import org.jboss.arquillian.test.spi.event.suite.After;
+import org.jboss.arquillian.test.spi.event.suite.AfterTestLifecycleEvent;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 
 /**
@@ -45,8 +46,8 @@ public class DefaultAnnotationScreenshootingStrategy implements AnnotationScreen
 
     @Override
     public boolean isTakingAction(Event event, TestResult result) {
-        if (event instanceof After) {
-            Screenshot screenshotAnnotation = ScreenshotAnnotationScanner.getScreenshotAnnotation(((After) event).getTestMethod());
+        if (event instanceof AfterTestLifecycleEvent && !(event instanceof After)) {
+            Screenshot screenshotAnnotation = ScreenshotAnnotationScanner.getScreenshotAnnotation(((AfterTestLifecycleEvent) event).getTestMethod());
 
             if (screenshotAnnotation != null) {
                 if (screenshotAnnotation.takeAfterTest()) {

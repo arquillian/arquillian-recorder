@@ -37,7 +37,7 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.TestResult;
-import org.jboss.arquillian.test.spi.event.suite.After;
+import org.jboss.arquillian.test.spi.event.suite.AfterTestLifecycleEvent;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.jboss.arquillian.test.spi.event.suite.TestLifecycleEvent;
@@ -93,7 +93,7 @@ public class ScreenshooterLifecycleObserver {
         }
     }
 
-    public void afterTest(@Observes After event, TestResult result) {
+    public void afterTest(@Observes AfterTestLifecycleEvent event, TestResult result) {
         if (new TakingScreenshotDecider(recorderStrategyRegister.get()).decide(event, result)) {
             ScreenshotMetaData metaData = getMetaData(event);
             metaData.setTestResult(result);
@@ -181,8 +181,9 @@ public class ScreenshooterLifecycleObserver {
         private boolean hasScreenshotAnnotation(org.jboss.arquillian.core.spi.event.Event event) {
             if (event instanceof Before) {
                 return ScreenshotAnnotationScanner.getScreenshotAnnotation(((Before) event).getTestMethod()) != null;
-            } else if (event instanceof After) {
-                return ScreenshotAnnotationScanner.getScreenshotAnnotation(((After) event).getTestMethod()) != null;
+            } else if (event instanceof AfterTestLifecycleEvent) {
+                return ScreenshotAnnotationScanner
+                    .getScreenshotAnnotation(((AfterTestLifecycleEvent) event).getTestMethod()) != null;
             }
             return false;
         }

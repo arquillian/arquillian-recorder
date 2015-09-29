@@ -43,6 +43,8 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.spi.ServiceLoader;
+import org.jboss.arquillian.junit.event.AfterRules;
+import org.jboss.arquillian.test.spi.LifecycleMethodExecutor;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.After;
@@ -147,7 +149,7 @@ public class RecorderLifecycleObserverTestCase extends AbstractTestTestBase {
 
         bind(TestScoped.class, TestResult.class, TestResult.passed());
 
-        fire(new After(DummyTestCase.class, DummyTestCase.class.getMethod("test")));
+        fire(new AfterRules(DummyTestCase.class, DummyTestCase.class.getMethod("test"), LifecycleMethodExecutor.NO_OP));
         fire(new AfterClass(DummyTestCase.class));
         fire(new AfterSuite());
 
@@ -201,7 +203,7 @@ public class RecorderLifecycleObserverTestCase extends AbstractTestTestBase {
 
         bind(TestScoped.class, TestResult.class, TestResult.passed());
 
-        fire(new After(DummyTestCase.class, DummyTestCase.class.getMethod("test")));
+        fire(new AfterRules(DummyTestCase.class, DummyTestCase.class.getMethod("test"), LifecycleMethodExecutor.NO_OP));
         fire(new AfterClass(DummyTestCase.class));
         fire(new AfterSuite());
 
@@ -227,7 +229,7 @@ public class RecorderLifecycleObserverTestCase extends AbstractTestTestBase {
 
         bind(TestScoped.class, TestResult.class, TestResult.passed());
 
-        fire(new After(DummyTestCase.class, DummyTestCase.class.getMethod("test")));
+        fire(new AfterRules(DummyTestCase.class, DummyTestCase.class.getMethod("test"), LifecycleMethodExecutor.NO_OP));
         fire(new AfterClass(DummyTestCase.class));
         fire(new AfterSuite());
 
@@ -253,7 +255,7 @@ public class RecorderLifecycleObserverTestCase extends AbstractTestTestBase {
 
         bind(TestScoped.class, TestResult.class, TestResult.failed(new RuntimeException("some exception")));
 
-        fire(new After(DummyTestCase.class, DummyTestCase.class.getMethod("test")));
+        fire(new AfterRules(DummyTestCase.class, DummyTestCase.class.getMethod("test"), LifecycleMethodExecutor.NO_OP));
         fire(new AfterClass(DummyTestCase.class));
         fire(new AfterSuite());
 
@@ -281,7 +283,7 @@ public class RecorderLifecycleObserverTestCase extends AbstractTestTestBase {
 
         bind(TestScoped.class, TestResult.class, TestResult.passed());
 
-        fire(new After(DummyTestCase.class, DummyTestCase.class.getMethod("test")));
+        fire(new AfterRules(DummyTestCase.class, DummyTestCase.class.getMethod("test"), LifecycleMethodExecutor.NO_OP));
         fire(new AfterClass(DummyTestCase.class));
         fire(new AfterSuite());
 

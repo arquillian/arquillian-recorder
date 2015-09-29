@@ -37,9 +37,10 @@ import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.spi.ServiceLoader;
 import org.jboss.arquillian.core.spi.context.ApplicationContext;
+import org.jboss.arquillian.junit.event.AfterRules;
+import org.jboss.arquillian.test.spi.LifecycleMethodExecutor;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
-import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 import org.jboss.arquillian.test.test.AbstractTestTestBase;
 import org.junit.Assert;
@@ -171,7 +172,8 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
 
         bind(TestScoped.class, TestResult.class, TestResult.passed());
 
-        fire(new After(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest")));
+        fire(new AfterRules(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest"),
+            LifecycleMethodExecutor.NO_OP));
 
         assertEventFired(BeforeScreenshotTaken.class, 1);
         assertEventFired(TakeScreenshot.class, 1);
@@ -192,7 +194,8 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
 
         bind(TestScoped.class, TestResult.class, TestResult.failed(new RuntimeException()));
 
-        fire(new After(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest")));
+        fire(new AfterRules(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest"),
+            LifecycleMethodExecutor.NO_OP));
 
         assertEventFired(BeforeScreenshotTaken.class, 1);
         assertEventFired(TakeScreenshot.class, 1);
@@ -213,7 +216,8 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
 
         bind(TestScoped.class, TestResult.class, TestResult.failed(new RuntimeException()));
 
-        fire(new After(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest")));
+        fire(new AfterRules(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest"),
+            LifecycleMethodExecutor.NO_OP));
 
         assertEventFired(BeforeScreenshotTaken.class, 1);
         assertEventFired(TakeScreenshot.class, 1);
@@ -233,7 +237,8 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
 
         bind(TestScoped.class, TestResult.class, TestResult.passed());
 
-        fire(new After(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest")));
+        fire(new AfterRules(FakeTestClass.class, FakeTestClass.class.getMethod("fakeTest"),
+            LifecycleMethodExecutor.NO_OP));
 
         assertEventFired(BeforeScreenshotTaken.class, 1);
         assertEventFired(TakeScreenshot.class, 1);
@@ -256,7 +261,8 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
 
         bind(TestScoped.class, TestResult.class, TestResult.passed());
 
-        fire(new After(FakeAnnotatedClass.class, FakeAnnotatedClass.class.getMethod("takeBeforeTestTrueMethod")));
+        fire(new AfterRules(FakeAnnotatedClass.class, FakeAnnotatedClass.class.getMethod("takeBeforeTestTrueMethod"),
+            LifecycleMethodExecutor.NO_OP));
 
         // so we take it
         assertEventFired(BeforeScreenshotTaken.class, 1);
@@ -278,7 +284,8 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
 
         bind(TestScoped.class, TestResult.class, TestResult.passed());
 
-        fire(new After(FakeAnnotatedClass.class, FakeAnnotatedClass.class.getMethod("takeBeforeTestFalseMethod")));
+        fire(new AfterRules(FakeAnnotatedClass.class, FakeAnnotatedClass.class.getMethod("takeBeforeTestFalseMethod"),
+            LifecycleMethodExecutor.NO_OP));
 
         // so we dont take it
         assertEventFired(BeforeScreenshotTaken.class, 0);
@@ -300,7 +307,8 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
 
         bind(TestScoped.class, TestResult.class, TestResult.passed());
 
-        fire(new After(FakeAnnotatedClass.class, FakeAnnotatedClass.class.getMethod("takeAfterTestMethod")));
+        fire(new AfterRules(FakeAnnotatedClass.class, FakeAnnotatedClass.class.getMethod("takeAfterTestMethod"),
+            LifecycleMethodExecutor.NO_OP));
 
         // so we take it
         assertEventFired(BeforeScreenshotTaken.class, 1);
@@ -322,7 +330,8 @@ public class ScreenshooterLifecycleObserverTestCase extends AbstractTestTestBase
 
         bind(TestScoped.class, TestResult.class, TestResult.failed(new Throwable()));
 
-        fire(new After(FakeAnnotatedClass.class, FakeAnnotatedClass.class.getMethod("takeWhenTestFailedMethod")));
+        fire(new AfterRules(FakeAnnotatedClass.class, FakeAnnotatedClass.class.getMethod("takeWhenTestFailedMethod"),
+            LifecycleMethodExecutor.NO_OP));
 
         // so we take it
         assertEventFired(BeforeScreenshotTaken.class, 1);

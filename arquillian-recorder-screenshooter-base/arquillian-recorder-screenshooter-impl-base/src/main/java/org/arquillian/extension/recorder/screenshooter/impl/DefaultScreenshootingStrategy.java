@@ -23,6 +23,7 @@ import org.jboss.arquillian.core.spi.event.Event;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.jboss.arquillian.test.spi.TestResult.Status;
 import org.jboss.arquillian.test.spi.event.suite.After;
+import org.jboss.arquillian.test.spi.event.suite.AfterTestLifecycleEvent;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 
 /**
@@ -41,7 +42,7 @@ public class DefaultScreenshootingStrategy implements ScreenshootingStrategy {
 
     @Override
     public boolean isTakingAction(Event event, TestResult result) {
-        if (event instanceof After) {
+        if (event instanceof AfterTestLifecycleEvent && !(event instanceof After)) {
             if (configuration.getTakeAfterTest()) {
                 return true;
             }
