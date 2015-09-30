@@ -18,7 +18,7 @@
     <parent>
         <groupId>org.arquillian.extension</groupId>
         <artifactId>arquillian-recorder-build</artifactId>
-        <version>1.1.0.Final-SNAPSHOT</version>
+        <version>1.1.0.Alpha3</version>
         <relativePath>../arquillian-recorder-build/pom.xml</relativePath>
     </parent>
 
