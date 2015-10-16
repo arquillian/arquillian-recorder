@@ -17,7 +17,7 @@
     <!-- Artifact configuration -->
     <groupId>org.arquillian.extension</groupId>
     <artifactId>arquillian-desktop-video-recorder</artifactId>
-    <version>1.1.0.Alpha4</version>
+    <version>1.1.0.Final-SNAPSHOT</version>
     <name>Arquillian Desktop Video Recorder</name>
     <description>Arquillian Desktop Video Recorder</description>
 
