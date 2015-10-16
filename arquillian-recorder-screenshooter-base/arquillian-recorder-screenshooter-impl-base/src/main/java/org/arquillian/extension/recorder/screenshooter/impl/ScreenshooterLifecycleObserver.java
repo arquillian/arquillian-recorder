@@ -66,7 +66,7 @@ public class ScreenshooterLifecycleObserver {
     @Inject
     private Instance<Screenshooter> screenshooter;
 
-    public void beforeTest(@Observes Before event) {
+    public void beforeTest(@Observes(precedence = -50) Before event) {
 
         if (new TakingScreenshotDecider(recorderStrategyRegister.get()).decide(event, null)) {
             ScreenshotMetaData metaData = getMetaData(event);
