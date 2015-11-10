@@ -16,7 +16,6 @@
  */
 package org.arquillian.extension.recorder.video.impl;
 
-import org.arquillian.extension.recorder.video.VideoConfiguration;
 import org.arquillian.extension.recorder.video.VideoRecorderEnvironmentCleaner;
 import org.arquillian.extension.recorder.video.VideoStrategy;
 import org.arquillian.extension.recorder.video.event.VideoExtensionConfigured;
@@ -54,9 +53,6 @@ public class VideoRecorderExtensionInitializer {
     @Inject
     @ApplicationScoped
     private InstanceProducer<VideoRecorderEnvironmentCleaner> cleaner;
-
-    @Inject
-    private Instance<VideoConfiguration> configuration;
 
     @Inject
     private Instance<ServiceLoader> serviceLoader;
