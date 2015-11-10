@@ -17,6 +17,7 @@
 package org.arquillian.extension.recorder.video.impl;
 
 import java.lang.annotation.Annotation;
+
 import org.arquillian.extension.recorder.video.Recorder;
 import org.arquillian.extension.recorder.video.VideoConfiguration;
 import org.jboss.arquillian.core.api.Instance;
@@ -47,16 +48,17 @@ public class RecorderProvider implements ResourceProvider {
 
         VideoConfiguration configuration = this.configuration.get();
 
+        if (configuration == null || recorder == null) {
+            throw new IllegalStateException("Unable to inject recorder into test. Be sure there is some Video Recorder "
+                + "implementation on the class path.");
+        }
+
         if (configuration.getStartBeforeClass() || configuration.getStartBeforeSuite()
             || configuration.getStartBeforeTest() || configuration.getTakeOnlyOnFail()) {
             throw new IllegalStateException("It is not possible to inject video recorder into test "
                 + "when you have specified that you want to take videos automatically via configuration "
                 + "where you set one of start* properties to true or takeOnlyOnFail to true. In order "
                 + "to use recorder manually in test class, you have to set all mentioned above to false.");
-        }
-
-        if (recorder == null) {
-            throw new IllegalStateException("Unable to inject recorder into test.");
         }
 
         return recorder;

@@ -43,6 +43,10 @@ public class InTestVideoResourceReportObserver {
 
         TakenResourceRegister register = takenResourceRegister.get();
 
+        if (register == null) {
+            return; // no video implementation on the class path
+        }
+
         for (Video video : register.getTakenVideos()) {
             if (!register.getReportedVideos().contains(video)) {
 

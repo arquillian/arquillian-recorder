@@ -17,10 +17,11 @@
 package org.arquillian.extension.recorder.video.impl;
 
 import org.arquillian.extension.recorder.video.VideoConfiguration;
-import org.arquillian.extension.recorder.video.VideoConfigurationException;
 import org.arquillian.extension.recorder.video.VideoRecorderEnvironmentCleaner;
 import org.arquillian.extension.recorder.video.VideoStrategy;
 import org.arquillian.extension.recorder.video.event.VideoExtensionConfigured;
+import org.arquillian.recorder.reporter.event.ReportingExtensionConfigured;
+import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
@@ -29,8 +30,20 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.ServiceLoader;
 
 /**
+ * Observes:
+ * <ul>
+ * <li>{@link ReportingExtensionConfigured}</li>
+ * </ul>
+ * Produces {@link ApplicationScoped}:
+ * <ul>
+ * <li>{@link VideoStrategy}</li>
+ * <li>{@link VideoRecorderEnvironmentCleaner}</li>
+ * </ul>
+ * Fires:
+ * <ul>
+ * <li>{@link VideoExtensionConfigured}</li>
+ * </ul>
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
- *
  */
 public class VideoRecorderExtensionInitializer {
 
@@ -48,10 +61,12 @@ public class VideoRecorderExtensionInitializer {
     @Inject
     private Instance<ServiceLoader> serviceLoader;
 
-    public void afterExtensionConfigured(@Observes VideoExtensionConfigured event) {
+    @Inject
+    private Event<VideoExtensionConfigured> extensionConfiguredEvent;
 
-        VideoStrategy strategy = serviceLoader.get().onlyOne(VideoStrategy.class, DefaultVideoStrategy.class);
-        strategy.setConfiguration(configuration.get());
+    public void afterReportingExtensionConfigured(@Observes ReportingExtensionConfigured event) {
+
+        VideoStrategy strategy = new SkippingVideoStrategy();
 
         VideoRecorderEnvironmentCleaner cleaner = serviceLoader.get().onlyOne(VideoRecorderEnvironmentCleaner.class,
             DefaultVideoRecorderEnvironmentCleaner.class);
@@ -59,10 +74,6 @@ public class VideoRecorderExtensionInitializer {
         this.strategy.set(strategy);
         this.cleaner.set(cleaner);
 
-        try {
-            this.cleaner.get().clean(configuration.get());
-        } catch (Exception e) {
-            throw new VideoConfigurationException("Unable to clean before screenshooting extension gets to work.", e);
-        }
+        extensionConfiguredEvent.fire(new VideoExtensionConfigured());
     }
 }

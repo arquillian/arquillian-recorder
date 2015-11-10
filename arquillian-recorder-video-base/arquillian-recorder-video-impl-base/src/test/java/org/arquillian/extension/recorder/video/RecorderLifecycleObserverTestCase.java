@@ -105,6 +105,9 @@ public class RecorderLifecycleObserverTestCase extends AbstractTestTestBase {
         bind(ApplicationScoped.class, Recorder.class, recorder);
         bind(ApplicationScoped.class, TakenResourceRegister.class, takenResourceRegister);
 
+        strategy.setConfiguration(configuration);
+        bind(ApplicationScoped.class, VideoStrategy.class, strategy);
+
         Mockito.when(recorder.getVideoType()).thenReturn(VideoType.MP4);
 
         Mockito.doNothing().when(cleaner).clean(configuration);
@@ -112,8 +115,8 @@ public class RecorderLifecycleObserverTestCase extends AbstractTestTestBase {
         Mockito.when(serviceLoader.onlyOne(VideoRecorderEnvironmentCleaner.class, DefaultVideoRecorderEnvironmentCleaner.class))
             .thenReturn(cleaner);
 
-        Mockito.when(serviceLoader.onlyOne(VideoStrategy.class, DefaultVideoStrategy.class))
-            .thenReturn(strategy);
+//        Mockito.when(serviceLoader.onlyOne(VideoStrategy.class, DefaultVideoStrategy.class))
+//            .thenReturn(strategy);
 
         videoFile = File.createTempFile("fakeVideo", recorder.getVideoType().toString().toLowerCase());
 

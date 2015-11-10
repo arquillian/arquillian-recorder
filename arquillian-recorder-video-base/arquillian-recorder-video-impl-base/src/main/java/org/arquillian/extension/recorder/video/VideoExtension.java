@@ -16,8 +16,10 @@
  */
 package org.arquillian.extension.recorder.video;
 
+import org.arquillian.extension.recorder.video.impl.DefaultVideoStrategy;
 import org.arquillian.extension.recorder.video.impl.InTestVideoResourceReportObserver;
 import org.arquillian.extension.recorder.video.impl.RecorderProvider;
+import org.arquillian.extension.recorder.video.impl.SkippingVideoStrategy;
 import org.arquillian.extension.recorder.video.impl.VideoLifecycleObserver;
 import org.arquillian.extension.recorder.video.impl.VideoRecorderExtensionInitializer;
 import org.arquillian.extension.recorder.video.impl.VideoTaker;
@@ -35,6 +37,8 @@ public class VideoExtension implements LoadableExtension {
         builder.observer(VideoLifecycleObserver.class);
         builder.observer(VideoRecorderExtensionInitializer.class);
         builder.service(ResourceProvider.class, RecorderProvider.class);
+        builder.service(VideoStrategy.class, SkippingVideoStrategy.class);
+        builder.service(VideoStrategy.class, DefaultVideoStrategy.class);
         builder.observer(VideoTaker.class);
         builder.observer(InTestVideoResourceReportObserver.class);
     }

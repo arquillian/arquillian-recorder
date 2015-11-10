@@ -37,7 +37,7 @@ import org.jboss.arquillian.core.api.annotation.Observes;
  * <li>{@link Recorder}</li>
  * <li>{@link TakenResourceRegister}</li>
  * </ul>
- * 
+ *
  * @author <a href="mailto:pmensik@redhat.com">Petr Mensik</a>
  */
 public class DesktopVideoRecorderCreator {
@@ -53,7 +53,7 @@ public class DesktopVideoRecorderCreator {
     @Inject
     private Instance<VideoConfiguration> configuration;
 
-    public void onVideoRecorderExtensionConfigured(@Observes VideoExtensionConfigured event) {
+    public void onVideoRecorderExtensionConfigured(@Observes(precedence = -100) VideoExtensionConfigured event) {
 
         if (takenResourceRegister.get() == null) {
             this.takenResourceRegister.set(new TakenResourceRegister());
