@@ -52,6 +52,7 @@
         <module>arquillian-recorder-screenshooter-base</module>
         <module>arquillian-recorder-video-base</module>
         <module>arquillian-desktop-video-recorder</module>
+        <module>arquillian-webcam-video-recorder</module>
     </modules>
 
     <!-- SCM -->
