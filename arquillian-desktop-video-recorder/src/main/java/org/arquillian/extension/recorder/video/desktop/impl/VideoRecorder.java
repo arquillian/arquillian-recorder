@@ -36,9 +36,7 @@ import org.arquillian.extension.recorder.video.VideoType;
 import org.arquillian.extension.recorder.video.desktop.configuration.DesktopVideoConfiguration;
 import org.jboss.arquillian.core.spi.Validate;
 
-import com.xuggle.mediatool.IMediaWriter;
-import com.xuggle.mediatool.ToolFactory;
-import com.xuggle.xuggler.ICodec;
+import org.jcodec.api.awt.SequenceEncoder;
 
 /**
  *
@@ -94,7 +92,31 @@ class VideoRecorder {
             @Override
             public void run() {
 
-                final IMediaWriter writer = ToolFactory.makeWriter(recordedVideo.getAbsolutePath());
+                try {
+                    SequenceEncoder encoder = new SequenceEncoder(recordedVideo);
+
+                    timer = new Timer();
+                    timer.schedule(new TestTimeoutTask(), TimeUnit.SECONDS.toMillis(configuration.getTestTimeout()));
+
+                    while (running) {
+                        BufferedImage bgrScreen = convertToType(getDesktopScreenshot(), BufferedImage.TYPE_3BYTE_BGR);
+                        encoder.encodeImage(bgrScreen);
+                        //TODO resize image
+                        try {
+                            Thread.sleep(500 / frameRate);
+                        } catch (InterruptedException ex) {
+                            logger.log(Level.WARNING, "Exception occured during video recording", ex);
+                        }
+                        if (!running) {
+                            encoder.finish();
+                        }
+                    }
+
+                } catch (IOException ex) {
+                    logger.log(Level.WARNING, "Exception occured during video recording", ex);
+                }
+
+                /*final IMediaWriter writer = ToolFactory.makeWriter(recordedVideo.getAbsolutePath());
                 writer.addVideoStream(0, 0, ICodec.ID.CODEC_ID_H264, screenBounds.width / 2, screenBounds.height / 2);
 
                 long startTime = System.nanoTime();
@@ -114,7 +136,7 @@ class VideoRecorder {
                     if (!running) {
                         writer.close();
                     }
-                }
+                }*/
             }
         });
         thread.start();

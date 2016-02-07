@@ -43,17 +43,16 @@
     <!-- Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    
-        <!-- Xuggler -->
-        <xuggler.version>5.4</xuggler.version>
+
+        <jcodec-javase.version>0.1.9</jcodec-javase.version>
 
         <!-- Other -->
         <version.maven.deploy.plugin>2.8.1</version.maven.deploy.plugin>
         <version.maven.compiler.plugin>2.3.2</version.maven.compiler.plugin>
 
-        <maven.compiler.target>1.6</maven.compiler.target>
-        <maven.compiler.source>1.6</maven.compiler.source>
-    </properties>    
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
+    </properties>
     
     <!-- Dependencies -->
     <dependencies>
@@ -63,9 +62,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>xuggle</groupId>
-            <artifactId>xuggle-xuggler</artifactId>
-            <version>${xuggler.version}</version>
+            <groupId>org.jcodec</groupId>
+            <artifactId>jcodec-javase</artifactId>
+            <version>${jcodec-javase.version}</version>
         </dependency>
     </dependencies>
 
