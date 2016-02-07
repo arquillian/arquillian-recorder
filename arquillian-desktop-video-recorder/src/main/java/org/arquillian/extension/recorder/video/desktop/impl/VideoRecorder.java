@@ -30,15 +30,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.coobird.thumbnailator.Thumbnails;
 import org.arquillian.extension.recorder.video.Video;
 import org.arquillian.extension.recorder.video.VideoConfiguration;
 import org.arquillian.extension.recorder.video.VideoType;
 import org.arquillian.extension.recorder.video.desktop.configuration.DesktopVideoConfiguration;
 import org.jboss.arquillian.core.spi.Validate;
 
-import com.xuggle.mediatool.IMediaWriter;
-import com.xuggle.mediatool.ToolFactory;
-import com.xuggle.xuggler.ICodec;
+import org.jcodec.api.awt.SequenceEncoder;
 
 /**
  *
@@ -94,26 +93,27 @@ class VideoRecorder {
             @Override
             public void run() {
 
-                final IMediaWriter writer = ToolFactory.makeWriter(recordedVideo.getAbsolutePath());
-                writer.addVideoStream(0, 0, ICodec.ID.CODEC_ID_H264, screenBounds.width / 2, screenBounds.height / 2);
+                try {
+                    SequenceEncoder encoder = new SequenceEncoder(recordedVideo);
 
-                long startTime = System.nanoTime();
+                    timer = new Timer();
+                    timer.schedule(new TestTimeoutTask(), TimeUnit.SECONDS.toMillis(configuration.getTestTimeout()));
 
-                timer = new Timer();
-                timer.schedule(new TestTimeoutTask(), TimeUnit.SECONDS.toMillis(configuration.getTestTimeout()));
-
-                while (running) {
-                    BufferedImage bgrScreen = convertToType(getDesktopScreenshot(), BufferedImage.TYPE_3BYTE_BGR);
-                    writer.encodeVideo(0, bgrScreen, System.nanoTime() - startTime, TimeUnit.NANOSECONDS);
-
-                    try {
-                        Thread.sleep(500 / frameRate);
-                    } catch (InterruptedException ex) {
-                        logger.log(Level.WARNING, "Exception occured during video recording", ex);
+                    while (running) {
+                        BufferedImage bgrScreen = convertToType(getDesktopScreenshot(), BufferedImage.TYPE_3BYTE_BGR);
+                        encoder.encodeImage(bgrScreen);
+                        try {
+                            Thread.sleep(500 / frameRate);
+                        } catch (InterruptedException ex) {
+                            logger.log(Level.WARNING, "Exception occured during video recording", ex);
+                        }
+                        if (!running) {
+                            encoder.finish();
+                        }
                     }
-                    if (!running) {
-                        writer.close();
-                    }
+
+                } catch (IOException ex) {
+                    logger.log(Level.WARNING, "Exception occured during video recording", ex);
                 }
             }
         });
@@ -165,13 +165,18 @@ class VideoRecorder {
         }
     }
 
-    private BufferedImage convertToType(BufferedImage sourceImage, int targetType) {
+    private BufferedImage convertToType(BufferedImage sourceImage, int targetType) throws IOException {
         BufferedImage image;
         if (sourceImage.getType() == targetType) {
-            image = sourceImage;
+            image = Thumbnails.of(sourceImage)
+                    .size(screenBounds.width, screenBounds.height)
+                    .asBufferedImage();
         } // otherwise create a new image of the target type and draw the new image
         else {
-            image = new BufferedImage(sourceImage.getWidth(), sourceImage.getHeight(), targetType);
+            BufferedImage tmp = Thumbnails.of(sourceImage)
+                    .size(screenBounds.width, screenBounds.height)
+                    .asBufferedImage();
+            image = new BufferedImage(tmp.getWidth(), tmp.getHeight(), targetType);
             image.getGraphics().drawImage(sourceImage, 0, 0, null);
         }
         return image;
