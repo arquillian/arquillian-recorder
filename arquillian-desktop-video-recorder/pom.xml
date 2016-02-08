@@ -33,18 +33,12 @@
         </developer>
     </developers>
 
-    <repositories>
-        <repository>
-            <id>xuggle repo</id>
-            <url>http://xuggle.googlecode.com/svn/trunk/repo/share/java</url>
-        </repository>
-    </repositories>
-
     <!-- Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <jcodec-javase.version>0.1.9</jcodec-javase.version>
+        <thumbnailator.version>0.4.8</thumbnailator.version>
 
         <!-- Other -->
         <version.maven.deploy.plugin>2.8.1</version.maven.deploy.plugin>
@@ -65,6 +59,11 @@
             <groupId>org.jcodec</groupId>
             <artifactId>jcodec-javase</artifactId>
             <version>${jcodec-javase.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>${thumbnailator.version}</version>
         </dependency>
     </dependencies>
 
