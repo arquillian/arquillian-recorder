@@ -17,7 +17,11 @@
 
 package org.arquillian.extension.recorder.video.webcam.configuration;
 
-import org.arquillian.extension.recorder.video.*;
+import org.arquillian.extension.recorder.video.VideoConfiguration;
+import org.arquillian.extension.recorder.video.VideoConfigurationException;
+import org.arquillian.extension.recorder.video.VideoConfigurator;
+import org.arquillian.extension.recorder.video.VideoRecorderEnvironmentCleaner;
+import org.arquillian.extension.recorder.video.VideoStrategy;
 import org.arquillian.extension.recorder.video.event.VideoExtensionConfigured;
 import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
@@ -43,8 +47,8 @@ import java.util.logging.Logger;
  * </ul>
  * Produces {@link ApplicationScoped}:
  * <ul>
- * <li>{@link VideoConfiguration}</li>
- * <li>{@link VideoStrategy}</li>
+ * <li>{@link org.arquillian.extension.recorder.video.VideoConfiguration}</li>
+ * <li>{@link org.arquillian.extension.recorder.video.VideoStrategy}</li>
  * </ul>
  *
  * @author <a href="mailto:asotobu@gmail.com">Alex Soto</a>
@@ -84,7 +88,7 @@ public class WebcamVideoRecorderConfigurator extends VideoConfigurator {
         this.configuration.set(configuration);
 
         if (logger.isLoggable(Level.INFO)) {
-            System.out.println("Configuration of Arquillian Desktop Video Recorder:");
+            System.out.println("Configuration of Arquillian Webcam Video Recorder:");
             System.out.println(this.configuration.get().toString());
         }
 

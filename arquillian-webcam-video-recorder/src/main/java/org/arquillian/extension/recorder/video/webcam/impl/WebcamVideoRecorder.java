@@ -18,7 +18,11 @@ package org.arquillian.extension.recorder.video.webcam.impl;
 
 import org.arquillian.extension.recorder.DefaultFileNameBuilder;
 import org.arquillian.extension.recorder.RecorderFileUtils;
-import org.arquillian.extension.recorder.video.*;
+import org.arquillian.extension.recorder.video.Recorder;
+import org.arquillian.extension.recorder.video.Video;
+import org.arquillian.extension.recorder.video.VideoConfiguration;
+import org.arquillian.extension.recorder.video.VideoMetaData;
+import org.arquillian.extension.recorder.video.VideoType;
 import org.arquillian.extension.recorder.video.webcam.configuration.WebcamVideoConfiguration;
 import org.arquillian.recorder.reporter.impl.TakenResourceRegister;
 import org.jboss.arquillian.core.spi.Validate;

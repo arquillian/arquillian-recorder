@@ -24,7 +24,8 @@ import org.arquillian.extension.recorder.video.webcam.configuration.WebcamVideoC
 import org.jboss.arquillian.core.spi.Validate;
 import org.jcodec.api.awt.SequenceEncoder;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +48,7 @@ class WebcamRecorder {
     public static final int MIN_FRAMERATE = 0;
 
     public static final int MAX_FRAMERATE = 100;
+    public static final int ONE_SECOND = 1000;
 
     private int frameRate = DEFAULT_FRAMERATE;
 
@@ -102,7 +104,7 @@ class WebcamRecorder {
                         enc.encodeImage(bgrScreen);
 
                         try {
-                            Thread.sleep(500 / frameRate);
+                            Thread.sleep(ONE_SECOND / frameRate);
                         } catch (InterruptedException ex) {
                             logger.log(Level.WARNING, "Exception occured during video recording", ex);
                         }
