@@ -52,7 +52,7 @@ class WebcamRecorder {
 
     private int frameRate = DEFAULT_FRAMERATE;
 
-    private final Dimension screenBounds;
+    private Dimension screenBounds;
 
     private volatile boolean running = false;
 
@@ -68,7 +68,9 @@ class WebcamRecorder {
         Validate.notNull(configuration, "Video configuration is null!");
         this.configuration = configuration;
         this.frameRate = configuration.getFrameRate();
-        screenBounds = Toolkit.getDefaultToolkit().getScreenSize();
+        if (this.configuration.getWidth() > 0 && this.configuration.getHeight() > 0) {
+            screenBounds = new Dimension(this.configuration.getWidth(), this.configuration.getHeight());
+        }
     }
 
     public void startRecording(final File toFile) {
@@ -91,7 +93,15 @@ class WebcamRecorder {
             public void run() {
 
                 Webcam webcam = Webcam.getDefault();
-                webcam.setViewSize(screenBounds);
+                if (screenBounds != null) {
+                    webcam.setViewSize(screenBounds);
+                } else {
+                    final Dimension[] viewSizes = webcam.getViewSizes();
+                    if (viewSizes.length == 0) {
+                        throw new IllegalArgumentException("No valid dimensions to record webcam and no default values in driver.");
+                    }
+                    screenBounds = viewSizes[0];
+                }
                 webcam.open();
 
                 try {
@@ -139,8 +149,9 @@ class WebcamRecorder {
         Video video = new WebcamVideo();
         video.setResource(recordedVideo);
         video.setResourceType(VideoType.valueOf(configuration.getVideoType()));
-        video.setWidth(screenBounds.width / 2);
-        video.setHeight(screenBounds.height / 2);
+
+        video.setWidth(screenBounds.width);
+        video.setHeight(screenBounds.height);
         return video;
     }
 
