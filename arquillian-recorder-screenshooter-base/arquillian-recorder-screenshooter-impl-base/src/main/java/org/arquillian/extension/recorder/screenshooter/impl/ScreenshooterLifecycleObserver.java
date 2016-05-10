@@ -93,7 +93,7 @@ public class ScreenshooterLifecycleObserver {
         }
     }
 
-    public void afterTest(@Observes AfterTestLifecycleEvent event, TestResult result) {
+    public void afterTest(@Observes(precedence = 50) AfterTestLifecycleEvent event, TestResult result) {
         if (new TakingScreenshotDecider(recorderStrategyRegister.get()).decide(event, result)) {
             ScreenshotMetaData metaData = getMetaData(event);
             metaData.setTestResult(result);
