@@ -29,6 +29,10 @@ public class DefaultExporterRegisterFactory implements ExporterRegisterFactory {
 
     private static class ExporterRegisterHolder {
         public static ExporterRegister lastRegister = new ExporterRegisterImpl();
+
+        private ExporterRegisterHolder() {
+            throw new UnsupportedOperationException("no instantiation");
+        }
     }
 
     private static ExporterRegister getAsSingleton() {

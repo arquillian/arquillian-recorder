@@ -24,7 +24,11 @@ import org.jboss.arquillian.core.spi.Validate;
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */
-public class RecorderFileUtils {
+public final class RecorderFileUtils {
+
+    private RecorderFileUtils() {
+        throw new UnsupportedOperationException("no instantiation");
+    }
 
     /**
      *

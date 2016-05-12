@@ -24,7 +24,11 @@ import org.arquillian.extension.recorder.screenshooter.api.Screenshot;
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */
-public class ScreenshotAnnotationScanner {
+public final class ScreenshotAnnotationScanner {
+
+    private ScreenshotAnnotationScanner() {
+        throw new UnsupportedOperationException("no instantiation");
+    }
 
     /**
      *
