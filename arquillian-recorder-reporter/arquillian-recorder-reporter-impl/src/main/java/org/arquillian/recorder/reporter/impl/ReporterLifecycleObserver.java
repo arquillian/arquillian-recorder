@@ -279,6 +279,10 @@ public class ReporterLifecycleObserver {
 
     private static final class ReportMessageParser {
 
+        private ReportMessageParser() {
+            throw new UnsupportedOperationException("no instantiation");
+        }
+
         public static String parseTestReportMessage(Method testMethod) {
             return getReportMessage(testMethod.getAnnotations());
         }

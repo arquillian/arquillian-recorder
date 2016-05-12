@@ -22,13 +22,17 @@ import java.lang.annotation.Annotation;
  * @author <a href="mailto:asotobu@gmail.com">Alex Soto</a>
  *
  */
-public class ReflectionUtil {
+public final class ReflectionUtil {
 
-public static Class<?> getClassWithAnnotation(final Class<?> source, final Class<? extends Annotation> annotationClass) {
+    private ReflectionUtil() {
+        throw new UnsupportedOperationException("no instantiation");
+    }
+
+    public static Class<?> getClassWithAnnotation(final Class<?> source, final Class<? extends Annotation> annotationClass) {
 
         Class<?> nextSource = source;
         while (nextSource != Object.class) {
-            if(nextSource.isAnnotationPresent(annotationClass)) {
+            if (nextSource.isAnnotationPresent(annotationClass)) {
                 return nextSource;
             } else {
                 nextSource = nextSource.getSuperclass();
