@@ -47,7 +47,7 @@ public class DesktopVideoRecorder implements Recorder {
 
     private VideoRecorder recorder;
 
-    private TakenResourceRegister takenResourceRegister;
+    private final TakenResourceRegister takenResourceRegister;
 
     private String message;
 

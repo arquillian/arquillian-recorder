@@ -51,28 +51,28 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
 
     private String file = getFileDefaultFileName();
 
-    private String rootDir = "target";
+    private static final String ROOT_DIR = "target";
 
-    private String template = "template.xsl";
+    private static final String TEMPLATE = "template.xsl";
 
-    private String reportAfterEvery = ReportFrequency.CLASS.toString();
+    private final String reportAfterEvery = ReportFrequency.CLASS.toString();
 
-    private String language = "en";
+    private static final String LANGUAGE = "en";
 
-    private String maxImageWidth = DEFAULT_MAX_IMAGE_WIDTH;
+    private static final String MAX_IMAGE_WIDTH = DEFAULT_MAX_IMAGE_WIDTH;
 
-    private String imageWidth = DEFAULT_IMAGE_WIDTH;
+    private static final String IMAGE_WIDTH = DEFAULT_IMAGE_WIDTH;
 
-    private String imageHeight = DEFAULT_IMAGE_HEIGHT;
+    private static final String IMAGE_HEIGHT = DEFAULT_IMAGE_HEIGHT;
 
-    private String title = DEFAULT_TITLE;
+    private static final String TITLE = DEFAULT_TITLE;
 
-    private String asciidocStandardCompliant = DEFAULT_ASCIIDOC_STANDARD_COMPLIANT;
+    private static final String ASCIIDOC_STANDARD_COMPLIANT = DEFAULT_ASCIIDOC_STANDARD_COMPLIANT;
 
-    private String asciiDocAttributesFile = "";
+    private static final String ASCII_DOC_ATTRIBUTES_FILE = "";
 
     public String getAsciiDocAttributesFile() {
-        return getProperty("asciiDocAttributesFile", asciiDocAttributesFile);
+        return getProperty("asciiDocAttributesFile", ASCII_DOC_ATTRIBUTES_FILE);
     }
 
     /**
@@ -80,7 +80,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
      * @return true if we want generated asciidoc document be compliant with standard format. False otherwise and output will be an AsciiDoc document to be rendered by Asciidoctor.
      */
     public boolean isAsciiDocCompliant() {
-        return Boolean.parseBoolean(getProperty("asciidocStandardCompliant", asciidocStandardCompliant).toLowerCase());
+        return Boolean.parseBoolean(getProperty("asciidocStandardCompliant", ASCIIDOC_STANDARD_COMPLIANT).toLowerCase());
     }
 
     /**
@@ -104,7 +104,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
      * @return root directory which prepends {@link #getFile()}
      */
     public File getRootDir() {
-        return new File(getProperty("rootDir", rootDir));
+        return new File(getProperty("rootDir", ROOT_DIR));
     }
 
     /**
@@ -114,7 +114,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
      * @return xsl template file
      */
     public File getTemplate() {
-        return new File(getProperty("template", template));
+        return new File(getProperty("template", TEMPLATE));
     }
 
     public String getReportAfterEvery() {
@@ -127,7 +127,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
      * @return language
      */
     public String getLanguage() {
-        return getProperty("language", language).toLowerCase();
+        return getProperty("language", LANGUAGE).toLowerCase();
     }
 
     /**
@@ -137,7 +137,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
      * @return maximum width of an image to be displayed
      */
     public String getMaxImageWidth() {
-        return getProperty("maxImageWidth", maxImageWidth);
+        return getProperty("maxImageWidth", MAX_IMAGE_WIDTH);
     }
 
     /**
@@ -146,7 +146,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
      *         from presentation point of view.
      */
     public String getImageWidth() {
-        return getProperty("imageWidth", imageWidth);
+        return getProperty("imageWidth", IMAGE_WIDTH);
     }
 
     /**
@@ -155,11 +155,11 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
      *         from presentation point of view.
      */
     public String getImageHeight() {
-        return getProperty("imageHeight", imageHeight);
+        return getProperty("imageHeight", IMAGE_HEIGHT);
     }
 
     public String getTitle() {
-        return getProperty("title", title);
+        return getProperty("title", TITLE);
     }
 
     private String getFileDefaultFileName() {

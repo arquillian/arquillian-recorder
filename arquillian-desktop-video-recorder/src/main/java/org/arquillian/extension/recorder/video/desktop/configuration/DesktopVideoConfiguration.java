@@ -31,7 +31,7 @@ public class DesktopVideoConfiguration extends VideoConfiguration {
 
     private static Logger logger = Logger.getLogger(DesktopVideoConfiguration.class.getSimpleName());
 
-    private String frameRate = "20"; // fps
+    private static final String FRAME_RATE = "20"; // fps
 
     public DesktopVideoConfiguration(ReporterConfiguration reporterConfiguration) {
         super(reporterConfiguration);
@@ -43,7 +43,7 @@ public class DesktopVideoConfiguration extends VideoConfiguration {
      * @return framerate of which videos should be taken
      */
     public int getFrameRate() {
-        return Integer.parseInt(getProperty("frameRate", frameRate));
+        return Integer.parseInt(getProperty("frameRate", FRAME_RATE));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class DesktopVideoConfiguration extends VideoConfiguration {
         super.validate();
 
         try {
-            if (Integer.parseInt(getProperty("frameRate", this.frameRate)) <= 0) {
+            if (Integer.parseInt(getProperty("frameRate", FRAME_RATE)) <= 0) {
                 throw new VideoConfigurationException("It seems you have set framerate to be lower or equal to 0.");
             }
         } catch (NumberFormatException ex) {

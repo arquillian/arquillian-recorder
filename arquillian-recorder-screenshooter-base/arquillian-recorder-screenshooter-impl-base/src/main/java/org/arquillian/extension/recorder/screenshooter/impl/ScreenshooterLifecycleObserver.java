@@ -154,7 +154,7 @@ public class ScreenshooterLifecycleObserver {
 
     private class TakingScreenshotDecider {
 
-        private RecorderStrategyRegister recorderStrategyRegister;
+        private final RecorderStrategyRegister recorderStrategyRegister;
 
         public TakingScreenshotDecider(RecorderStrategyRegister recorderStrategyRegister) {
             this.recorderStrategyRegister = recorderStrategyRegister;

@@ -27,7 +27,7 @@ import org.jboss.arquillian.core.spi.Validate;
  */
 public class PropertyReportEvent {
 
-    private PropertyEntry propertyEntry;
+    private final PropertyEntry propertyEntry;
 
     /**
      *

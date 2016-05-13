@@ -68,7 +68,7 @@ public class TestClassReport implements ReportEntry {
     private boolean runAsClient;
 
     @XmlTransient
-    private Date start = new Date(System.currentTimeMillis());
+    private final Date start = new Date(System.currentTimeMillis());
 
     @XmlTransient
     private Date stop = start;

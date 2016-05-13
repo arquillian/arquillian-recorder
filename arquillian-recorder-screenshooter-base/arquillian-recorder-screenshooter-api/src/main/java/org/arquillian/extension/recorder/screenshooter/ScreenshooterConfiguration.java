@@ -29,17 +29,17 @@ import org.arquillian.recorder.reporter.ReporterConfiguration;
  */
 public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfiguration> {
 
-    private String rootDir = "target/screenshots";
+    private static final String ROOT_DIR = "target/screenshots";
 
-    private String screenshotType = ScreenshotType.PNG.toString();
+    private static final String SCREENSHOT_TYPE = ScreenshotType.PNG.toString();
 
-    private String takeBeforeTest = "false";
+    private static final String TAKE_BEFORE_TEST = "false";
 
-    private String takeAfterTest = "false";
+    private static final String TAKE_AFTER_TEST = "false";
 
-    private String takeWhenTestFailed = "true";
+    private static final String TAKE_WHEN_TEST_FAILED = "true";
 
-    private ReporterConfiguration reporterConfiguration;
+    private final ReporterConfiguration reporterConfiguration;
 
     public ScreenshooterConfiguration(ReporterConfiguration reporterConfiguration) {
         this.reporterConfiguration = reporterConfiguration;
@@ -51,7 +51,7 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
      * @return root folder where all screenshots will be placed. Directory structure is left on the extension itself
      */
     public File getRootDir() {
-        return new File(getProperty("rootDir", rootDir));
+        return new File(getProperty("rootDir", ROOT_DIR));
     }
 
     /**
@@ -60,7 +60,7 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
      * @return type of image we want to have our screenshots of, consult {@link ScreenshotType}
      */
     public String getScreenshotType() {
-        return getProperty("screenshotType", screenshotType).toUpperCase();
+        return getProperty("screenshotType", SCREENSHOT_TYPE).toUpperCase();
     }
 
     /**
@@ -69,7 +69,7 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
      * @return true if screenshot should be taken before test, false otherwise
      */
     public boolean getTakeBeforeTest() {
-        return Boolean.parseBoolean(getProperty("takeBeforeTest", takeBeforeTest));
+        return Boolean.parseBoolean(getProperty("takeBeforeTest", TAKE_BEFORE_TEST));
     }
 
     /**
@@ -78,7 +78,7 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
      * @return true if screenshot should be taken after test, false otherwise
      */
     public boolean getTakeAfterTest() {
-        return Boolean.parseBoolean(getProperty("takeAfterTest", takeAfterTest));
+        return Boolean.parseBoolean(getProperty("takeAfterTest", TAKE_AFTER_TEST));
     }
 
     /**
@@ -87,7 +87,7 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
      * @return true if screenshot should be taken when test failed, false otherwise
      */
     public boolean getTakeWhenTestFailed() {
-        return Boolean.parseBoolean(getProperty("takeWhenTestFailed", takeWhenTestFailed));
+        return Boolean.parseBoolean(getProperty("takeWhenTestFailed", TAKE_WHEN_TEST_FAILED));
     }
 
     @Override

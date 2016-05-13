@@ -75,7 +75,7 @@ public class HTMLExporter implements Exporter {
 
     private JAXBContext context;
 
-    private TransformerFactory transformerFactory;
+    private final TransformerFactory transformerFactory;
 
     public HTMLExporter(JAXBContext context) {
         this.context = context;

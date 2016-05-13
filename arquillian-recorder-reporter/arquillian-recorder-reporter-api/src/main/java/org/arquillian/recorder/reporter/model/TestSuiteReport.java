@@ -60,7 +60,7 @@ public class TestSuiteReport implements ReportEntry {
 
     @XmlAttribute(required = true)
     @XmlSchemaType(name = "dateTime")
-    private Date start = new Date(System.currentTimeMillis());
+    private final Date start = new Date(System.currentTimeMillis());
 
     @XmlAttribute(required = true)
     @XmlSchemaType(name = "dateTime")

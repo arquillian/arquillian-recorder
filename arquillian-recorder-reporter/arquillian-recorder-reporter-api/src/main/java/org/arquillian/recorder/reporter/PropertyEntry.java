@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public abstract class PropertyEntry implements ReportEntry {
 
     @XmlTransient
-    private List<PropertyEntry> propertyEntries = new ArrayList<PropertyEntry>();
+    private final List<PropertyEntry> propertyEntries = new ArrayList<PropertyEntry>();
 
     @Override
     public List<PropertyEntry> getPropertyEntries() {

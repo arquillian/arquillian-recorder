@@ -25,8 +25,8 @@ import org.arquillian.extension.recorder.video.VideoType;
  */
 public class AfterVideoStart {
 
-    private VideoType videoType;
-    private VideoMetaData videoMetaData;
+    private final VideoType videoType;
+    private final VideoMetaData videoMetaData;
 
     public AfterVideoStart(VideoType videoType, VideoMetaData videoMetaData) {
         this.videoType = videoType;

@@ -29,27 +29,27 @@ import org.arquillian.recorder.reporter.ReporterConfiguration;
  */
 public class VideoConfiguration extends Configuration<VideoConfiguration> {
 
-    private String rootDir = "target/videos";
+    private static final String ROOT_DIR = "target/videos";
 
-    private String videoType = VideoType.MP4.name();
+    private static final String VIDEO_TYPE = VideoType.MP4.name();
 
-    private String startBeforeTest = "false";
+    private static final String START_BEFORE_TEST = "false";
 
-    private String startBeforeClass = "false";
+    private static final String START_BEFORE_CLASS = "false";
 
-    private String startBeforeSuite = "false";
+    private static final String START_BEFORE_SUITE = "false";
 
-    private String takeOnlyOnFail = "true";
+    private static final String TAKE_ONLY_ON_FAIL = "true";
 
-    private String videoName = "record";
+    private static final String VIDEO_NAME = "record";
 
-    private String testTimeout = "1800"; // 30 minutes
+    private static final String TEST_TIMEOUT = "1800"; // 30 minutes
 
-    private String width = "0"; // pixels
+    private static final String WIDTH = "0"; // pixels
 
-    private String height = "0"; // pixels.
+    private static final String HEIGHT = "0"; // pixels.
 
-    private ReporterConfiguration reporterConfiguration;
+    private final ReporterConfiguration reporterConfiguration;
 
     public VideoConfiguration(ReporterConfiguration reporterConfiguration) {
         this.reporterConfiguration = reporterConfiguration;
@@ -61,7 +61,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
      * @return true if video should be taken only for the failed tests
      */
     public boolean getTakeOnlyOnFail() {
-        return Boolean.parseBoolean(getProperty("takeOnlyOnFail", takeOnlyOnFail));
+        return Boolean.parseBoolean(getProperty("takeOnlyOnFail", TAKE_ONLY_ON_FAIL));
     }
 
     /**
@@ -70,7 +70,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
      * @return timeout for each test in order to stop recording and save the video file if the test gets stuck
      */
     public int getTestTimeout() {
-        return Integer.parseInt(getProperty("testTimeout", testTimeout));
+        return Integer.parseInt(getProperty("testTimeout", TEST_TIMEOUT));
     }
 
     /**
@@ -79,7 +79,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
      * @return video name which will be used in case you want to record whole test suite into one file.
      */
     public String getVideoName() {
-        return getProperty("videoName", videoName);
+        return getProperty("videoName", VIDEO_NAME);
     }
 
     /**
@@ -88,7 +88,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
      * @return root folder where all videos will be placed. Directory structure is left on the extension itself.
      */
     public File getRootDir() {
-        return new File(getProperty("rootDir", rootDir));
+        return new File(getProperty("rootDir", ROOT_DIR));
     }
 
     /**
@@ -97,7 +97,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
      * @return type of video we want our screenshots to be of
      */
     public String getVideoType() {
-        return getProperty("videoType", videoType).toUpperCase();
+        return getProperty("videoType", VIDEO_TYPE).toUpperCase();
     }
 
     /**
@@ -106,7 +106,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
      * @return true if video recording should start before test, false otherwise
      */
     public boolean getStartBeforeTest() {
-        return Boolean.parseBoolean(getProperty("startBeforeTest", startBeforeTest));
+        return Boolean.parseBoolean(getProperty("startBeforeTest", START_BEFORE_TEST));
     }
 
     /**
@@ -115,7 +115,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
      * @return true if video should be taken before class, false otherwise
      */
     public boolean getStartBeforeClass() {
-        return Boolean.parseBoolean(getProperty("startBeforeClass", startBeforeClass));
+        return Boolean.parseBoolean(getProperty("startBeforeClass", START_BEFORE_CLASS));
     }
 
     /**
@@ -124,7 +124,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
      * @return true if screenshot should be taken before suite, false otherwise
      */
     public boolean getStartBeforeSuite() {
-        return Boolean.parseBoolean(getProperty("startBeforeSuite", startBeforeSuite));
+        return Boolean.parseBoolean(getProperty("startBeforeSuite", START_BEFORE_SUITE));
     }
 
     /**
@@ -133,7 +133,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
      * @return height of recorded video
      */
     public int getHeight() {
-        return Integer.parseInt(getProperty("height", height));
+        return Integer.parseInt(getProperty("height", HEIGHT));
     }
 
     /**
@@ -142,7 +142,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
      * @return width of recorder video
      */
     public int getWidth() {
-        return Integer.parseInt(getProperty("width", width));
+        return Integer.parseInt(getProperty("width", WIDTH));
     }
 
     @Override
@@ -190,7 +190,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
         }
 
         try {
-            if (Integer.parseInt(getProperty("width", this.width)) < 0) {
+            if (Integer.parseInt(getProperty("width", WIDTH)) < 0) {
                 throw new VideoConfigurationException("It seems you have set width of video to be lower then 0.");
             }
         } catch (NumberFormatException ex) {
@@ -198,7 +198,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
         }
 
         try {
-            if (Integer.parseInt(getProperty("height", this.height)) < 0) {
+            if (Integer.parseInt(getProperty("height", HEIGHT)) < 0) {
                 throw new VideoConfigurationException("It seems you have set height of video to be lower then 0.");
             }
         } catch (NumberFormatException ex) {

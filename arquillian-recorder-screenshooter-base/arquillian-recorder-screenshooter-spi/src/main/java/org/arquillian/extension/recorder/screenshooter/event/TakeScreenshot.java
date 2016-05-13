@@ -38,7 +38,7 @@ public class TakeScreenshot {
 
     private String fileName;
 
-    private org.arquillian.extension.recorder.screenshooter.api.Screenshot annotation;
+    private final org.arquillian.extension.recorder.screenshooter.api.Screenshot annotation;
 
     public TakeScreenshot(String fileName, ScreenshotMetaData metaData, When when, org.arquillian.extension.recorder.screenshooter.api.Screenshot annotation) {
         Validate.notNull(fileName, "File name is a null object!");

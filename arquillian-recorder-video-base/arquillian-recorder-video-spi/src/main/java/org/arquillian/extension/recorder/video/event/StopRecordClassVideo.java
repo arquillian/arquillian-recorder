@@ -24,8 +24,8 @@ import org.arquillian.extension.recorder.video.VideoType;
  *
  */
 public class StopRecordClassVideo {
-    private VideoType videoType;
-    private VideoMetaData videoMetaData;
+    private final VideoType videoType;
+    private final VideoMetaData videoMetaData;
 
     public StopRecordClassVideo(VideoType videoType, VideoMetaData videoMetaData) {
         this.videoMetaData = videoMetaData;
