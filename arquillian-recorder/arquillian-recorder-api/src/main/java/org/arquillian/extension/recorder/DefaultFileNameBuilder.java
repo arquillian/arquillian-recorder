@@ -99,11 +99,11 @@ public class DefaultFileNameBuilder extends AbstractFileNameBuilder {
                     sb.append(metaData.getTestMethodName());
                 }
                 if (when != null) {
-                    sb.append("_");
+                    sb.append('_');
                     sb.append(when.toString());
                 }
                 if (resourceType != null) {
-                    sb.append(".");
+                    sb.append('.');
                     sb.append(resourceType.toString());
                 }
                 return sb.toString();

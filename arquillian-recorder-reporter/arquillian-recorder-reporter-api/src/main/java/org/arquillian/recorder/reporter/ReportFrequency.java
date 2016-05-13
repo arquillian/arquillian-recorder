@@ -46,7 +46,7 @@ public enum ReportFrequency {
 
         for (ReportFrequency frequency : ReportFrequency.values()) {
             sb.append(frequency.toString());
-            sb.append(" ");
+            sb.append(' ');
         }
 
         return sb.toString().trim();

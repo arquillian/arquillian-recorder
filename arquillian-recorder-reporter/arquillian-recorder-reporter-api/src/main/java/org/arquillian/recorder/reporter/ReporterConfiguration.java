@@ -267,7 +267,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
             } else {
                 sb.append(fileProperty);
             }
-            sb.append(".");
+            sb.append('.');
             sb.append(reportProperty);
             file = sb.toString();
             setProperty("file", file);
