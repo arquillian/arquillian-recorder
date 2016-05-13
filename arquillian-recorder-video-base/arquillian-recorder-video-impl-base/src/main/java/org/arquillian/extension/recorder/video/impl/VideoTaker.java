@@ -59,7 +59,7 @@ public class VideoTaker {
     @Inject
     private Instance<TakenResourceRegister> resourceRegister;
 
-    private DefaultFileNameBuilder nb = new DefaultFileNameBuilder();
+    private final DefaultFileNameBuilder nb = new DefaultFileNameBuilder();
 
     // starts
 

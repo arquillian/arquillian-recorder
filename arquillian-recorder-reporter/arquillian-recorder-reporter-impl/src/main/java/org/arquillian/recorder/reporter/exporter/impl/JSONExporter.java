@@ -41,7 +41,7 @@ public class JSONExporter implements Exporter {
 
     private ReporterConfiguration configuration;
 
-    private JAXBContext context;
+    private final JAXBContext context;
 
     public JSONExporter(JAXBContext context) {
         this.context = context;

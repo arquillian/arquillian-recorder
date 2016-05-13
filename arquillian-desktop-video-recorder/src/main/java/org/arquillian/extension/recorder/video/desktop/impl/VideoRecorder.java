@@ -65,7 +65,7 @@ class VideoRecorder {
 
     private Timer timer;
 
-    private VideoConfiguration configuration;
+    private final VideoConfiguration configuration;
 
     public VideoRecorder(DesktopVideoConfiguration configuration) {
         Validate.notNull(configuration, "Video configuration is null!");
