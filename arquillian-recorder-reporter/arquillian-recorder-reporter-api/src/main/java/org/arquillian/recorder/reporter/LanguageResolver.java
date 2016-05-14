@@ -104,7 +104,7 @@ class LanguageResolver implements Resolver {
         return supportedLanguages;
     }
 
-    private String parseLanguage(String name) {
+    private static String parseLanguage(String name) {
         String language = name.substring(DEFAULT_TEMPLATE_DIR.length());
         return language.substring(0, language.indexOf("/"));
     }

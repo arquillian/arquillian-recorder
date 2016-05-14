@@ -162,7 +162,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         return getProperty("title", TITLE);
     }
 
-    private String getFileDefaultFileName() {
+    private static String getFileDefaultFileName() {
         return new StringBuilder()
             .append("arquillian_report")
             .append(".")

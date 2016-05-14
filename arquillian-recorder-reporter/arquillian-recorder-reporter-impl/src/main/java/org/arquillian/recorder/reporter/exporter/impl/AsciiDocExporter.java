@@ -190,7 +190,7 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
-    private String convertDuration(long duration, TimeUnit fromTimeUnit, TimeUnit toTimeUnit) {
+    private static String convertDuration(long duration, TimeUnit fromTimeUnit, TimeUnit toTimeUnit) {
         return Long.toString(toTimeUnit.convert(duration, fromTimeUnit));
     }
 
@@ -656,7 +656,7 @@ public class AsciiDocExporter implements Exporter {
 
     }
 
-    private String getIcon(String iconName, String role) {
+    private static String getIcon(String iconName, String role) {
         return "icon:" + iconName + "[role=\"" + role + "\"]";
     }
 

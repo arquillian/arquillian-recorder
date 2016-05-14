@@ -65,7 +65,7 @@ public enum BlurLevel {
 
     }
 
-    private BufferedImage deepCopy(BufferedImage srcImage) {
+    private static BufferedImage deepCopy(BufferedImage srcImage) {
         ColorModel cm = srcImage.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
         WritableRaster raster = srcImage.copyData(null);
