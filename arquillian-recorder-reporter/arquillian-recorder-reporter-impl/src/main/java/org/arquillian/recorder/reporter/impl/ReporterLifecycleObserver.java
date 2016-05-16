@@ -264,7 +264,7 @@ public class ReporterLifecycleObserver {
         return extensionReports;
     }
 
-    private String getStackTrace(Throwable aThrowable) {
+    private static String getStackTrace(Throwable aThrowable) {
         StringBuilder sb = new StringBuilder();
         String newLine = System.getProperty("line.separator");
         sb.append(aThrowable.toString());
