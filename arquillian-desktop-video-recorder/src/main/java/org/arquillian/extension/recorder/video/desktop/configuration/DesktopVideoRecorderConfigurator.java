@@ -56,7 +56,7 @@ import org.jboss.arquillian.core.spi.ServiceLoader;
  */
 public class DesktopVideoRecorderConfigurator extends VideoConfigurator {
 
-    private static final Logger logger = Logger.getLogger(DesktopVideoRecorderConfigurator.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(DesktopVideoRecorderConfigurator.class.getSimpleName());
 
     @Inject
     @ApplicationScoped
@@ -88,9 +88,9 @@ public class DesktopVideoRecorderConfigurator extends VideoConfigurator {
 
         this.configuration.set(configuration);
 
-        if (logger.isLoggable(Level.INFO)) {
-            System.out.println("Configuration of Arquillian Desktop Video Recorder:");
-            System.out.println(this.configuration.get().toString());
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("Configuration of Arquillian Desktop Video Recorder:");
+            LOGGER.info(this.configuration.get().toString());
         }
 
         // there will be 2 strategies in this list at least - SkippingVideoStrategy and DefaultVideoStrategy

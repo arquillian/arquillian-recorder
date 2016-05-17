@@ -84,7 +84,7 @@ public class AsciiDocExporter implements Exporter {
     protected static final String FAIL_STEP = "thumbs-down";
     protected static final String NOT_PERFORMED_STEP = "unlink";
 
-    protected BufferedWriter writer = null;
+    protected BufferedWriter writer;
     protected OutputStream outputStream;
     protected ReporterConfiguration configuration;
 

@@ -47,7 +47,7 @@ import org.jboss.arquillian.core.api.annotation.Observes;
  */
 public class ReporterConfigurator extends RecorderConfigurator<ReporterConfiguration> {
 
-    private static final Logger logger = Logger.getLogger(ReporterConfigurator.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReporterConfigurator.class.getName());
 
     private static final String EXTENSION_NAME = "reporter";
 
@@ -73,9 +73,9 @@ public class ReporterConfigurator extends RecorderConfigurator<ReporterConfigura
 
         this.configuration.set(configuration);
 
-        if (logger.isLoggable(Level.INFO)) {
-            System.out.println("Configuration of Arquillian Reporting extension:");
-            System.out.println(this.configuration.get().toString());
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("Configuration of Arquillian Reporting extension:");
+            LOGGER.info(this.configuration.get().toString());
         }
 
         extensionConfigured.fire(new ReportingExtensionConfigured());
