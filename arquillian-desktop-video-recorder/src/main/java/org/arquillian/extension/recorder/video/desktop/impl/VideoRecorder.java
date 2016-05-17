@@ -57,11 +57,11 @@ class VideoRecorder {
 
     private final Dimension screenBounds;
 
-    private volatile boolean running = false;
+    private volatile boolean running;
 
     private Thread thread;
 
-    private File recordedVideo = null;
+    private File recordedVideo;
 
     private Timer timer;
 

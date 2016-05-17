@@ -26,9 +26,9 @@ import java.util.UUID;
  */
 public class DefaultFileNameBuilder extends AbstractFileNameBuilder {
 
-    protected ResourceMetaData metaData = null;
+    protected ResourceMetaData metaData;
 
-    protected When when = null;
+    protected When when;
 
     protected ResourceIdentifier<ResourceType> resourceIdentifier;
 
