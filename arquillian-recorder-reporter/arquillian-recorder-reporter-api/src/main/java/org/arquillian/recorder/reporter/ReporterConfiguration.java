@@ -213,7 +213,8 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         } catch (IllegalArgumentException ex) {
             throw new ReporterConfigurationException(
                 "Report frequency you specified in arquillian.xml is not valid. "
-                    + "Supported frequencies are: " + ReportFrequency.getAll());
+                        + "The configured frequency is: " + getReportAfterEvery().toUpperCase() + ". "
+                        + "The supported frequencies are: " + ReportFrequency.getAll(), ex);
         }
 
         // we check language only for html output
@@ -249,7 +250,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
             }
         } catch (SecurityException ex) {
             throw new ReporterConfigurationException(
-                "You are not permitted to operate on specified resource: " + getRootDir().getAbsolutePath() + "'.");
+                "You are not permitted to operate on specified resource: " + getRootDir().getAbsolutePath() + "'.", ex);
         }
 
         setFileName(getProperty("report", report));

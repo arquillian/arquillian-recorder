@@ -84,7 +84,7 @@ class VideoRecorder {
         try {
             recordedVideo.createNewFile();
         } catch (IOException ex) {
-            throw new RuntimeException("Unable to create file to which video will be saved: " + recordedVideo.getAbsolutePath());
+            throw new RuntimeException("Unable to create file to which video will be saved: " + recordedVideo.getAbsolutePath(), ex);
         }
 
         running = true;

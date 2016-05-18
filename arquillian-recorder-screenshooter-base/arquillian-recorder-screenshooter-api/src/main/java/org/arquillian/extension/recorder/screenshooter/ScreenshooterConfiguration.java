@@ -112,8 +112,9 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
             ScreenshotType.valueOf(ScreenshotType.class, getScreenshotType());
         } catch (IllegalArgumentException ex) {
             throw new ScreenshooterConfigurationException(
-                "Screenshot type you specified in arquillian.xml is not valid screenshot type."
-                    + "Supported screenshot types are: " + ScreenshotType.getAll());
+                "Screenshot type you specified in arquillian.xml is not valid screenshot type. "
+                        + "The configured screenshot type is: " + getScreenshotType() + ". "
+                        + "The supported screenshot types are: " + ScreenshotType.getAll(), ex);
         }
 
         final String report = reporterConfiguration.getReport().toLowerCase();
@@ -144,7 +145,7 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
             }
         } catch (SecurityException ex) {
             throw new ScreenshooterConfigurationException(
-                "You are not permitted to operate on specified resource: " + getRootDir().getAbsolutePath() + "'.");
+                "You are not permitted to operate on specified resource: " + getRootDir().getAbsolutePath() + "'.", ex);
         }
 
     }
