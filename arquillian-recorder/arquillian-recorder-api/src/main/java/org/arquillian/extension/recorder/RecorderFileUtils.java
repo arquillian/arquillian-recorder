@@ -17,25 +17,26 @@
 package org.arquillian.extension.recorder;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 import org.jboss.arquillian.core.spi.Validate;
 
 /**
  * @author <a href="smikloso@redhat.com">Stefan Miklosovic</a>
- *
  */
 public final class RecorderFileUtils {
+
+    private static final Logger logger = Logger.getLogger(RecorderFileUtils.class.getName());
 
     private RecorderFileUtils() {
         throw new UnsupportedOperationException("no instantiation");
     }
 
     /**
-     *
      * @param file file to check the file extension of
      * @param type type of file
-     * @return the same file instance if {@code file} name ends with {@code type} string, dot included, otherwise new file
-     *         instance with the appended {@code type} file.
+     * @return the same file instance if {@code file} name ends with {@code type} string, dot included, otherwise new
+     * file instance with the appended {@code type} file.
      * @throws IllegalArgumentException if name of file is empty string or if file is null
      */
     public static File checkFileExtension(File file, ResourceType type) {
@@ -54,7 +55,13 @@ public final class RecorderFileUtils {
 
     public static void createDirectory(File file) {
         if (!file.exists()) {
-            file.mkdirs();
+            try {
+                if (!file.mkdirs()) {
+                    throw new IllegalStateException("Unable to create directory " + file.getAbsolutePath());
+                }
+            } catch (SecurityException ex) {
+                logger.warning("Unable to create directory due to security exception: " + ex.getMessage());
+            }
         }
     }
 

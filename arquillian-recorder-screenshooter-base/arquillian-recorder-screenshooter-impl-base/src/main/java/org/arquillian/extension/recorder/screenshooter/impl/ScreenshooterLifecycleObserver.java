@@ -152,7 +152,7 @@ public class ScreenshooterLifecycleObserver {
         return screenshooter.get().getScreenshotType();
     }
 
-    private class TakingScreenshotDecider {
+    private static class TakingScreenshotDecider {
 
         private final RecorderStrategyRegister recorderStrategyRegister;
 

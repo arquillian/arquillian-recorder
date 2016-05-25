@@ -403,10 +403,10 @@ public class AsciiDocExporter implements Exporter {
      */
     protected void writeScreenshot(ScreenshotEntry screenshotEntry) throws IOException {
 
-        int heigth = screenshotEntry.getHeight() * Integer.valueOf(this.configuration.getImageHeight()) / 100;
-        int width = screenshotEntry.getWidth() * Integer.valueOf(this.configuration.getImageWidth()) / 100;
+        int heigth = screenshotEntry.getHeight() * Integer.parseInt(this.configuration.getImageHeight()) / 100;
+        int width = screenshotEntry.getWidth() * Integer.parseInt(this.configuration.getImageWidth()) / 100;
 
-        boolean large = width > Integer.valueOf(this.configuration.getMaxImageWidth());
+        boolean large = width > Integer.parseInt(this.configuration.getMaxImageWidth());
 
         if (large) {
 

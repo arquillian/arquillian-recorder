@@ -278,15 +278,15 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%-40s %s\n", "report", getReport()));
-        sb.append(String.format("%-40s %s\n", "rootDir", getRootDir().getPath()));
-        sb.append(String.format("%-40s %s\n", "file", getFile().getPath()));
-        sb.append(String.format("%-40s %s\n", "template", getTemplate().getPath()));
-        sb.append(String.format("%-40s %s\n", "reportAfterEvery", getReportAfterEvery()));
-        sb.append(String.format("%-40s %s\n", "language", getLanguage()));
-        sb.append(String.format("%-40s %s\n", "maxImageWidth", getMaxImageWidth()));
-        sb.append(String.format("%-40s %s%%\n", "imageWidth", getImageWidth()));
-        sb.append(String.format("%-40s %s%%\n", "imageHeight", getImageHeight()));
+        sb.append(String.format("%-40s %s%n", "report", getReport()));
+        sb.append(String.format("%-40s %s%n", "rootDir", getRootDir().getPath()));
+        sb.append(String.format("%-40s %s%n", "file", getFile().getPath()));
+        sb.append(String.format("%-40s %s%n", "template", getTemplate().getPath()));
+        sb.append(String.format("%-40s %s%n", "reportAfterEvery", getReportAfterEvery()));
+        sb.append(String.format("%-40s %s%n", "language", getLanguage()));
+        sb.append(String.format("%-40s %s%n", "maxImageWidth", getMaxImageWidth()));
+        sb.append(String.format("%-40s %s%%%n", "imageWidth", getImageWidth()));
+        sb.append(String.format("%-40s %s%%%n", "imageHeight", getImageHeight()));
         return sb.toString();
     }
 

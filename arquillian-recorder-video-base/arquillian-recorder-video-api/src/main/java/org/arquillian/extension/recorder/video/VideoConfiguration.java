@@ -210,16 +210,16 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%-40s %s\n", "startBeforeSuite", getStartBeforeSuite()));
-        sb.append(String.format("%-40s %s\n", "startBeforeClass", getStartBeforeClass()));
-        sb.append(String.format("%-40s %s\n", "startBeforeTest", getStartBeforeTest()));
-        sb.append(String.format("%-40s %s\n", "takeOnlyOnFail", getTakeOnlyOnFail()));
-        sb.append(String.format("%-40s %s\n", "testTimeOut", getTestTimeout()));
-        sb.append(String.format("%-40s %s\n", "rootDir", getRootDir()));
-        sb.append(String.format("%-40s %s\n", "videoName", getVideoName()));
-        sb.append(String.format("%-40s %s\n", "videoType", getVideoType()));
-        sb.append(String.format("%-40s %s\n", "width", getWidth()));
-        sb.append(String.format("%-40s %s\n", "height", getHeight()));
+        sb.append(String.format("%-40s %s%n", "startBeforeSuite", getStartBeforeSuite()));
+        sb.append(String.format("%-40s %s%n", "startBeforeClass", getStartBeforeClass()));
+        sb.append(String.format("%-40s %s%n", "startBeforeTest", getStartBeforeTest()));
+        sb.append(String.format("%-40s %s%n", "takeOnlyOnFail", getTakeOnlyOnFail()));
+        sb.append(String.format("%-40s %s%n", "testTimeOut", getTestTimeout()));
+        sb.append(String.format("%-40s %s%n", "rootDir", getRootDir()));
+        sb.append(String.format("%-40s %s%n", "videoName", getVideoName()));
+        sb.append(String.format("%-40s %s%n", "videoType", getVideoType()));
+        sb.append(String.format("%-40s %s%n", "width", getWidth()));
+        sb.append(String.format("%-40s %s%n", "height", getHeight()));
         return sb.toString();
     }
 

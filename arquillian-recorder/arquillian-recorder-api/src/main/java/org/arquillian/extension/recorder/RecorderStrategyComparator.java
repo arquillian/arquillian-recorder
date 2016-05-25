@@ -16,13 +16,14 @@
  */
 package org.arquillian.extension.recorder;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */
-public class RecorderStrategyComparator implements Comparator<RecorderStrategy<?>> {
+public class RecorderStrategyComparator implements Comparator<RecorderStrategy<?>>, Serializable {
 
     @Override
     public int compare(RecorderStrategy<?> o1, RecorderStrategy<?> o2) {

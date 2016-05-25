@@ -22,7 +22,6 @@ import java.util.TreeSet;
 
 /**
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
- *
  */
 public class RecorderStrategyRegister {
 
@@ -40,8 +39,8 @@ public class RecorderStrategyRegister {
         recorderStrategies.clear();
     }
 
-    public void size() {
-        recorderStrategies.size();
+    public int size() {
+        return recorderStrategies.size();
     }
 
     public RecorderStrategy<?> get(int precedence) {
