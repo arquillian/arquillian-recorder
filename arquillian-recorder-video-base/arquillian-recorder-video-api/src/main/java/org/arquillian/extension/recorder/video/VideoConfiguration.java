@@ -155,8 +155,9 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
             VideoType.valueOf(VideoType.class, getVideoType());
         } catch (IllegalArgumentException ex) {
             throw new VideoConfigurationException(
-                "Video type you specified in arquillian.xml is not valid video type."
-                    + "Supported video types are: " + VideoType.getAll());
+                "Video type you specified in arquillian.xml is not valid video type. "
+                        + "The configured video type is: " + getVideoType() + ". "
+                        + "The supported video types are: " + VideoType.getAll());
         }
 
         final String report = reporterConfiguration.getReport().toLowerCase();
@@ -186,7 +187,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
             }
         } catch (SecurityException ex) {
             throw new VideoConfigurationException(
-                "You are not permitted to operate on specified resource: " + getRootDir().getAbsolutePath() + "'.");
+                "You are not permitted to operate on specified resource: " + getRootDir().getAbsolutePath() + "'.", ex);
         }
 
         try {
