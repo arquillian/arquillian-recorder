@@ -79,7 +79,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Arquillian Core -->
-        <version.arquillian.core>1.1.10.Final</version.arquillian.core>
+        <version.arquillian.core>1.1.11.Final</version.arquillian.core>
 
         <maven.compiler.target>1.6</maven.compiler.target>
         <maven.compiler.source>1.6</maven.compiler.source>
