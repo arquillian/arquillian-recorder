@@ -62,13 +62,13 @@ public class VideoRecorderExtensionInitializer {
 
     public void afterReportingExtensionConfigured(@Observes ReportingExtensionConfigured event) {
 
-        VideoStrategy strategy = new SkippingVideoStrategy();
+        VideoStrategy strategyLocal = new SkippingVideoStrategy();
 
-        VideoRecorderEnvironmentCleaner cleaner = serviceLoader.get().onlyOne(VideoRecorderEnvironmentCleaner.class,
+        VideoRecorderEnvironmentCleaner cleanerLocal = serviceLoader.get().onlyOne(VideoRecorderEnvironmentCleaner.class,
             DefaultVideoRecorderEnvironmentCleaner.class);
 
-        this.strategy.set(strategy);
-        this.cleaner.set(cleaner);
+        this.strategy.set(strategyLocal);
+        this.cleaner.set(cleanerLocal);
 
         extensionConfiguredEvent.fire(new VideoExtensionConfigured());
     }

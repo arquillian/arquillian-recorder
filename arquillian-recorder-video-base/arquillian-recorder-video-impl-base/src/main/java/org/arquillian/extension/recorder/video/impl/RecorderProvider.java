@@ -44,24 +44,24 @@ public class RecorderProvider implements ResourceProvider {
 
     @Override
     public Object lookup(ArquillianResource resource, Annotation... qualifiers) {
-        Recorder recorder = this.recorder.get();
+        Recorder recorderLocal = this.recorder.get();
 
-        VideoConfiguration configuration = this.configuration.get();
+        VideoConfiguration configurationLocal = this.configuration.get();
 
-        if (configuration == null || recorder == null) {
+        if (configurationLocal == null || recorderLocal == null) {
             throw new IllegalStateException("Unable to inject recorder into test. Be sure there is some Video Recorder "
                 + "implementation on the class path.");
         }
 
-        if (configuration.getStartBeforeClass() || configuration.getStartBeforeSuite()
-            || configuration.getStartBeforeTest() || configuration.getTakeOnlyOnFail()) {
+        if (configurationLocal.getStartBeforeClass() || configurationLocal.getStartBeforeSuite()
+            || configurationLocal.getStartBeforeTest() || configurationLocal.getTakeOnlyOnFail()) {
             throw new IllegalStateException("It is not possible to inject video recorder into test "
                 + "when you have specified that you want to take videos automatically via configuration "
                 + "where you set one of start* properties to true or takeOnlyOnFail to true. In order "
                 + "to use recorder manually in test class, you have to set all mentioned above to false.");
         }
 
-        return recorder;
+        return recorderLocal;
     }
 
 }

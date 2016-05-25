@@ -40,13 +40,13 @@ public class ScreenshooterProvider implements ResourceProvider {
 
     @Override
     public Object lookup(ArquillianResource resource, Annotation... qualifiers) {
-        Screenshooter screenshooter = this.screenshooter.get();
+        Screenshooter screenshooterLocal = this.screenshooter.get();
 
-        if (screenshooter == null) {
+        if (screenshooterLocal == null) {
             throw new IllegalStateException("Unable to inject screenshooter into test.");
         }
 
-        return screenshooter;
+        return screenshooterLocal;
     }
 
 }

@@ -67,10 +67,10 @@ public class ScreenshooterExtensionInitializer {
         recorderStrategyRegister.set(new RecorderStrategyRegister());
         recorderStrategyRegister.get().addAll(recorderStrategies);
 
-        ScreenshooterEnvironmentCleaner cleaner = serviceLoader.get()
+        ScreenshooterEnvironmentCleaner cleanerLocal = serviceLoader.get()
             .onlyOne(ScreenshooterEnvironmentCleaner.class, DefaultScreenshooterEnvironmentCleaner.class);
 
-        this.cleaner.set(cleaner);
+        this.cleaner.set(cleanerLocal);
 
         try {
             this.cleaner.get().clean(configuration.get());
