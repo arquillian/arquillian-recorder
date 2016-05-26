@@ -94,10 +94,10 @@ public class HTMLExporter implements Exporter {
 
         if (configuration.getTemplate().exists()) {
             xslt = new StreamSource(configuration.getTemplate());
-        } else if ((is = getClass().getClassLoader().getResourceAsStream(baseTemplatePath)) != null) {
+        } else if ((is = Thread.currentThread().getContextClassLoader().getResourceAsStream(baseTemplatePath)) != null) {
             xslt = new StreamSource(is);
         } else {
-            is = getClass().getClassLoader().getResourceAsStream(coreTemplatePath);
+            is = Thread.currentThread().getContextClassLoader().getResourceAsStream(coreTemplatePath);
             if (is == null) {
                 throw new IllegalStateException("Unable to load default " + coreTemplatePath);
             } else {
