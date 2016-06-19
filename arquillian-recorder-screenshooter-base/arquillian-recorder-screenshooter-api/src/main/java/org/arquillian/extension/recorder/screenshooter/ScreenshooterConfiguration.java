@@ -98,11 +98,11 @@ public class ScreenshooterConfiguration extends Configuration<ScreenshooterConfi
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%-40s %s\n", "rootDir", getRootDir()));
-        sb.append(String.format("%-40s %s\n", "screenshotType", getScreenshotType()));
-        sb.append(String.format("%-40s %s\n", "takeBeforeTest", getTakeBeforeTest()));
-        sb.append(String.format("%-40s %s\n", "takeAfterTest", getTakeAfterTest()));
-        sb.append(String.format("%-40s %s\n", "takeWhenTestFailed", getTakeWhenTestFailed()));
+        sb.append(String.format("%-40s %s%n", "rootDir", getRootDir()));
+        sb.append(String.format("%-40s %s%n", "screenshotType", getScreenshotType()));
+        sb.append(String.format("%-40s %s%n", "takeBeforeTest", getTakeBeforeTest()));
+        sb.append(String.format("%-40s %s%n", "takeAfterTest", getTakeAfterTest()));
+        sb.append(String.format("%-40s %s%n", "takeWhenTestFailed", getTakeWhenTestFailed()));
         return sb.toString();
     }
 

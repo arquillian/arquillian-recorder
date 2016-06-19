@@ -95,7 +95,7 @@ public class DesktopVideoConfiguration extends VideoConfiguration {
         String parent = super.toString();
         StringBuilder sb = new StringBuilder();
         sb.append(parent);
-        sb.append(String.format("%-40s %s\n", "frameRate", getFrameRate()));
+        sb.append(String.format("%-40s %s%n", "frameRate", getFrameRate()));
         return sb.toString();
     }
 }
