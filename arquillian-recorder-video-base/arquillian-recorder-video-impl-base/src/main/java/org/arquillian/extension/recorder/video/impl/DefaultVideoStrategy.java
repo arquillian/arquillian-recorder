@@ -47,12 +47,11 @@ public class DefaultVideoStrategy implements VideoStrategy {
     public boolean isTakingAction(Event event, TestResult result) {
         if (event instanceof AfterTestLifecycleEvent && !(event instanceof After)) {
             switch (result.getStatus()) {
-                case SKIPPED:
-                    return false;
                 case FAILED:
                     return configuration.getTakeOnlyOnFail();
                 case PASSED:
                     return configuration.getStartBeforeTest() || configuration.getTakeOnlyOnFail();
+                case SKIPPED:
                 default:
                     return false;
             }
@@ -62,17 +61,15 @@ public class DefaultVideoStrategy implements VideoStrategy {
 
     @Override
     public boolean isTakingAction(Event event) {
-        if (event instanceof BeforeSuite) {
+        if (event instanceof BeforeSuite
+                || event instanceof AfterSuite) {
             return configuration.getStartBeforeSuite();
-        } else if (event instanceof BeforeClass) {
+        } else if (event instanceof BeforeClass
+                || event instanceof AfterClass) {
             return configuration.getStartBeforeClass();
         } else if (event instanceof Before) {
             return configuration.getStartBeforeTest()
                 || configuration.getTakeOnlyOnFail();
-        } else if (event instanceof AfterSuite) {
-            return configuration.getStartBeforeSuite();
-        } else if (event instanceof AfterClass) {
-            return configuration.getStartBeforeClass();
         }
 
         return false;

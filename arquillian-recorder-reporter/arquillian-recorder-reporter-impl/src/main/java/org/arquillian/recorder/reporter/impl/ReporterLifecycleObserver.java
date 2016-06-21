@@ -244,9 +244,8 @@ public class ReporterLifecycleObserver {
     }
 
     private boolean shouldReport(org.jboss.arquillian.core.spi.event.Event event, String frequency) {
-        if (event instanceof AfterClass && ReportFrequency.CLASS.toString().equals(frequency)) {
-            return true;
-        } else if (event instanceof After && ReportFrequency.METHOD.toString().equals(frequency)) {
+        if (event instanceof AfterClass && ReportFrequency.CLASS.toString().equals(frequency)
+                || (event instanceof After && ReportFrequency.METHOD.toString().equals(frequency)) ) {
             return true;
         }
         return false;
