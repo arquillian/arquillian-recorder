@@ -29,7 +29,7 @@ import org.arquillian.recorder.reporter.ReporterConfiguration;
  */
 public class DesktopVideoConfiguration extends VideoConfiguration {
 
-    private static Logger logger = Logger.getLogger(DesktopVideoConfiguration.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(DesktopVideoConfiguration.class.getSimpleName());
 
     private static final String FRAME_RATE = "20"; // fps
 
@@ -61,19 +61,19 @@ public class DesktopVideoConfiguration extends VideoConfiguration {
         if ((getStartBeforeClass() || getStartBeforeSuite())
             && getStartBeforeTest()) {
             setProperty("startBeforeTest", "false");
-            logger.log(Level.INFO, "You have set both startBeforeTest and startBeforeSuite or startBeforeClass to true - "
+            LOGGER.log(Level.INFO, "You have set both startBeforeTest and startBeforeSuite or startBeforeClass to true - "
                 + "startBeforeTest was set to false.");
         }
 
         if (getStartBeforeSuite() && getStartBeforeClass()) {
-            logger.log(Level.INFO, "You have set startBeforeSuite and startBeforeClass both to true. You can not set them "
+            LOGGER.log(Level.INFO, "You have set startBeforeSuite and startBeforeClass both to true. You can not set them "
                 + "simultaneously to true - startBeforeSuite has precedence so startBeforeClass was set to true.");
             setProperty("startBeforeClass", "false");
         }
 
         if (getTakeOnlyOnFail() && getStartBeforeTest()) {
             setProperty("startBeforeTest", "false");
-            logger.log(Level.INFO, "You have set takeOnlyOnFail to true as well as startBeforeTest to true. You can not set "
+            LOGGER.log(Level.INFO, "You have set takeOnlyOnFail to true as well as startBeforeTest to true. You can not set "
                 + "both to true - startBeforeTest was set to false. Videos of all tests will be recorded automatically "
                 + "and some video of test will be preserved only if test fails.");
         }
@@ -84,7 +84,7 @@ public class DesktopVideoConfiguration extends VideoConfiguration {
             setProperty("startBeforeSuite", "false");
             setProperty("startBeforeTest", "false");
 
-            logger.log(Level.INFO, "You have set one of startBeforeClass, startBeforeSuite or startBeforeTest in connection "
+            LOGGER.log(Level.INFO, "You have set one of startBeforeClass, startBeforeSuite or startBeforeTest in connection "
                 + "with takeOnlyOnFail. All start* properties were set to false so every @Test will be recorded and "
                 + "preserved only in case it has failed");
         }

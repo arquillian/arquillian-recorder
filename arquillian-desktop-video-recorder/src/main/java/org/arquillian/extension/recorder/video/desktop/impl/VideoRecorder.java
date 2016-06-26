@@ -45,7 +45,7 @@ import org.jcodec.api.awt.SequenceEncoder;
  */
 class VideoRecorder {
 
-    private static final Logger logger = Logger.getLogger(VideoRecorder.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(VideoRecorder.class.getName());
 
     public static final int DEFAULT_FRAMERATE = 20;
 
@@ -105,7 +105,7 @@ class VideoRecorder {
                         try {
                             Thread.sleep(500 / frameRate);
                         } catch (InterruptedException ex) {
-                            logger.log(Level.WARNING, "Exception occured during video recording", ex);
+                            LOGGER.log(Level.WARNING, "Exception occured during video recording", ex);
                         }
                         if (!running) {
                             encoder.finish();
@@ -113,7 +113,7 @@ class VideoRecorder {
                     }
 
                 } catch (IOException ex) {
-                    logger.log(Level.WARNING, "Exception occured during video recording", ex);
+                    LOGGER.log(Level.WARNING, "Exception occured during video recording", ex);
                 }
             }
         });
@@ -189,7 +189,7 @@ class VideoRecorder {
             Rectangle captureSize = new Rectangle(screenBounds);
             return robot.createScreenCapture(captureSize);
         } catch (AWTException e) {
-            logger.log(Level.WARNING, "Exception occured while taking screenshot for video record", e);
+            LOGGER.log(Level.WARNING, "Exception occured while taking screenshot for video record", e);
             return null;
         }
     }

@@ -29,7 +29,7 @@ import org.arquillian.extension.recorder.Configuration;
  */
 public class ReporterConfiguration extends Configuration<ReporterConfiguration> {
 
-    private static final Logger logger = Logger.getLogger(ReporterConfiguration.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReporterConfiguration.class.getName());
 
     public static final String DEFAULT_TYPE = "xml";
 
@@ -173,7 +173,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
     @Override
     public void validate() throws ReporterConfigurationException {
         if (report.isEmpty()) {
-            logger.info("Report type can not be empty string! Choosing default type \"xml\"");
+            LOGGER.info("Report type can not be empty string! Choosing default type \"xml\"");
             report = DEFAULT_TYPE;
         }
 
@@ -224,7 +224,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
             List<String> supportedLanguages = languageResolver.getSupportedLanguages();
 
             if (!languageResolver.isLanguageSupported(getLanguage())) {
-                logger.log(Level.INFO, "Language you set ({0}) for HTML report is not supported. It will default to "
+                LOGGER.log(Level.INFO, "Language you set ({0}) for HTML report is not supported. It will default to "
                     + "\"{1}\". When you are executing this from IDE, put reporter api jar to build path among external "
                     + "jars in order to scan it.",
                     new Object[] { getLanguage(), DEFAULT_LANGUAGE, supportedLanguages });

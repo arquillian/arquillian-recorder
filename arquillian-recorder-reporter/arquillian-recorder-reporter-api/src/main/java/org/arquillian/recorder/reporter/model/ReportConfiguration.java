@@ -34,7 +34,7 @@ import org.arquillian.recorder.reporter.ReportEntry;
 @XmlRootElement(name = "reportConfiguration")
 public class ReportConfiguration implements ReportEntry {
 
-    private static final Logger logger = Logger.getLogger(ReportConfiguration.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReportConfiguration.class.getName());
 
     private static final int MAX_HEIGHT_IN_PERCENT = 100;
 
@@ -64,7 +64,7 @@ public class ReportConfiguration implements ReportEntry {
                 this.maxImageWidth = maxImageWidth;
             }
         } catch (NumberFormatException ex) {
-            logger.info(String.format("You are trying to parse '%s' as a number for maxImageWidth.", maxImageWidth));
+            LOGGER.info(String.format("You are trying to parse '%s' as a number for maxImageWidth.", maxImageWidth));
         }
     }
 
@@ -80,7 +80,7 @@ public class ReportConfiguration implements ReportEntry {
                 this.imageWidth = imageWidth;
             }
         } catch (NumberFormatException ex) {
-            logger.info(String.format("You are trying to parse '%s' as a number for imageWidth.", imageWidth));
+            LOGGER.info(String.format("You are trying to parse '%s' as a number for imageWidth.", imageWidth));
         }
     }
 
@@ -96,7 +96,7 @@ public class ReportConfiguration implements ReportEntry {
                 this.imageHeight = imageHeight;
             }
         } catch (NumberFormatException ex) {
-            logger.info(String.format("You are trying to parse '%s' as a number for imageHeight.", imageHeight));
+            LOGGER.info(String.format("You are trying to parse '%s' as a number for imageHeight.", imageHeight));
         }
     }
 
