@@ -26,7 +26,7 @@ import org.jboss.arquillian.core.spi.Validate;
  */
 public final class RecorderFileUtils {
 
-    private static final Logger logger = Logger.getLogger(RecorderFileUtils.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RecorderFileUtils.class.getName());
 
     private RecorderFileUtils() {
         throw new UnsupportedOperationException("no instantiation");
@@ -60,7 +60,7 @@ public final class RecorderFileUtils {
                     throw new IllegalStateException("Unable to create directory " + file.getAbsolutePath());
                 }
             } catch (SecurityException ex) {
-                logger.warning("Unable to create directory due to security exception: " + ex.getMessage());
+                LOGGER.warning("Unable to create directory due to security exception: " + ex.getMessage());
             }
         }
     }
