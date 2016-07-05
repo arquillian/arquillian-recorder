@@ -40,7 +40,7 @@ class LanguageResolver implements Resolver {
 
     private final List<String> supportedLanguages;
 
-    public LanguageResolver() {
+    LanguageResolver() {
         supportedLanguages = resolveSupportedLanguages();
     }
 

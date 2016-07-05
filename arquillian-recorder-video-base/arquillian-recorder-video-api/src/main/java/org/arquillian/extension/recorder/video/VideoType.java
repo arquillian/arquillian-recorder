@@ -30,7 +30,7 @@ public enum VideoType implements ResourceType {
 
     private String name;
 
-    private VideoType(String name) {
+    VideoType(String name) {
         this.name = name;
     }
 

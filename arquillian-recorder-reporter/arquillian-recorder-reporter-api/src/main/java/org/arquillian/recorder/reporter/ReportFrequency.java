@@ -28,7 +28,7 @@ public enum ReportFrequency {
 
     private String phase;
 
-    private ReportFrequency(String phase) {
+    ReportFrequency(String phase) {
         this.phase = phase;
     }
 

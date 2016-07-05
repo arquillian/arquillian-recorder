@@ -33,7 +33,7 @@ public enum When {
 
     private final String name;
 
-    private When(String name) {
+    When(String name) {
         this.name = name;
     }
 

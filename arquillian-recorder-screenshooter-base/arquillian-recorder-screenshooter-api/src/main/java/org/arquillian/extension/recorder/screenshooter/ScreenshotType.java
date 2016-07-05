@@ -34,7 +34,7 @@ public enum ScreenshotType implements ResourceType {
 
     private String name;
 
-    private ScreenshotType(String name) {
+    ScreenshotType(String name) {
         this.name = name;
     }
 
