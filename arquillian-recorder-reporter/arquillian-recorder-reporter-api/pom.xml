@@ -45,6 +45,11 @@
             <artifactId>arquillian-recorder-api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.arquillian.extension</groupId>
+            <artifactId>arquillian-recorder-reporter-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- EclipseLink MOXy provider of JAXB -->
         <dependency>

@@ -43,9 +43,8 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.arquillian.extension</groupId>
-            <artifactId>arquillian-recorder-reporter-api</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>org.jboss.arquillian.core</groupId>
+            <artifactId>arquillian-core-spi</artifactId>
         </dependency>
     </dependencies>
 
