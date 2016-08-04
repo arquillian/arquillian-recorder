@@ -16,9 +16,6 @@
  */
 package org.arquillian.recorder.reporter.impl.test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.arquillian.recorder.reporter.Exporter;
 import org.arquillian.recorder.reporter.JAXBContextFactory;
 import org.arquillian.recorder.reporter.Reporter;
@@ -29,12 +26,16 @@ import org.arquillian.recorder.reporter.impl.ReporterImpl;
 import org.arquillian.recorder.reporter.model.Report;
 import org.arquillian.recorder.reporter.model.entry.GroupEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
+import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
 import org.arquillian.recorder.reporter.model.entry.table.TableCellEntry;
 import org.arquillian.recorder.reporter.model.entry.table.TableEntry;
 import org.arquillian.recorder.reporter.model.entry.table.TableRowEntry;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
@@ -65,9 +66,28 @@ public class GroupEntryTestCase {
 
         group1.getPropertyEntries().add(group2);
 
+        GroupEntry group3 = new GroupEntry("screenshots");
+        ScreenshotEntry screenshotEntry = new ScreenshotEntry();
+        screenshotEntry.setLink("a.jpg");
+        screenshotEntry.setHeight(300);
+        screenshotEntry.setWidth(300);
+
+        ScreenshotEntry screenshotEntry2 = new ScreenshotEntry();
+        screenshotEntry2.setLink("b.jpg");
+        screenshotEntry2.setHeight(300);
+        screenshotEntry2.setWidth(300);
+        screenshotEntry2.setMessage("My B image");
+
+        group3.getPropertyEntries().add(screenshotEntry);
+        group3.getPropertyEntries().add(screenshotEntry2);
+
+        group1.getPropertyEntries().add(group3);
+
         reporter.getReport().getPropertyEntries().add(group1);
         reporter.getReport().getPropertyEntries().add(new KeyValueEntry("topKey1", "topValue1"));
         reporter.getReport().getPropertyEntries().add(new KeyValueEntry("topKey2", "topValue2"));
+
+
 
         Exporter exporter1 = new XMLExporter(JAXBContextFactory.initContext(Report.class));
         Exporter exporter2 = new HTMLExporter(JAXBContextFactory.initContext(Report.class));

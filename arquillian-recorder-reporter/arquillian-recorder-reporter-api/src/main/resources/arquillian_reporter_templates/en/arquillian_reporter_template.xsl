@@ -62,6 +62,8 @@
         </xsl:if>
 
         <xsl:apply-templates select="table"/>
+        <xsl:apply-templates select="screenshot"/>
+        <xsl:apply-templates select="video"/>
         <xsl:apply-templates select="group"/>
     </div>
 </xsl:template>
@@ -104,6 +106,35 @@
         </div>
     </div>
 </xsl:template>
+
+<xsl:template match="screenshot">
+    <div class="screenshotParent">
+        <div class="screenshotLeft">
+            <h6>
+                <xsl:choose>
+                    <xsl:when test="@message">
+                        <xsl:value-of select="@message"></xsl:value-of>
+                    </xsl:when>
+                </xsl:choose>
+            </h6>
+            <xsl:choose>
+                <xsl:when test="@width &gt; /report/reportConfiguration/maxImageWidth">
+                    <p><a href="{@link}"><xsl:value-of select="@link"/></a></p>
+                </xsl:when>
+                <xsl:otherwise>
+                    <a href="{@link}">
+                        <img src="{@link}">
+                            <xsl:attribute name="width"><xsl:value-of select="@width * /report/reportConfiguration/imageWidth div 100"/></xsl:attribute>
+                            <xsl:attribute name="height"><xsl:value-of select="@height * /report/reportConfiguration/imageHeight div 100"/></xsl:attribute>
+                        </img>
+                    </a>
+                </xsl:otherwise>
+            </xsl:choose>
+        </div>
+    </div>
+    <div class="clear"/>
+</xsl:template>
+
 
 <xsl:template match="video">
     <div class="video">
