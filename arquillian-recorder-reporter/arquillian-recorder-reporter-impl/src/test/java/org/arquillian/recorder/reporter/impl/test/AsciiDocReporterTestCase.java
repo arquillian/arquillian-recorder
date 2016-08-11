@@ -39,6 +39,7 @@ import org.arquillian.recorder.reporter.model.TestSuiteReport;
 import org.arquillian.recorder.reporter.model.entry.FileEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
+import org.arquillian.recorder.reporter.model.entry.TextEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 import org.arquillian.recorder.reporter.model.entry.table.TableCellEntry;
 import org.arquillian.recorder.reporter.model.entry.table.TableEntry;
@@ -121,6 +122,7 @@ public class AsciiDocReporterTestCase {
 
         TestMethodReport testMethodReport = new TestMethodReport();
         testMethodReport.setName("someTestMethod");
+        testMethodReport.getPropertyEntries().add(new TextEntry("Test"));
         TestResult testResult = TestResult.passed();
         testResult.setStart(System.currentTimeMillis());
         testResult.setEnd(testResult.getStart() + 1000);

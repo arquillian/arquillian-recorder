@@ -22,6 +22,7 @@ import java.util.Map;
 import org.arquillian.extension.recorder.When;
 import org.arquillian.recorder.reporter.Exporter;
 import org.arquillian.recorder.reporter.JAXBContextFactory;
+import org.arquillian.recorder.reporter.PropertyEntry;
 import org.arquillian.recorder.reporter.Reporter;
 import org.arquillian.recorder.reporter.ReporterConfiguration;
 import org.arquillian.recorder.reporter.exporter.impl.HTMLExporter;
@@ -38,6 +39,7 @@ import org.arquillian.recorder.reporter.model.entry.FileEntry;
 import org.arquillian.recorder.reporter.model.entry.GroupEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
+import org.arquillian.recorder.reporter.model.entry.TextEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 import org.arquillian.recorder.reporter.model.entry.table.TableCellEntry;
 import org.arquillian.recorder.reporter.model.entry.table.TableEntry;
@@ -148,6 +150,7 @@ public class ReporterTestCase {
 
         testMethodReport.getPropertyEntries().add(generateTable());
         testMethodReport.getPropertyEntries().add(generateGroup());
+        testMethodReport.getPropertyEntries().add(generateText());
 
         reporter.getLastTestClassReport().getTestMethodReports().add(testMethodReport);
         reporter.setTestMethodReport(testMethodReport);
@@ -183,6 +186,10 @@ public class ReporterTestCase {
 
         exporter1.export(reporter.getReport());
         exporter2.export(reporter.getReport());
+    }
+
+    private PropertyEntry generateText() {
+        return new TextEntry("Test");
     }
 
     private TableEntry generateTable() {

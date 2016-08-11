@@ -49,6 +49,7 @@ import org.arquillian.recorder.reporter.model.TestSuiteReport;
 import org.arquillian.recorder.reporter.model.entry.FileEntry;
 import org.arquillian.recorder.reporter.model.entry.KeyValueEntry;
 import org.arquillian.recorder.reporter.model.entry.ScreenshotEntry;
+import org.arquillian.recorder.reporter.model.entry.TextEntry;
 import org.arquillian.recorder.reporter.model.entry.VideoEntry;
 import org.arquillian.recorder.reporter.model.entry.table.TableCellEntry;
 import org.arquillian.recorder.reporter.model.entry.table.TableEntry;
@@ -161,6 +162,7 @@ public class AsciiDocExporter implements Exporter {
                 .append(NEW_LINE);
             writeTime(testSuiteReport.getStart(), testSuiteReport.getStop(), testSuiteReport.getDuration());
             writeProperties(testSuiteReport.getPropertyEntries());
+            writeText(testSuiteReport.getPropertyEntries());
             writeMedia(testSuiteReport.getPropertyEntries());
             writeContainers(testSuiteReport.getContainerReports());
             writeTestResults(testSuiteReport.getTestClassReports());
@@ -240,6 +242,16 @@ public class AsciiDocExporter implements Exporter {
             writer.append("|===").append(NEW_LINE).append(NEW_LINE);
         }
 
+    }
+
+    protected void writeText(List<PropertyEntry> propertyEntries) throws IOException {
+        for (PropertyEntry propertyEntry : propertyEntries) {
+            if (propertyEntry instanceof TextEntry) {
+                writer.append("++++").append(NEW_LINE);
+                writer.append(((TextEntry)propertyEntry).getContent()).append(NEW_LINE);
+                writer.append("++++").append(NEW_LINE).append(NEW_LINE);
+            }
+        }
     }
 
     /**
@@ -499,6 +511,7 @@ public class AsciiDocExporter implements Exporter {
 
             writeTestClassTitle(testClassReport);
             writeSummary(testClassReport);
+            writeText(testClassReport.getPropertyEntries());
             writeMedia(testClassReport.getPropertyEntries());
             writeTestMethods(testClassReport);
 
@@ -596,6 +609,7 @@ public class AsciiDocExporter implements Exporter {
             writeTables(testMethodReport.getPropertyEntries());
             writeTestMethodHeader(testClassReport.getTestClassName(), testMethodReport);
             writeTestMethodProperties(testMethodReport);
+            writeText(testMethodReport.getPropertyEntries());
             writeMedia(testMethodReport.getPropertyEntries());
         }
 
