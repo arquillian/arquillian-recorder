@@ -15,6 +15,12 @@
 
 <xsl:preserve-space elements="exception" />
 
+<xsl:template match="text">
+    <pre>
+        <xsl:value-of select="./content"/>
+    </pre>
+</xsl:template>
+
 <xsl:template match="table">
     <table>
         <thead>
@@ -61,6 +67,7 @@
             </table>
         </xsl:if>
 
+        <xsl:apply-templates select="text"/>
         <xsl:apply-templates select="table"/>
         <xsl:apply-templates select="screenshot"/>
         <xsl:apply-templates select="video"/>
@@ -294,6 +301,7 @@
               </xsl:for-each>
             </tbody>
           </table>
+          <xsl:apply-templates select="text"/>
           <xsl:apply-templates select="table"/>
           <xsl:apply-templates select="group"/>
         </div>
@@ -350,6 +358,7 @@
                   </xsl:for-each>
                 </tbody>
               </table>
+              <xsl:apply-templates select="text"/>
               <xsl:apply-templates select="table"/>
               <xsl:apply-templates select="group"/>
             </div>
@@ -387,6 +396,7 @@
                       </xsl:for-each>
                     </tbody>
                   </table>
+                  <xsl:apply-templates select="text"/>
                   <xsl:apply-templates select="video"/>
                   <xsl:apply-templates select="table"/>
                   <xsl:apply-templates select="group"/>
