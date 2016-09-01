@@ -83,4 +83,28 @@ public class TableEntry extends PropertyEntry {
         return tableBody.getRows().size();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        TableEntry that = (TableEntry) o;
+
+        if (!tableHead.equals(that.tableHead)) return false;
+        if (!tableBody.equals(that.tableBody)) return false;
+        if (!tableFoot.equals(that.tableFoot)) return false;
+        return tableName != null ? tableName.equals(that.tableName) : that.tableName == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + tableHead.hashCode();
+        result = 31 * result + tableBody.hashCode();
+        result = 31 * result + tableFoot.hashCode();
+        result = 31 * result + (tableName != null ? tableName.hashCode() : 0);
+        return result;
+    }
 }

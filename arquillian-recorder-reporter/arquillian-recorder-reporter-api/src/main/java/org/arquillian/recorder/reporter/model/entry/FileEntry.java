@@ -86,4 +86,29 @@ public class FileEntry extends PropertyEntry {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        FileEntry fileEntry = (FileEntry) o;
+
+        if (path != null ? !path.equals(fileEntry.path) : fileEntry.path != null) return false;
+        if (size != null ? !size.equals(fileEntry.size) : fileEntry.size != null) return false;
+        if (type != null ? !type.equals(fileEntry.type) : fileEntry.type != null) return false;
+        return message != null ? message.equals(fileEntry.message) : fileEntry.message == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (path != null ? path.hashCode() : 0);
+        result = 31 * result + (size != null ? size.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (message != null ? message.hashCode() : 0);
+        return result;
+    }
 }

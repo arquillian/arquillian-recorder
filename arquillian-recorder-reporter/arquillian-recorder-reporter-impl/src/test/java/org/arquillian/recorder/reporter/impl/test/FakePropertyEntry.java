@@ -63,4 +63,24 @@ public class FakePropertyEntry extends PropertyEntry {
         return null;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        FakePropertyEntry that = (FakePropertyEntry) o;
+
+        if (myKey != null ? !myKey.equals(that.myKey) : that.myKey != null) return false;
+        return myValue != null ? myValue.equals(that.myValue) : that.myValue == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (myKey != null ? myKey.hashCode() : 0);
+        result = 31 * result + (myValue != null ? myValue.hashCode() : 0);
+        return result;
+    }
 }
