@@ -85,4 +85,28 @@ public class ScreenshotEntry extends FileEntry {
         this.link = link;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ScreenshotEntry that = (ScreenshotEntry) o;
+
+        if (width != that.width) return false;
+        if (height != that.height) return false;
+        if (phase != that.phase) return false;
+        return link != null ? link.equals(that.link) : that.link == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (phase != null ? phase.hashCode() : 0);
+        result = 31 * result + width;
+        result = 31 * result + height;
+        result = 31 * result + (link != null ? link.hashCode() : 0);
+        return result;
+    }
 }

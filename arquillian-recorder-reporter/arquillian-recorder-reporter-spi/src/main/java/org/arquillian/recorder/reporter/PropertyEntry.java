@@ -36,4 +36,20 @@ public abstract class PropertyEntry implements ReportEntry {
     public List<PropertyEntry> getPropertyEntries() {
         return propertyEntries;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PropertyEntry that = (PropertyEntry) o;
+
+        return propertyEntries.equals(that.propertyEntries);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return propertyEntries.hashCode();
+    }
 }
