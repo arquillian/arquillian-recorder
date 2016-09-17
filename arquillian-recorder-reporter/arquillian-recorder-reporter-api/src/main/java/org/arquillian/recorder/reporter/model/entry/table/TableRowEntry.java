@@ -70,4 +70,20 @@ public class TableRowEntry implements Reportable {
 
         return n;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TableRowEntry that = (TableRowEntry) o;
+
+        return cells != null ? cells.equals(that.cells) : that.cells == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return cells != null ? cells.hashCode() : 0;
+    }
 }

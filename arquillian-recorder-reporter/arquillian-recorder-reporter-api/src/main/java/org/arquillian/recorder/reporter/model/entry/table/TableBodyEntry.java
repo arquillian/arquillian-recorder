@@ -55,4 +55,20 @@ public class TableBodyEntry implements Reportable {
             }
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TableBodyEntry that = (TableBodyEntry) o;
+
+        return rows != null ? rows.equals(that.rows) : that.rows == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return rows != null ? rows.hashCode() : 0;
+    }
 }
