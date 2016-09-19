@@ -34,4 +34,20 @@ public class TableHeadEntry implements Reportable {
     public TableRowEntry getRow() {
         return row;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TableHeadEntry that = (TableHeadEntry) o;
+
+        return row != null ? row.equals(that.row) : that.row == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return row != null ? row.hashCode() : 0;
+    }
 }

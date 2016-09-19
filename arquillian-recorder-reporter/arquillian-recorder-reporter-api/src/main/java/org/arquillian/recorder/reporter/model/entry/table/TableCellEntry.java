@@ -82,4 +82,24 @@ public class TableCellEntry implements Reportable {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TableCellEntry that = (TableCellEntry) o;
+
+        if (colspan != that.colspan) return false;
+        if (rowspan != that.rowspan) return false;
+        return content != null ? content.equals(that.content) : that.content == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = colspan;
+        result = 31 * result + rowspan;
+        result = 31 * result + (content != null ? content.hashCode() : 0);
+        return result;
+    }
 }
