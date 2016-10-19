@@ -59,10 +59,10 @@ public class DesktopVideoRecorderCreator {
             this.takenResourceRegister.set(new TakenResourceRegister());
         }
 
-        Recorder recorder = new DesktopVideoRecorder(takenResourceRegister.get());
-        recorder.init((DesktopVideoConfiguration) configuration.get());
+        Recorder recorderLocal = new DesktopVideoRecorder(takenResourceRegister.get());
+        recorderLocal.init((DesktopVideoConfiguration) configuration.get());
 
-        this.recorder.set(recorder);
+        this.recorder.set(recorderLocal);
     }
 
 }

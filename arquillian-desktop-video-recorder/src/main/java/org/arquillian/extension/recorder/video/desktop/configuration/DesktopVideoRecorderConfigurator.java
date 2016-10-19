@@ -76,17 +76,17 @@ public class DesktopVideoRecorderConfigurator extends VideoConfigurator {
     private Instance<VideoRecorderEnvironmentCleaner> cleaner;
 
     public void afterVideoExtensionConfigured(@Observes VideoExtensionConfigured event, ArquillianDescriptor descriptor) {
-        VideoConfiguration configuration = new DesktopVideoConfiguration(reporterConfiguration.get());
+        VideoConfiguration configurationLocal = new DesktopVideoConfiguration(reporterConfiguration.get());
 
         for (ExtensionDef extension : descriptor.getExtensions()) {
             if (extension.getExtensionName().equals(EXTENSION_NAME)) {
-                configuration.setConfiguration(extension.getExtensionProperties());
-                configuration.validate();
+                configurationLocal.setConfiguration(extension.getExtensionProperties());
+                configurationLocal.validate();
                 break;
             }
         }
 
-        this.configuration.set(configuration);
+        this.configuration.set(configurationLocal);
 
         if (LOGGER.isLoggable(Level.INFO)) {
             LOGGER.info("Configuration of Arquillian Desktop Video Recorder:");

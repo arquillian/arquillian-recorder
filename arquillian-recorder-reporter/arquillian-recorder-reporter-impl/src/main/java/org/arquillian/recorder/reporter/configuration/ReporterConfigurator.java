@@ -60,18 +60,18 @@ public class ReporterConfigurator extends RecorderConfigurator<ReporterConfigura
 
     public void configureExtension(@Observes ArquillianDescriptor descriptor) {
 
-        ReporterConfiguration configuration = new ReporterConfiguration();
+        ReporterConfiguration configurationLocal = new ReporterConfiguration();
 
         for (ExtensionDef extension : descriptor.getExtensions()) {
             if (extension.getExtensionName().equals(EXTENSION_NAME)) {
-                configuration.setConfiguration(extension.getExtensionProperties());
+                configurationLocal.setConfiguration(extension.getExtensionProperties());
                 break;
             }
         }
 
-        configuration.validate();
+        configurationLocal.validate();
 
-        this.configuration.set(configuration);
+        this.configuration.set(configurationLocal);
 
         if (LOGGER.isLoggable(Level.INFO)) {
             LOGGER.info("Configuration of Arquillian Reporting extension:");

@@ -90,9 +90,9 @@ public class ReporterExtensionInitializer {
 
         // produce default reporter
 
-        Reporter reporter = serviceLoader.get().onlyOne(Reporter.class, ReporterImpl.class);
-        reporter.setConfiguration(configuration.get());
-        this.reporter.set(reporter);
+        Reporter reporterLocal = serviceLoader.get().onlyOne(Reporter.class, ReporterImpl.class);
+        reporterLocal.setConfiguration(configuration.get());
+        this.reporter.set(reporterLocal);
 
         // produce default exporter
 

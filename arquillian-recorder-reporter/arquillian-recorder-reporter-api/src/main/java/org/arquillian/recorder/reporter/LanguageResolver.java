@@ -79,7 +79,7 @@ class LanguageResolver implements Resolver {
      * @return
      */
     protected List<String> resolveSupportedLanguages() {
-        List<String> supportedLanguages = new ArrayList<String>();
+        List<String> supportedLanguagesLocal = new ArrayList<String>();
         final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
 
         if (jarFile.isFile()) { // Run with JAR file
@@ -92,7 +92,7 @@ class LanguageResolver implements Resolver {
                     if ((entry.getName().startsWith(DEFAULT_TEMPLATE_DIR)
                         || entry.getName().startsWith(DEFAULT_TEMPLATE_BASE_DIR))
                         && entry.getName().endsWith(DEFAULT_TEMPLATE_EXTENSION)) {
-                        supportedLanguages.add(parseLanguage(entry.getName()));
+                        supportedLanguagesLocal.add(parseLanguage(entry.getName()));
                     }
                 }
                 jar.close();
@@ -101,7 +101,7 @@ class LanguageResolver implements Resolver {
             }
         }
 
-        return supportedLanguages;
+        return supportedLanguagesLocal;
     }
 
     private static String parseLanguage(String name) {
