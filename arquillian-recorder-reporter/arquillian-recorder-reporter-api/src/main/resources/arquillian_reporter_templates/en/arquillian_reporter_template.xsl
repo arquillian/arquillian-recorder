@@ -26,7 +26,13 @@
         <thead>
             <xsl:for-each select="thead/row">
                 <tr>
-                    <xsl:for-each select="cell"><th><xsl:value-of select="."/></th></xsl:for-each>
+                    <xsl:for-each select="cell">
+                        <th>
+                            <xsl:attribute name="colspan"><xsl:value-of select='@colspan'/></xsl:attribute>
+                            <xsl:attribute name="rowspan"><xsl:value-of select='@rowspan'/></xsl:attribute>
+                            <xsl:value-of select="."/>
+                        </th>
+                    </xsl:for-each>
                 </tr>
             </xsl:for-each>
         </thead>
