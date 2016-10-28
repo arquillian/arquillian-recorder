@@ -51,8 +51,10 @@ public class GroupEntry extends PropertyEntry {
         @XmlElement(name = "table", type = TableEntry.class),
         @XmlElement(name = "group", type = GroupEntry.class),
         @XmlElement(name = "screenshot", type = ScreenshotEntry.class),
-        @XmlElement(name = "video", type = VideoEntry.class)
+        @XmlElement(name = "video", type = VideoEntry.class),
+        @XmlElement(name = "file", type = FileEntry.class)
     })
+
     private final List<PropertyEntry> propertyEntries = new ArrayList<PropertyEntry>();
 
     public GroupEntry() {

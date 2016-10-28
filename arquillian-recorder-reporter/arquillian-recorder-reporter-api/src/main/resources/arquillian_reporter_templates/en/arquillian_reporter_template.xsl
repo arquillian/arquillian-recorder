@@ -71,8 +71,15 @@
         <xsl:apply-templates select="table"/>
         <xsl:apply-templates select="screenshot"/>
         <xsl:apply-templates select="video"/>
+        <xsl:apply-templates select="file"/>
         <xsl:apply-templates select="group"/>
     </div>
+</xsl:template>
+
+<xsl:template match="file">
+   <div class="file">
+        <a href="{@path}"><xsl:value-of select="@path"/></a>
+   </div>
 </xsl:template>
 
 <xsl:template match="extension">
@@ -256,13 +263,11 @@
             <xsl:for-each select="/report/property">
               <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
             </xsl:for-each>
-            <xsl:for-each select="/report/file">
-              <tr><td colspan="2"><xsl:value-of select="@path"/></td></tr>
-            </xsl:for-each>
           </tbody>
         </table>
 
         <xsl:apply-templates select="/report/table"/>
+        <xsl:apply-templates select="/report/file"/>
         <xsl:apply-templates select="/report/group"/>
       </div>
 
@@ -296,13 +301,11 @@
               <xsl:for-each select="property">
                 <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
               </xsl:for-each>
-              <xsl:for-each select="file">
-                <tr><td colspan="2"><xsl:value-of select="@path"/></td></tr>
-              </xsl:for-each>
             </tbody>
           </table>
           <xsl:apply-templates select="text"/>
           <xsl:apply-templates select="table"/>
+          <xsl:apply-templates select="file"/>
           <xsl:apply-templates select="group"/>
         </div>
 
@@ -353,13 +356,11 @@
                   <xsl:for-each select="property">
                     <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
                   </xsl:for-each>
-                  <xsl:for-each select="file">
-                    <tr><td colspan="2"><xsl:value-of select="@path"/></td></tr>
-                  </xsl:for-each>
                 </tbody>
               </table>
               <xsl:apply-templates select="text"/>
               <xsl:apply-templates select="table"/>
+              <xsl:apply-templates select="file"/>
               <xsl:apply-templates select="group"/>
             </div>
 
@@ -391,14 +392,12 @@
                       <xsl:for-each select="property">
                         <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
                       </xsl:for-each>
-                      <xsl:for-each select="file">
-                        <tr><td colspan="2"><xsl:value-of select="@path"/></td></tr>
-                      </xsl:for-each>
                     </tbody>
                   </table>
                   <xsl:apply-templates select="text"/>
                   <xsl:apply-templates select="video"/>
                   <xsl:apply-templates select="table"/>
+                  <xsl:apply-templates select="file"/>
                   <xsl:apply-templates select="group"/>
                 </div>
 
