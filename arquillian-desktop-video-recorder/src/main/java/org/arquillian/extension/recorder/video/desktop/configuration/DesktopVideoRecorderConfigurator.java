@@ -81,11 +81,11 @@ public class DesktopVideoRecorderConfigurator extends VideoConfigurator {
         for (ExtensionDef extension : descriptor.getExtensions()) {
             if (extension.getExtensionName().equals(EXTENSION_NAME)) {
                 configuration.setConfiguration(extension.getExtensionProperties());
-                configuration.validate();
                 break;
             }
         }
 
+        configuration.validate();
         this.configuration.set(configuration);
 
         if (LOGGER.isLoggable(Level.INFO)) {
