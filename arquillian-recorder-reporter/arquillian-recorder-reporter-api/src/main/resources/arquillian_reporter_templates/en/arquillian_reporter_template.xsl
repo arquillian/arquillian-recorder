@@ -22,7 +22,7 @@
 </xsl:template>
 
 <xsl:template match="table">
-    <table>
+    <table id="hor-minimalist-a">
         <thead>
             <xsl:for-each select="thead/row">
                 <tr>
@@ -64,7 +64,7 @@
         <h5><xsl:value-of select="@name"/></h5>
 
         <xsl:if test="property">
-            <table>
+            <table id="hor-minimalist-a">
                 <tbody>
                     <xsl:for-each select="property">
                         <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
@@ -93,7 +93,7 @@
         <h5>Extension <xsl:value-of select="@qualifier"/></h5>
         <xsl:if test="configuration">
         <div class="properties">
-            <table>
+            <table id="hor-minimalist-a">
                 <tbody>
                 <xsl:for-each select="configuration/entry">
                     <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
@@ -107,7 +107,7 @@
 
 <xsl:template match="deployment">
     <div class="deployment">
-        <table>
+        <table id="hor-minimalist-a">
             <tbody>
                 <tr><td>name</td><td><xsl:value-of select="@name"/></td></tr>
                 <tr><td>archive</td><td><xsl:value-of select="archive"/></td></tr>
@@ -172,49 +172,75 @@
 <xsl:template name="all" match="/">
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Arquillian test run report</title>
-    <style type="text/css">
-      body { margin: 1em; padding: 0; }
-      h1 { font-size: 300%; margin: 0; padding: 0; display: inline-block; }
-      h1 > img { float:left; margin: 0 5px 0 0; }
-      h2 { font-size: 275%; margin: 0; padding: 0; }
-      h3 { font-size: 250%; margin: 0; padding: 0; }
-      h4 { font-size: 200%; margin: 0; padding: 0; }
-      h5 { font-size: 150%; margin: 0; padding: 0; display: inline-block; }
-      h5 > img { float:left; margin: 0 5px 0 0; }
-      h6 { font-size: 125%; margin: 0; padding: 0; }
-      .clear { clear: both; }
-      .extensions { margin: 0 0 0 2em; }
-      .extension { margin: 0 0 0 2em; }
-      .suite,.configuration { margin: 0 0 0 2em; }
-      .containers { margin: 0 0 0 2em; }
-      .container { margin: 0 0 0 2em; }
-      .deployments { margin: 0 0 0 2em; }
-      .deployment { margin: 0 0 0 2em; }
-      .testClasses { margin: 0 0 0 2em; }
-      .testClass { margin: 0 0 0 2em; }
-      .testMethod { margin: 0 0 0 2em; }
-      .testMethod > table { margin: 0 0 0 2em; }
-      .properties { margin: 0 0 0 2em; }
-      .properties > table { margin: 0 0 0 2em; }
-      .video { margin: 0 0 0 2em; }
-      .video > video { margin: 0 0 0 2em; }
-      .screenshotParent { margin: 0 0 0 2em; }
-      .screenshotLeft { display: inline-block; float: left; }
-      .screenshotLeft:nth-child(1n) { margin: 0 0 0 2em; }
-      .passed { color: #336633; }
-      .failed { color: #FF0000; }
-      .skipped { color: #FF9900; }
-      .whitespaces { margin: 0 0 0 2em; white-space: pre; }
-      .exception_stacktrace { overflow: hidden; height: 16%; }
-      .exception_stacktrace::first-line { font-weight:bold; font-size: 110%; }
-      #hoverpopup { visibility:hidden; position:absolute; top:0; left:0; color: white; background-color: black;}
-      .testClass.collapsed>.testMethod,.containers.collapsed>.container,.testMethod.collapsed>div,.configuration.collapsed>div { display: none; }
-      .collapsable:hover { cursor: pointer; }
-      .collapsable::before { content: "[-] "; }
-      .collapsable:hover::before { color: red; }
-      .collapsed .collapsable::before { content: "[+] "; }
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <title>Arquillian test run report</title>
+      <style type="text/css">
+          body { margin: 1em; padding: 0; }
+          h1 { font-size: 300%; margin: 0; padding: 0; display: inline-block; }
+          h1 > img { float:left; margin: 0 5px 0 0; }
+          h2 { font-size: 275%; margin: 0; padding: 0; }
+          h3 { font-size: 250%; margin: 0; padding: 0; }
+          h4 { font-size: 200%; margin: 0; padding: 0; }
+          h5 { font-size: 150%; margin: 0; padding: 0; display: inline-block; }
+          h5 > img { float:left; margin: 0 5px 0 0; }
+          h6 { font-size: 125%; margin: 0; padding: 0; }
+          .clear { clear: both; }
+          .extensions { margin: 0 0 0 2em; }
+          .extension { margin: 0 0 0 2em; }
+          .suite,.configuration { margin: 0 0 0 2em; }
+          .containers { margin: 0 0 0 2em; }
+          .container { margin: 0 0 0 2em; }
+          .deployments { margin: 0 0 0 2em; }
+          .deployment { margin: 0 0 0 2em; }
+          .testClasses { margin: 0 0 0 2em; }
+          .testClass { margin: 0 0 0 2em; }
+          .testMethod { margin: 0 0 0 2em; }
+          .testMethod > table { margin: 0 0 0 2em; }
+          .properties { margin: 0 0 0 2em; }
+          .properties > table { margin: 0 0 0 2em; }
+          .video { margin: 0 0 0 2em; }
+          .video > video { margin: 0 0 0 2em; }
+          .screenshotParent { margin: 0 0 0 2em; }
+          .screenshotLeft { display: inline-block; float: left; }
+          .screenshotLeft:nth-child(1n) { margin: 0 0 0 2em; }
+          .passed { color: #336633; }
+          .failed { color: #FF0000; }
+          .skipped { color: #FF9900; }
+          .whitespaces { margin: 0 0 0 2em; white-space: pre; }
+          .exception_stacktrace { overflow: hidden; height: 16%; }
+          .exception_stacktrace::first-line { font-weight:bold; font-size: 110%; }
+           #hoverpopup { visibility:hidden; position:absolute; top:0; left:0; color: white; background-color: black;}
+          .testClass.collapsed>.testMethod,.containers.collapsed>.container,.testMethod.collapsed>div,.configuration.collapsed>div { display: none; }
+          .collapsable:hover { cursor: pointer; }
+          .collapsable::before { content: "[-] "; }
+          .collapsable:hover::before { color: red; }
+          .collapsed .collapsable::before { content: "[+] "; }
+          #hor-minimalist-a
+            {
+                font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+                font-size: 12px;
+                background: #fff;
+                margin: 10px;
+                border-collapse: collapse;
+                text-align: left;
+            }
+            #hor-minimalist-a th
+            {
+                font-size: 14px;
+                font-weight: normal;
+                color: #039;
+                padding: 10px 15px;
+                border-bottom: 2px solid #6678b1;
+            }
+            #hor-minimalist-a td
+            {
+            color: #669;
+                padding: 9px 8px 0px 15px;
+            }
+            #hor-minimalist-a tbody tr:hover td
+            {
+                color: #009;
+            }
     </style>
     <script type="text/javascript"><![CDATA[
             function overflow(x) {
@@ -264,7 +290,7 @@
     <div class="configuration collapsed">
       <h4 onclick="collapse(this);" class="collapsable">Configuration</h4>
       <div class="properties">
-        <table>
+        <table id="hor-minimalist-a">
           <tbody>
             <xsl:for-each select="/report/property">
               <tr><td><xsl:value-of select="key"/></td><td><xsl:value-of select="value"/></td></tr>
@@ -287,7 +313,7 @@
         <h2>Suite</h2>
 
         <div class="properties">
-          <table>
+          <table id="hor-minimalist-a">
             <tbody>
               <tr>
                 <td>start</td>
@@ -324,7 +350,7 @@
             <h4><xsl:value-of select="@qualifier"/></h4>
             <div class="properties">
               <h5>Configuration</h5>
-              <table>
+              <table id="hor-minimalist-a">
                 <tbody>
                 <!-- properties hooked to container -->
                 <xsl:for-each select="configuration/entry">
@@ -347,7 +373,7 @@
           <div class="testClass">
             <h4 onclick="collapse(this);" class="collapsable"><xsl:value-of select="@name"/> - <xsl:value-of select='@duration div 1000'/>s <xsl:if test="@runAsClient = 'true'"> (runs as client)</xsl:if></h4>
             <div class="properties">
-              <table>
+              <table id="hor-minimalist-a">
                 <tbody>
                     <xsl:if test="@reportMessage">
                       <tr><td colspan="2"><xsl:value-of select="@reportMessage"/></td></tr>
@@ -389,7 +415,7 @@
                 </xsl:when>
               </xsl:choose>
                 <div class="properties">
-                  <table>
+                  <table id="hor-minimalist-a">
                     <tbody>
                       <xsl:if test="@reportMessage"><tr><td colspan="2"><xsl:value-of select="@reportMessage"/></td></tr></xsl:if>
                       <xsl:if test="@runAsClient = 'true'"><tr><td colspan="2">runs as client</td></tr></xsl:if>
