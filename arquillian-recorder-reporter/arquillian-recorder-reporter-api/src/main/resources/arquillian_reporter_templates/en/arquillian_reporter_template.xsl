@@ -22,7 +22,7 @@
 </xsl:template>
 
 <xsl:template match="table">
-    <table>
+    <table class="stats-summary-table">
         <thead>
             <xsl:for-each select="thead/row">
                 <tr>
@@ -173,7 +173,6 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Arquillian test run report</title>
     <style type="text/css">
       body { margin: 1em; padding: 0; }
       h1 { font-size: 300%; margin: 0; padding: 0; display: inline-block; }
@@ -215,7 +214,30 @@
       .collapsable::before { content: "[-] "; }
       .collapsable:hover::before { color: red; }
       .collapsed .collapsable::before { content: "[+] "; }
+      .stats-summary-table {
+      font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+      font-size: 12px;
+      background: #fff;
+      margin: 10px;
+      border-collapse: collapse;
+      text-align: left;
+      }
+      .stats-summary-table th {
+      font-size: 14px;
+      font-weight: normal;
+      color: #039;
+      padding: 10px 15px;
+      border-bottom: 2px solid #6678b1;
+      }
+      .stats-summary-table td {
+      color: #669;
+      padding: 9px 8px 0px 15px;
+      }
+      .stats-summary-table tbody tr:hover td {
+      color: #009;
+      }
     </style>
+    <title>Arquillian test run report</title>
     <script type="text/javascript"><![CDATA[
             function overflow(x) {
                 if(x.style.overflow === "auto") {
