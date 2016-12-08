@@ -148,30 +148,38 @@ public class HTMLExporter implements Exporter {
     private void normalizeFilePaths(Reportable report) {
         for (TestSuiteReport testSuiteReport : ((Report) report).getTestSuiteReports()) {
             for (PropertyEntry entry : testSuiteReport.getPropertyEntries()) {
-                if (entry instanceof VideoEntry) {
-                    VideoEntry e = (VideoEntry) entry;
-                    e.setLink(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
-                }
+                    validatePath(entry);
             }
             for (TestClassReport testClassReport : testSuiteReport.getTestClassReports()) {
                 for (PropertyEntry entry : testClassReport.getPropertyEntries()) {
-                    if (entry instanceof VideoEntry) {
-                        VideoEntry e = (VideoEntry) entry;
-                        e.setLink(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
-                    }
+                        validatePath(entry);
                 }
                 for (TestMethodReport testMethodReport : testClassReport.getTestMethodReports()) {
                     for (PropertyEntry entry : testMethodReport.getPropertyEntries()) {
-                        if (entry instanceof VideoEntry) {
-                            VideoEntry e = (VideoEntry) entry;
-                            e.setLink(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
-                        } else if (entry instanceof ScreenshotEntry) {
-                            ScreenshotEntry e = (ScreenshotEntry) entry;
-                            e.setLink(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
-                        }
+                            validatePath(entry);
                     }
                 }
             }
         }
     }
+
+    /**
+     * Validates if the file path is in absolute form and if so relativize it.
+     *
+     * @param entry
+    */
+    private void validatePath(PropertyEntry entry) {
+        if (entry instanceof VideoEntry) {
+            VideoEntry e = (VideoEntry) entry;
+            if (e.getPath().contains(configuration.getRootDir().getAbsolutePath())) {
+                e.setLink(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
+            }
+        } else if (entry instanceof ScreenshotEntry) {
+            ScreenshotEntry e = (ScreenshotEntry) entry;
+            if (e.getPath().contains(configuration.getRootDir().getAbsolutePath())) {
+                e.setLink(e.getPath().substring(configuration.getRootDir().getAbsolutePath().length() + 1));
+            }
+        }
+    }
 }
+
