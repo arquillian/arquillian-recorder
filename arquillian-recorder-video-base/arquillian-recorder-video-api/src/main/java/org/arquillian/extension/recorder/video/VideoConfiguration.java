@@ -171,7 +171,7 @@ public class VideoConfiguration extends Configuration<VideoConfiguration> {
 
         try {
             if (!getRootDir().exists()) {
-                boolean created = getRootDir().mkdir();
+                boolean created = getRootDir().mkdirs();
                 if (!created) {
                     throw new VideoConfigurationException("Unable to create root directory " + getRootDir().getAbsolutePath());
                 }
