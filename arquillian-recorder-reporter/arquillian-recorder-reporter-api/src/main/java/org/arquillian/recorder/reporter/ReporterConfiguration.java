@@ -234,7 +234,7 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
 
         try {
             if (!getRootDir().exists()) {
-                boolean created = getRootDir().mkdir();
+                boolean created = getRootDir().mkdirs();
                 if (!created) {
                     throw new ReporterConfigurationException("Unable to create root directory " + getRootDir().getAbsolutePath());
                 }
