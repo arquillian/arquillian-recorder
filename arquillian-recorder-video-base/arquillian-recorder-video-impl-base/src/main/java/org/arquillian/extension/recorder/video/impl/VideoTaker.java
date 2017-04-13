@@ -147,13 +147,13 @@ public class VideoTaker {
         StringBuilder sb = new StringBuilder();
 
         if (lastIndexOfDot == -1) {
-            sb.append(fileNameWithExtension).append("_").append(status.toString().toLowerCase());
+            sb.append(fileNameWithExtension).append('_').append(status.toString().toLowerCase());
         } else {
             String extension = fileNameWithExtension.substring(lastIndexOfDot + 1);
             sb.append(fileNameWithExtension.substring(0, lastIndexOfDot))
-                .append("_")
+                .append('_')
                 .append(status.toString().toLowerCase())
-                .append(".")
+                .append('.')
                 .append(extension);
         }
 

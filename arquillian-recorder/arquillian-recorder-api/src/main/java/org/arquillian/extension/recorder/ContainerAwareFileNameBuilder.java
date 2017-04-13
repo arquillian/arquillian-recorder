@@ -36,7 +36,7 @@ public class ContainerAwareFileNameBuilder extends DefaultFileNameBuilder {
 
                 if (containerQualifier != null && !containerQualifier.isEmpty()) {
                     sb.append(containerQualifier);
-                    sb.append("_");
+                    sb.append('_');
                 }
 
                 if (metaData == null || metaData.getTestMethodName() == null || metaData.getTestMethodName().isEmpty()) {
@@ -46,12 +46,12 @@ public class ContainerAwareFileNameBuilder extends DefaultFileNameBuilder {
                 }
 
                 if (when != null) {
-                    sb.append("_");
+                    sb.append('_');
                     sb.append(when.toString());
                 }
 
                 if (resourceType != null) {
-                    sb.append(".");
+                    sb.append('.');
                     sb.append(resourceType.toString());
                 }
 

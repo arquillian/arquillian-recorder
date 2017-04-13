@@ -52,7 +52,7 @@ public enum ScreenshotType implements ResourceType {
 
         for (ScreenshotType screenshotType : ScreenshotType.values()) {
             sb.append(screenshotType.toString());
-            sb.append(" ");
+            sb.append(' ');
         }
 
         return sb.toString().trim();

@@ -48,7 +48,7 @@ public enum VideoType implements ResourceType {
 
         for (VideoType videoType : VideoType.values()) {
             sb.append(videoType.toString());
-            sb.append(" ");
+            sb.append(' ');
         }
 
         return sb.toString().trim();
