@@ -75,6 +75,12 @@ public class ReporterConfiguration extends Configuration<ReporterConfiguration> 
         return getProperty("asciiDocAttributesFile", ASCII_DOC_ATTRIBUTES_FILE);
     }
 
+    private String asciiDocAttributesFile = "";
+
+    public String getAsciiDocAttributesFile() {
+        return getProperty("asciiDocAttributesFile", asciiDocAttributesFile);
+    }
+
     /**
      *
      * @return true if we want generated asciidoc document be compliant with standard format. False otherwise and output will be an AsciiDoc document to be rendered by Asciidoctor.
