@@ -27,7 +27,7 @@
     <name>Arquillian Recorder Reporter API</name>
     <description>Arquillian Recorder Reporter API</description>
     <properties>
-        <version.eclipselink.moxy>2.5.1</version.eclipselink.moxy>
+        <version.eclipselink.moxy>2.7.3</version.eclipselink.moxy>
     </properties>
     
     <!-- Developers -->
