@@ -45,7 +45,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <jcodec-javase.version>0.1.9</jcodec-javase.version>
+        <jcodec-javase.version>0.2.3</jcodec-javase.version>
         <thumbnailator.version>0.4.8</thumbnailator.version>
 
         <!-- Other -->
