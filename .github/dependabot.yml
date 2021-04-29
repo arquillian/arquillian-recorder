@@ -1,0 +1,25 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "11:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.mockito:mockito-core
+    versions:
+    - 3.7.7
+    - 3.8.0
+  - dependency-name: org.eclipse.persistence:org.eclipse.persistence.moxy
+    versions:
+    - 3.0.0
+  - dependency-name: org.apache.maven.wagon:wagon-webdav-jackrabbit
+    versions:
+    - 3.4.2
+  - dependency-name: org.jboss:jboss-parent
+    versions:
+    - "37"
+  - dependency-name: org.codehaus.mojo:animal-sniffer-maven-plugin
+    versions:
+    - "1.19"
